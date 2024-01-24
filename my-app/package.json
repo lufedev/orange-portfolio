@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "^6.19.1",
+    "@vercel/postgres": "^0.7.2",
     "mongoclient": "^1.0.3",
     "next": "14.1.0",
     "next-auth": "^4.22.1",
