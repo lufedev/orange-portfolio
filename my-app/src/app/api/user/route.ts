@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { QueryResult, sql } from '@vercel/postgres'
-
+import hashpass from '../../security/hashing'
 // export async function GET() {
 //   return NextResponse.json({
 //     status: 200,
@@ -8,15 +8,11 @@ import { QueryResult, sql } from '@vercel/postgres'
 //   })
 // }
 
-export async function GET(request: Request) {
-  try {
-    const users = await sql`SELECT (name, password) FROM users`
-    const userList = getUsers(users)
-    console.log(userList)
-    return NextResponse.json({ userList }, { status: 200 })
-  } catch (error) {
-    return NextResponse.json({ error }, { status: 500 })
-  }
+export async function GET() {
+  return NextResponse.json({
+    status: 200,
+    data: 'Pinguei no user'
+  })
 }
 
 export async function POST(request: Request) {
@@ -32,7 +28,8 @@ export async function POST(request: Request) {
   try {
     if (!name || !surname || !email || !password)
       throw new Error('Parametros faltando')
-    await sql`INSERT INTO Users (Name,Surname, Email, Password) VALUES (${name}, ${surname}, ${email}, ${password});`
+    const hashedPass = await hashpass(password)
+    await sql`INSERT INTO Users (Name,Surname, Email, Password) VALUES (${name}, ${surname}, ${email}, ${hashedPass});`
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 })
   }
@@ -40,23 +37,4 @@ export async function POST(request: Request) {
   return NextResponse.json({
     status: 200
   })
-}
-
-const getUsers = (users: QueryResult) => {
-  interface User {
-    username: string
-    password: string
-  }
-  interface RowItem {
-    row: string
-  }
-
-  const userList: User[] = users.rows.map((item: RowItem) => {
-    const [, username, password] = item.row.match(/"([^"]+)",([^)]+)/) || []
-    return {
-      username: username || 'unknown',
-      password: password || 'unknown'
-    }
-  })
-  console.log(userList)
 }
