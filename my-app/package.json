@@ -12,6 +12,7 @@
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "^6.19.1",
     "next": "14.1.0",
+    "next-auth": "^4.22.1",
     "react": "^18",
     "react-dom": "^18"
   },
