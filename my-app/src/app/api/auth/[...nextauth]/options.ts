@@ -1,12 +1,11 @@
 import type { NextAuthOptions } from 'next-auth'
-import { sql } 
+import { getUser } from '../../user/user'
+import bcrypt from 'bcrypt'
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
 
-
 //http://localhost:3000/api/auth/signin <- PRECISA SER MUDADO PARA A TELA A SER CONSTRUIDA
 export const options: NextAuthOptions = {
-  
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_ID as string,
@@ -30,38 +29,23 @@ export const options: NextAuthOptions = {
         // Fazer conexão com o BD aqui
         //next-auth.js.org/configuration/providers/credentials
 
-        const userList = await getUsers()
-
         // RECEBENDO USUÁRIOS DO BANCO DE DADOS
         //Falta como saber se o usuário existe no banco de dados
-        if (
-          credentials?.username === user.name &&
-          credentials?.password === user.password
-        ) {
-          return user
-        } else {
+        const user = await getUser(credentials?.username as string)
+        if (user === null) {
           return null
         }
+        return bcrypt
+          .compare(credentials?.password, user.password)
+          .then((match) => {
+            console.log(match)
+            if (!match) {
+              return null
+            } else {
+              return user
+            }
+          })
       }
     })
   ]
-}
-
-const getUsers = async () => {
-  interface User {
-    username: string;
-    password: string;
-  }
-  interface RowItem {
-    row: string;
-  }
-  
-  const users = await sql`SELECT (name, password) FROM users`;
-  const userList: User[] = users.rows.map((item: RowItem) => {
-    const [, username, password] = item.row.match(/"([^"]+)",([^)]+)/) || [];
-    return {
-      username: username || "unknown",
-      password: password || "unknown"
-    };
-  });
 }

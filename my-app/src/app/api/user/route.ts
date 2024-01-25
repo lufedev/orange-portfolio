@@ -1,14 +1,10 @@
 import { NextResponse } from 'next/server'
 import { QueryResult, sql } from '@vercel/postgres'
 import hashpass from '../../security/hashing'
-// export async function GET() {
-//   return NextResponse.json({
-//     status: 200,
-//     data: 'Pinguei no user'
-//   })
-// }
+import { getUser } from './user'
 
 export async function GET() {
+  getUser('Luiz Felipe')
   return NextResponse.json({
     status: 200,
     data: 'Pinguei no user'
