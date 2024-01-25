@@ -8,6 +8,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: '"Roboto"'
+      },
       colors: {
         // Brand Colors
         'color-principal': {
@@ -80,6 +83,9 @@ const config: Config = {
       }
     }
   },
-  plugins: []
+  plugins: [],
+  corePlugins: {
+    preflight: false
+  }
 }
 export default config
