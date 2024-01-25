@@ -4,13 +4,8 @@ import CustomButton from './components/CustomButton'
 export default function Home() {
   return (
     <div>
-      <Header/>
-      <CustomButton
-        variant="contained"
-        color="primary"
-        size="large"
-        name="LABEL"
-      />
+         <Header/>
+         <CustomButton theme={true} variant="contained" color="primary" size="large" disabled={false} name="LABEL" />
     </div>
   )
 }

@@ -23,7 +23,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 
 
-const pages = ['Meus Projetos', 'Descobrir', 'Configurações'];
+const pages = ['Meus projetos', 'Descobrir', 'Configurações'];
 const settings = ['Perfil', 'Sair'];
 
 export default function Header() {
@@ -83,54 +83,49 @@ export default function Header() {
                             >
                                 {pages.map((page) => (
                                     <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                        <Typography textAlign="left" width={100} className='divide-y'>
+                                        <Typography textAlign="left">
                                             {page}
                                         </Typography>
                                     </MenuItem>
                                 ))}
                             </Menu>
-                            <img src={Logo.src} alt='logo' width={150} />
+                            <img src={Logo.src} alt='logo' className="w-[6rem] h=[3rem]" />
                         </Box>
 
                     ) : (
-                        <img src={Logo.src} alt='logo' width={150} />
+                        <img src={Logo.src} alt='logo'  className="ml-7 w-[6.9rem]"  />
                     )}
 
 
-                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+                    <Box sx={{
+                        flexGrow: 1,
+                        display: { xs: 'none', md: 'flex' }, pl: '100px', gap: 3
+                    }}>
                         {pages.slice(0, 2).map((page) => (
                             <Button
                                 key={page}
                                 onClick={handleCloseNavMenu}
-                                sx={{ my: 2, color: 'white', display: 'block', textTransform: 'capitalize' }}
+                                className="text-white block text-base normal-case mt-2 mb-2"
                             >
                                 {page}
                             </Button>
                         ))}
                     </Box>
 
-                    <Box sx={{ 
-                        flexGrow: 0,
-                        display: 'flex',
-                        justifyContent: 'space-around',
-                        alignContent: 'space-between',
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        gap: '25px',
-                    }}
+                    <Box className="flex-grow-0 flex justify-around content-between flex-row items-center gap-2 md:gap-4"
                     >
-                        <Tooltip title="Open settings">
+                        <Tooltip title="Abrir configurações">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                                 <Avatar alt="Foto perfil" src={AvatarUser.src} />
                             </IconButton>
                         </Tooltip>
-                        <Box sx={{ flexGrow: 0, marginRight: '15px' }}>
+                        <Box className="flex-grow-0">
                             <Badge>
                                 <IconButton
                                     color="inherit"
                                     size="medium"
                                 >
-                                    <NotificationsIcon/>
+                                    <NotificationsIcon />
 
                                 </IconButton>
                             </Badge>
@@ -166,4 +161,3 @@ export default function Header() {
         </AppBar>
     );
 }
-
