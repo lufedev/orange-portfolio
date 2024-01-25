@@ -1,6 +1,6 @@
 import { createTheme } from '@mui/material'
 
-export const ButtonTheme = createTheme({
+export const ContainedTheme = createTheme({
   palette: {
     primary: {
       main: '#FF5522',
@@ -13,6 +13,14 @@ export const ButtonTheme = createTheme({
     error: {
       main: '#DD0000',
       dark: '#BB0000'
+    }
+  }
+})
+
+export const TextTheme = createTheme({
+  palette: {
+    primary: {
+      main: '#2196F3'
     }
   }
 })
