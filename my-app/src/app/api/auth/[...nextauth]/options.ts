@@ -25,7 +25,7 @@ export const options: NextAuthOptions = {
           placeholder: 'Password'
         }
       },
-      async authorize(credentials) {
+      async authorize(credentials: any) {
         // Fazer conexão com o BD aqui
         //next-auth.js.org/configuration/providers/credentials
 
@@ -42,14 +42,16 @@ export const options: NextAuthOptions = {
               //Aviso de erro, não sei como resolver ainda
               .then((match) => {
                 if (!match) {
+                  console.log('SENHA INVALIDA ')
                   return null
                 } else {
-                  return credentials
+                  return user
                 }
               })
           )
         } catch (error) {
           if (error instanceof Error) {
+            console.log('ERRO DESCONHECIDO')
             return null
           }
         }

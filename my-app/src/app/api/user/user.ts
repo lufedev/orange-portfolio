@@ -13,7 +13,6 @@ export const getAllUsers = async () => {
 
   function transformData(data: { rows: Row[] }): TransformedData[] {
     return data.rows.map((row) => {
-      console.log(row.row)
       const data = row.row
         .replace('(', '')
         .replace(')', '')
