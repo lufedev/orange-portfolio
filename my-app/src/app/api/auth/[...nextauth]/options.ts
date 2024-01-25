@@ -1,5 +1,5 @@
 import type { NextAuthOptions } from 'next-auth'
-import { getUser } from '../../user/user'
+import { getEmail } from '../../user/user'
 import bcrypt from 'bcrypt'
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
@@ -15,9 +15,9 @@ export const options: NextAuthOptions = {
       name: 'Credentials',
       credentials: {
         username: {
-          label: 'Username',
+          label: 'Email',
           type: 'text',
-          placeholder: 'User'
+          placeholder: 'user@gmail.com'
         },
         password: {
           label: 'Password',
@@ -31,20 +31,28 @@ export const options: NextAuthOptions = {
 
         // RECEBENDO USUÁRIOS DO BANCO DE DADOS
         //Falta como saber se o usuário existe no banco de dados
-        const user = await getUser(credentials?.username as string)
-        if (user === null) {
-          return null
+        try {
+          const user = await getEmail(credentials?.username as string)
+          if (user === null) {
+            return null
+          }
+          return (
+            bcrypt
+              .compare(credentials?.password, user.password)
+              //Aviso de erro, não sei como resolver ainda
+              .then((match) => {
+                if (!match) {
+                  return null
+                } else {
+                  return credentials
+                }
+              })
+          )
+        } catch (error) {
+          if (error instanceof Error) {
+            return null
+          }
         }
-        return bcrypt
-          .compare(credentials?.password, user.password)
-          .then((match) => {
-            console.log(match)
-            if (!match) {
-              return null
-            } else {
-              return user
-            }
-          })
       }
     })
   ]

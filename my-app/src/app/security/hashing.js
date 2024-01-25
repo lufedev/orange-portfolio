@@ -10,7 +10,6 @@ function hashpass(password) {
           if (hashError) {
             reject(hashError)
           } else {
-            console.log(hash)
             resolve(hash)
           }
         })
