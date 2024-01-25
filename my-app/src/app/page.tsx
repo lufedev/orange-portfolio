@@ -1,9 +1,9 @@
-import CustomButton from './components/CustomButton'
+import LoginInput from './components/LoginInput'
 
 export default function Home() {
   return (
     <div>
-      <CustomButton theme={true} variant="contained" color="primary" size="large" disabled={false} name="LABEL" />
+      <LoginInput />
     </div>
   )
 }
