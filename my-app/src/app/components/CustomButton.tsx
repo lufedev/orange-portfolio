@@ -10,11 +10,12 @@ export default function CustomButton({
   variant,
   color,
   size,
+  disabled,
   name
 }: TypeButton) {
   return (
-    <ThemeProvider theme={theme}>
-      <Button variant={variant} color={color} size={size}>
+    <ThemeProvider theme={theme ? ContainedTheme : TextTheme}>
+      <Button variant={variant} color={color} size={size} disabled={disabled} >
         {name}
       </Button>
     </ThemeProvider>
