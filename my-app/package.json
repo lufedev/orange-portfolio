@@ -10,10 +10,14 @@
     "format": "prettier --write '*/**/*.{js,jsx,ts,tsx,json,css,md}'"
   },
   "dependencies": {
+    "@fontsource/roboto": "^5.0.8",
+    "@mui/material": "^5.15.6",
+    "@mui/styled-engine-sc": "^6.0.0-alpha.13",
     "@typescript-eslint/eslint-plugin": "^6.19.1",
     "next": "14.1.0",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "styled-components": "^6.1.8"
   },
   "devDependencies": {
     "@types/node": "^20",
