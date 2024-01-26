@@ -50,3 +50,13 @@
     @apply text-[.9375rem] font-medium leading-[1.625rem] tracking-[.02875rem] uppercase;
   }
 }
+
+.MuiFormLabel-root.Mui-error {
+  color: #515255; /* Cor do label quando ocorre um erro */
+}
+
+.MuiFormLabel-root.Mui-focused.Mui-error {
+  /* Estilos específicos para o rótulo quando está em foco e ocorre um erro */
+  color: #D32F2F; /* Por exemplo, alterando a cor para azul */
+}
+
