@@ -50,3 +50,13 @@
     @apply text-[.9375rem] font-medium leading-[1.625rem] tracking-[.02875rem] uppercase;
   }
 }
+
+.MuiFormLabel-root.Mui-focused{
+  color: #2348B1;
+}
+
+.MuiFormLabel-root.Mui-error, 
+.MuiFormLabel-root.Mui-focused  {
+  color: #515255 !important; 
+}
+

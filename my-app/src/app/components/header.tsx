@@ -3,6 +3,10 @@
 import * as React from 'react';
 import Logo from '../assets/img/logo-orangeportifolio.png';
 import AvatarUser from '../assets/img/avatar.png';
+import MenuIcon from '@mui/icons-material/Menu';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import { ThemeProvider } from '@mui/material/styles';
+import { MainTheme } from '../themes/Theme';
 import {
     AppBar,
     Box,
@@ -19,8 +23,8 @@ import {
     useMediaQuery,
     Badge
 } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import NotificationsIcon from '@mui/icons-material/Notifications';
+
+
 
 
 const pages = ['Meus projetos', 'Descobrir', 'Configurações'];
@@ -47,7 +51,8 @@ export default function Header() {
     const isMobile: boolean = useMediaQuery('(max-width: 899px)');
 
     return (
-        <AppBar position="static" className="bg-color-principal-100">
+        <ThemeProvider theme={MainTheme}>
+        <AppBar position="static" color='primary'>
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     {isMobile ? (
@@ -159,5 +164,6 @@ export default function Header() {
                 </Toolbar>
             </Container>
         </AppBar>
+        </ThemeProvider>
     );
 }

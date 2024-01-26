@@ -1,10 +1,16 @@
-import { createTheme } from '@mui/material'
+"use client";
+import { createTheme } from '@mui/material/styles';
+
 
 export const TextFieldTheme = createTheme({
+  
   palette: {
     primary: {
-      main: '#FF5522',
-      dark: '#CC4400'
-    }
-  }
+      main: '#2348B1',
+      contrastText: '#000000',
+    },
+  
+  },
+
+
 })

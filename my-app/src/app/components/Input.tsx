@@ -1,7 +1,6 @@
 "use client";
 import * as React from 'react';
 import IconButton from '@mui/material/IconButton';
-import Input from '@mui/material/Input';
 import CustomButton from './CustomButton'
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
@@ -21,7 +20,7 @@ export default function Input() {
     };
 
     return (
-        <div style={{ width: '1280px', height: '832px', top: '1070px', left: '4068px', display: 'flex', flexDirection: 'column', gap: '15px', background: '#FFFFFF' }}>
+        <div style={{ width: '100%', height: '832px', top: '1070px', left: '4068px', display: 'flex', flexDirection: 'column', gap: '15px', background: '#FFFFFF' }}>
             <h2 style={{ width: '256px', height: '40px', top: '271px', left: '792px', fontFamily: 'Roboto', fontSize: '48px', fontWeight: 400, lineHeight: '40px', letterSpacing: '0em', textAlign: 'center' }}>Cadastre-se</h2>
             <div style={{ width: '517px', height: '258px', top: '2497px', left: '998px', display: 'flex', flexDirection: 'column', gap: '15px' }}>
                 <div style={{ width: '517px', height: '56px', display: 'flex', alignItems: 'center' }}>
@@ -51,10 +50,13 @@ export default function Input() {
                     />
                 </FormControl>
                 <CustomButton
+                    theme={true}
                     variant="contained"
                     color="primary"
                     size="large"
-                    name="Cadastrar"
+                    disabled={false}
+                    name="CADASTRAR"
+                    className="mb-[1.13rem]"
                 />
             </div>
         </div>
