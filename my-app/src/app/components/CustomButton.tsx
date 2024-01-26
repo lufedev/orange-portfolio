@@ -14,7 +14,9 @@ export default function CustomButton({
   className,
   name
 }: TypeButton) {
+  
   return (
+
     <ThemeProvider theme={theme ? ContainedTheme : TextTheme}>
       <Button variant={variant} color={color} size={size} disabled={disabled} className={className} >
         {name}
