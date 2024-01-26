@@ -1,14 +1,9 @@
-import CustomButton from './components/CustomButton'
+import Input from './components/Input'
 
 export default function Home() {
   return (
     <div>
-      <CustomButton
-        variant="contained"
-        color="primary"
-        size="large"
-        name="LABEL"
-      />
+      <Input/>
     </div>
   )
 }
