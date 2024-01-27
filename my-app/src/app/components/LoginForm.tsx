@@ -13,9 +13,12 @@ import {
   OutlinedInput,
   TextField
 } from '@mui/material'
+import { signIn } from 'next-auth/react'
 
 export default function LoginForm() {
   const [value, setValue] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = React.useState(false)
 
   const handleClickShowPassword = () => setShowPassword((show) => !show)
@@ -25,6 +28,23 @@ export default function LoginForm() {
   ) => {
     event.preventDefault()
   }
+
+  //LOGIN API FUNCTION
+  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value)
+  }
+
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value)
+  }
+  const handleLogin = async () => {
+    await signIn('credentials', {
+      email,
+      password,
+      callbackUrl: '/dashboard'
+    })
+  }
+
   return (
     <div className="flex flex-col">
       <p className="mb-8 subtitle-1 text-color-neutral-110">
@@ -37,6 +57,7 @@ export default function LoginForm() {
           size="medium"
           className="mb-4"
           type="email"
+          onChange={handleEmailChange}
         />
         <FormControl variant="outlined" className="mb-4">
           <InputLabel htmlFor="outlined-adornment-password">
@@ -45,6 +66,7 @@ export default function LoginForm() {
           <OutlinedInput
             id="outlined-adornment-password"
             type={showPassword ? 'text' : 'password'}
+            onChange={handlePasswordChange}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
@@ -69,6 +91,7 @@ export default function LoginForm() {
         disabled={false}
         name="ENTRAR"
         className="mb-[1.13rem]"
+        onClick={handleLogin}
       />
       <a
         href="../register"

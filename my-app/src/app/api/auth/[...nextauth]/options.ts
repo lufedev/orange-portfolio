@@ -7,7 +7,7 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 //http://localhost:3000/api/auth/signin <- PRECISA SER MUDADO PARA A TELA A SER CONSTRUIDA
 export const options: NextAuthOptions = {
   pages: {
-    signIn: '/'
+    signIn: '/login'
   },
   providers: [
     GoogleProvider({
