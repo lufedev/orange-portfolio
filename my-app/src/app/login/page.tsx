@@ -8,7 +8,7 @@ export default function Login() {
         <h5 className="h5 text-color-principal-90 text-center mb-8">
           Entre no Orange Portfólio
         </h5>
-        <GoogleLoginButton className="mb-8"/>
+        <GoogleLoginButton className="mb-8" />
         <LoginForm />
       </div>
     </div>
