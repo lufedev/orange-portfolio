@@ -1,6 +1,6 @@
 'use client'
+
 import { Visibility, VisibilityOff } from '@mui/icons-material'
-import { redirect } from 'next/navigation'
 import { TextFieldTheme } from '../themes/TextField'
 import { ThemeProvider } from '@mui/material/styles'
 import CustomButton from './CustomButton'
@@ -13,13 +13,10 @@ import {
   OutlinedInput,
   TextField
 } from '@mui/material'
-import { signIn } from 'next-auth/react'
 
-export default function LoginInput() {
+export default function LoginForm() {
   const [value, setValue] = useState('')
   const [showPassword, setShowPassword] = React.useState(false)
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
 
   const handleClickShowPassword = () => setShowPassword((show) => !show)
 
@@ -28,25 +25,11 @@ export default function LoginInput() {
   ) => {
     event.preventDefault()
   }
-  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(event.target.value)
-  }
-
-  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(event.target.value)
-  }
-
-  const handleLogin = async () => {
-    await signIn('credentials', {
-      email,
-      password,
-      callbackUrl: '/dashboard'
-    })
-  }
-
   return (
-    <div className="flex flex-col w-1/2 m-auto mt-4	">
-      <h5 className="mb-8 h5 text-color-neutral-110">Faça login com email</h5>
+    <div className="flex flex-col">
+      <p className="mb-8 subtitle-1 text-color-neutral-110">
+        Faça login com email
+      </p>
       <ThemeProvider theme={TextFieldTheme}>
         <TextField
           label="Email address"
@@ -54,16 +37,14 @@ export default function LoginInput() {
           size="medium"
           className="mb-4"
           type="email"
-          onChange={handleEmailChange}
         />
         <FormControl variant="outlined" className="mb-4">
           <InputLabel htmlFor="outlined-adornment-password">
-            Password *
+            Password
           </InputLabel>
           <OutlinedInput
             id="outlined-adornment-password"
             type={showPassword ? 'text' : 'password'}
-            onChange={handlePasswordChange}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
@@ -88,11 +69,9 @@ export default function LoginInput() {
         disabled={false}
         name="ENTRAR"
         className="mb-[1.13rem]"
-        onClick={handleLogin}
       />
-
       <a
-        href="https://www.youtube.com/"
+        href="../register"
         className="subtitle-1 text-color-neutral-100 !no-underline"
       >
         Cadastre-se

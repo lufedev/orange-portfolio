@@ -6,10 +6,7 @@ import Header from './components/header'
 export default function Home() {
   return (
     <div>
-      <Header />
-      <LoginInput />
-      {/* <Input/> */}
-      {/* <SuccessModel status={false}  titulo="Edição concluída com sucesso!"/> */}
+      <h1>Hello World</h1>
     </div>
   )
 }

@@ -18,7 +18,6 @@ export default function CustomButton({
   return (
     <ThemeProvider theme={theme ? ContainedTheme : TextTheme}>
       <Button
-        onClick={onClick}
         variant={variant}
         color={color}
         size={size}

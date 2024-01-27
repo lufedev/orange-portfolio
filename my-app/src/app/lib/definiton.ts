@@ -8,3 +8,7 @@ export type TypeButton = {
   className: string
   name: string
 }
+
+export type GoogleLogin = {
+  className: string
+}
