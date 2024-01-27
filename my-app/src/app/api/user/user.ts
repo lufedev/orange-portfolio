@@ -93,7 +93,6 @@ export const editUser = async (
   if (bcrypt.compare(password, userOld.password) !== true) {
     userOld.password = await hashpass(password)
   }
-  console.log(userOld)
   const userNew =
     await sql`UPDATE users SET name = ${userOld.name}, surname = ${userOld.surname}, password = ${userOld.password} WHERE email = ${userOld.email}`
   if (userNew.rowCount < 1) {

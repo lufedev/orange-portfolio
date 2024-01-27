@@ -1,4 +1,5 @@
-eexport type TypeButton = {
+export type TypeButton = {
+  onClick?: () => void
   theme: boolean
   variant: string
   color: string

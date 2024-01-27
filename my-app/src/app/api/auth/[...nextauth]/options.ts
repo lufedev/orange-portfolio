@@ -6,6 +6,9 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 
 //http://localhost:3000/api/auth/signin <- PRECISA SER MUDADO PARA A TELA A SER CONSTRUIDA
 export const options: NextAuthOptions = {
+  pages: {
+    signIn: '/'
+  },
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_ID as string,
@@ -14,7 +17,7 @@ export const options: NextAuthOptions = {
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
-        username: {
+        email: {
           label: 'Email',
           type: 'text',
           placeholder: 'user@gmail.com'
@@ -32,7 +35,7 @@ export const options: NextAuthOptions = {
         // RECEBENDO USUÁRIOS DO BANCO DE DADOS
         //Falta como saber se o usuário existe no banco de dados
         try {
-          const user = await getEmail(credentials?.username as string)
+          const user = await getEmail(credentials?.email as string)
           if (user === null) {
             return null
           }
@@ -65,7 +68,6 @@ export const options: NextAuthOptions = {
       if (account) {
         token.accessToken = account.access_token
       }
-      console.log(token)
       return token
     }
   }
