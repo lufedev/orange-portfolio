@@ -13,6 +13,7 @@ export async function GET() {
 export async function POST(request: Request) {
   const data = await request.json()
   const size = Object.keys(data).length
+
   if (size < 1) {
     return NextResponse.json({
       status: 400,

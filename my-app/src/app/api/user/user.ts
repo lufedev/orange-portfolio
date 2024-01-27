@@ -1,6 +1,11 @@
+import hashpass from '@/app/security/hashing'
 import { sql } from '@vercel/postgres'
+import bcrypt from 'bcrypt'
+import { options } from '../../api/auth/[...nextauth]/options'
+import { getServerSession } from 'next-auth/next'
 
 //Lista todos os usuários do banco de dados
+
 export const getAllUsers = async () => {
   interface Row {
     row: string
@@ -65,4 +70,35 @@ export const createUser = async (
     return null
   }
   return user.rows[0]
+}
+
+export const editUser = async (
+  name: string,
+  surname: string,
+  email: string,
+  password: string
+) => {
+  const userOld = await getEmail(email)
+  const session = await getServerSession(options)
+  if (session === null || session.user?.email !== email) {
+    throw new Error('Usuário não autorizado')
+  }
+  const fields = ['email', 'name', 'surname']
+
+  fields.forEach((field) => {
+    if (userOld[field] !== eval(field)) {
+      userOld[field] = eval(field)
+    }
+  })
+  if (bcrypt.compare(password, userOld.password) !== true) {
+    userOld.password = await hashpass(password)
+  }
+  console.log(userOld)
+  const userNew =
+    await sql`UPDATE users SET name = ${userOld.name}, surname = ${userOld.surname}, password = ${userOld.password} WHERE email = ${userOld.email}`
+  if (userNew.rowCount < 1) {
+    // throw new Error('Usuário não encontrado')
+    console.log('user not found')
+  }
+  return userNew.rows[0]
 }
