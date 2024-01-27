@@ -1,4 +1,4 @@
-eexport type TypeButton = {
+export type TypeButton = {
   theme: boolean
   variant: string
   color: string

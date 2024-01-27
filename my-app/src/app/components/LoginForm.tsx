@@ -1,10 +1,10 @@
-"use client";
+'use client'
 
-import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { TextFieldTheme } from '../themes/TextField'
 import { ThemeProvider } from '@mui/material/styles'
 import CustomButton from './CustomButton'
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import {
   FormControl,
   IconButton,
@@ -14,33 +14,34 @@ import {
   TextField
 } from '@mui/material'
 
+export default function LoginForm() {
+  const [value, setValue] = useState('')
+  const [showPassword, setShowPassword] = React.useState(false)
 
+  const handleClickShowPassword = () => setShowPassword((show) => !show)
 
-
-
-export default function LoginInput() {
-  const [value, setValue] = useState('');
-  const [showPassword, setShowPassword] = React.useState(false);
-
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-  };
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault()
+  }
   return (
-    <div className="flex flex-col w-1/2 m-auto mt-4	">
-      <h5 className="mb-8 h5 text-color-neutral-110">Faça login com email</h5>
+    <div className="flex flex-col">
+      <p className="mb-8 subtitle-1 text-color-neutral-110">
+        Faça login com email
+      </p>
       <ThemeProvider theme={TextFieldTheme}>
         <TextField
           label="Email address"
           variant="outlined"
           size="medium"
           className="mb-4"
-          type="email"  
-  
+          type="email"
         />
         <FormControl variant="outlined" className="mb-4">
-          <InputLabel htmlFor="outlined-adornment-password">Password *</InputLabel>
+          <InputLabel htmlFor="outlined-adornment-password">
+            Password
+          </InputLabel>
           <OutlinedInput
             id="outlined-adornment-password"
             type={showPassword ? 'text' : 'password'}
@@ -70,7 +71,7 @@ export default function LoginInput() {
         className="mb-[1.13rem]"
       />
       <a
-        href="https://www.youtube.com/"
+        href="../register"
         className="subtitle-1 text-color-neutral-100 !no-underline"
       >
         Cadastre-se
