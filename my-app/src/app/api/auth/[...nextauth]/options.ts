@@ -45,18 +45,14 @@ export const options: NextAuthOptions = {
               //Aviso de erro, não sei como resolver ainda
               .then((match) => {
                 if (!match) {
-                  console.log('SENHA INVALIDA ')
-                  return null
+                  throw new Error('Senha incorreta')
                 } else {
                   return user
                 }
               })
           )
         } catch (error) {
-          if (error instanceof Error) {
-            console.log('ERRO DESCONHECIDO')
-            return null
-          }
+          throw new Error('Usuário não encontrado')
         }
       }
     })

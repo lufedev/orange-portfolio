@@ -7,6 +7,7 @@ import CustomButton from './CustomButton'
 import React, { useState } from 'react'
 import {
   FormControl,
+  FormHelperText,
   IconButton,
   InputAdornment,
   InputLabel,
@@ -14,13 +15,18 @@ import {
   TextField
 } from '@mui/material'
 import { signIn } from 'next-auth/react'
+import { redirect } from 'next/navigation'
 
 export default function LoginForm() {
-  const [value, setValue] = useState('')
+  const [error, setError] = useState({ status: false, message: '' })
   const [email, setEmail] = useState('')
+  const [userLogged, setUserLogged] = useState(false)
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = React.useState(false)
 
+  if (userLogged) {
+    redirect('/dashboard')
+  }
   const handleClickShowPassword = () => setShowPassword((show) => !show)
 
   const handleMouseDownPassword = (
@@ -38,11 +44,16 @@ export default function LoginForm() {
     setPassword(event.target.value)
   }
   const handleLogin = async () => {
-    await signIn('credentials', {
+    const loginStatus = await signIn('credentials', {
       email,
       password,
-      callbackUrl: '/dashboard'
+      redirect: false
     })
+    if (loginStatus?.ok) {
+      setUserLogged(true)
+    } else {
+      setError({ status: true, message: loginStatus?.error as string })
+    }
   }
 
   return (
@@ -58,6 +69,8 @@ export default function LoginForm() {
           className="mb-4"
           type="email"
           onChange={handleEmailChange}
+          error={error.status}
+          helperText={error.message}
         />
         <FormControl variant="outlined" className="mb-4">
           <InputLabel htmlFor="outlined-adornment-password">
@@ -80,7 +93,13 @@ export default function LoginForm() {
               </InputAdornment>
             }
             label="Password *"
+            error={error.status}
           />
+          {error.status && (
+            <FormHelperText id="outlined-adornment-password-helper">
+              {error.message}
+            </FormHelperText>
+          )}
         </FormControl>
       </ThemeProvider>
       <CustomButton
