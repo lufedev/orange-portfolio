@@ -18,7 +18,7 @@ import { signIn } from 'next-auth/react'
 import { redirect } from 'next/navigation'
 
 export default function LoginForm() {
-  const [error, setError] = useState({ status: false, message: '' })
+  const [error, setError] = useState({ status: false, type: '', message: '' })
   const [email, setEmail] = useState('')
   const [userLogged, setUserLogged] = useState(false)
   const [password, setPassword] = useState('')
@@ -35,7 +35,6 @@ export default function LoginForm() {
     event.preventDefault()
   }
 
-  //LOGIN API FUNCTION
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value)
   }
@@ -52,10 +51,21 @@ export default function LoginForm() {
     if (loginStatus?.ok) {
       setUserLogged(true)
     } else {
-      setError({ status: true, message: loginStatus?.error as string })
+      if (loginStatus?.error?.includes('Email')) {
+        setError({
+          status: true,
+          type: 'email',
+          message: loginStatus?.error as string
+        })
+      } else {
+        setError({
+          status: true,
+          type: 'pass',
+          message: loginStatus?.error as string
+        })
+      }
     }
   }
-
   return (
     <div className="flex flex-col">
       <p className="mb-8 subtitle-1 text-color-neutral-110">
@@ -69,8 +79,8 @@ export default function LoginForm() {
           className="mb-4"
           type="email"
           onChange={handleEmailChange}
-          error={error.status}
-          helperText={error.message}
+          error={error.status && error.type === 'email'}
+          helperText={error.type === 'email' ? error.message : null}
         />
         <FormControl variant="outlined" className="mb-4">
           <InputLabel htmlFor="outlined-adornment-password">
@@ -93,11 +103,11 @@ export default function LoginForm() {
               </InputAdornment>
             }
             label="Password *"
-            error={error.status}
+            error={error.status && error.type === 'pass'}
           />
           {error.status && (
             <FormHelperText id="outlined-adornment-password-helper">
-              {error.message}
+              {error.type === 'pass' ? error.message : null}
             </FormHelperText>
           )}
         </FormControl>

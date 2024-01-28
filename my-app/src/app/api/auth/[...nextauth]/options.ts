@@ -52,7 +52,7 @@ export const options: NextAuthOptions = {
               })
           )
         } catch (error) {
-          throw new Error('Usuário não encontrado')
+          throw new Error('Email não encontrado')
         }
       }
     })
