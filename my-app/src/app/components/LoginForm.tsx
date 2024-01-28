@@ -64,7 +64,7 @@ export default function LoginForm() {
   }
   return (
     <div className="flex flex-col">
-      <p className="mb-8 subtitle-1 text-color-neutral-110">
+      <p className="my-8 subtitle-1 text-color-neutral-110">
         Faça login com email
       </p>
       <ThemeProvider theme={TextFieldTheme}>
@@ -87,7 +87,7 @@ export default function LoginForm() {
             type={showPassword ? 'text' : 'password'}
             onChange={handlePasswordChange}
             endAdornment={
-              <InputAdornment position="end">
+              <InputAdornment position="start">
                 <IconButton
                   aria-label="toggle password visibility"
                   onClick={handleClickShowPassword}
@@ -120,7 +120,7 @@ export default function LoginForm() {
       />
       <a
         href="../register"
-        className="subtitle-1 text-color-neutral-100 !no-underline"
+        className="subtitle-1 mt-[1.13rem] text-color-neutral-100 !no-underline"
       >
         Cadastre-se
       </a>

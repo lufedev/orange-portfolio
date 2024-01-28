@@ -1,5 +1,3 @@
-'use client'
-
 import { ThemeProvider } from '@mui/material/styles'
 import Button from '@mui/material/Button'
 import { TypeButton } from '../lib/definiton'
