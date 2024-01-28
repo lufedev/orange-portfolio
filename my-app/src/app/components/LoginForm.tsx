@@ -16,15 +16,17 @@ import {
 } from '@mui/material'
 import { signIn } from 'next-auth/react'
 import { redirect } from 'next/navigation'
-import { getServerSession } from 'next-auth'
-import { options } from '../api/auth/[...nextauth]/options'
 
 export default function LoginForm() {
   const [error, setError] = useState({ status: false, type: '', message: '' })
   const [email, setEmail] = useState('')
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false)
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = React.useState(false)
 
+  if (isUserLoggedIn) {
+    redirect('/dashboard')
+  }
   const handleClickShowPassword = () => setShowPassword((show) => !show)
 
   const handleMouseDownPassword = (
@@ -46,7 +48,9 @@ export default function LoginForm() {
       password,
       redirect: false
     })
-    if (!loginStatus?.ok) {
+    if (loginStatus?.ok) {
+      setIsUserLoggedIn(true)
+    } else {
       if (loginStatus?.error?.includes('Email')) {
         setError({
           status: true,

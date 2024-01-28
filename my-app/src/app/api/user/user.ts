@@ -38,9 +38,6 @@ export const getAllUsers = async () => {
 //Procura um usuário
 export const getEmail = async (email: string) => {
   const user = await sql`SELECT * FROM users WHERE email = ${email}`
-  if (user.rowCount < 1) {
-    throw new Error('Usuário não encontrado')
-  }
   return user.rows[0]
 }
 
@@ -60,12 +57,14 @@ export const createUser = async (
   email: string,
   password: string
 ) => {
-  if ((await getEmail(email)) !== null) {
+  const alreadyExists = await getEmail(email)
+  if (alreadyExists !== undefined) {
     throw new Error('Usuário já existe')
   }
   const user =
     await sql`INSERT INTO users (name, surname, email, password) VALUES (${name}, 
       ${surname}, ${email}, ${password})`
+
   if (user.rowCount < 1) {
     return null
   }
