@@ -4,7 +4,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { TextFieldTheme } from '../themes/TextField'
 import { ThemeProvider } from '@mui/material/styles'
 import CustomButton from './CustomButton'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   FormControl,
   FormHelperText,
@@ -16,17 +16,15 @@ import {
 } from '@mui/material'
 import { signIn } from 'next-auth/react'
 import { redirect } from 'next/navigation'
+import { getServerSession } from 'next-auth'
+import { options } from '../api/auth/[...nextauth]/options'
 
 export default function LoginForm() {
   const [error, setError] = useState({ status: false, type: '', message: '' })
   const [email, setEmail] = useState('')
-  const [userLogged, setUserLogged] = useState(false)
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = React.useState(false)
 
-  if (userLogged) {
-    redirect('/dashboard')
-  }
   const handleClickShowPassword = () => setShowPassword((show) => !show)
 
   const handleMouseDownPassword = (
@@ -48,9 +46,7 @@ export default function LoginForm() {
       password,
       redirect: false
     })
-    if (loginStatus?.ok) {
-      setUserLogged(true)
-    } else {
+    if (!loginStatus?.ok) {
       if (loginStatus?.error?.includes('Email')) {
         setError({
           status: true,

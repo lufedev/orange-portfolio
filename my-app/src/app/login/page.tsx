@@ -1,7 +1,15 @@
 import GoogleLoginButton from '../components/GoogleLoginButton'
 import LoginForm from '../components/LoginForm'
+import { options } from '../api/auth/[...nextauth]/options'
+import { getServerSession } from 'next-auth/next'
+import { redirect } from 'next/navigation'
 
-export default function Login() {
+export default async function Login() {
+  const session = await getServerSession(options)
+  if (session) {
+    redirect('/dashboard')
+  }
+
   return (
     <div className="flex flex-col justify-center h-lvh">
       <div className="px-6 flex flex-col">
