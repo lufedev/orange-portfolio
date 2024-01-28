@@ -2,8 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-/* FONTS */
 @layer components {
+  /* FONTS */
   .h1 {
     @apply text-[6rem] font-light leading-[2.5rem] tracking-[-.09375rem];
   }
@@ -49,13 +49,18 @@
   .button {
     @apply text-[.9375rem] font-medium leading-[1.625rem] tracking-[.02875rem] uppercase;
   }
-}
 
-.MuiFormLabel-root.Mui-focused {
-  color: #2348b1;
-}
-
-.MuiFormLabel-root.Mui-error,
-.MuiFormLabel-root.Mui-focused {
-  color: #515255 !important;
+  /* Google Component */
+  .GoogleLoginButton {
+    @apply w-full flex justify-center items-center py-[.6875rem] px-[.5rem] text-sm font-medium text-[rgba(0,0,0,0.54)] bg-white border-none rounded-sm shadow-[0_1px_1px_0px_rgba(0,0,0,0.17),0_0_1px_0_rgba(0,0,0,0.08)] GoogleLoginButtonHover GoogleLoginActive GoogleLoginDisabled;
+  }
+  .GoogleLoginButtonHover {
+    @apply hover:outline hover:outline-[0.5px] hover:outline-[#4285F4] hover:shadow-none;
+  }
+  .GoogleLoginActive {
+    @apply active:bg-[#EEEEEE] active:outline-none active:shadow-[0_1px_1px_0px_rgba(0,0,0,0.17),0_0_1px_0_rgba(0,0,0,0.08)];
+  }
+  .GoogleLoginDisabled {
+    @apply disabled:outline-none disabled:bg-[rgba(0,0,0,0.08)];
+  }
 }

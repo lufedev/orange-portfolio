@@ -1,5 +1,3 @@
-'use client'
-
 import { ThemeProvider } from '@mui/material/styles'
 import Button from '@mui/material/Button'
 import { TypeButton } from '../lib/definiton'
@@ -11,7 +9,6 @@ export default function CustomButton({
   color,
   size,
   disabled,
-  className,
   name
 }: TypeButton) {
   return (
@@ -21,7 +18,6 @@ export default function CustomButton({
         color={color}
         size={size}
         disabled={disabled}
-        className={className}
       >
         {name}
       </Button>

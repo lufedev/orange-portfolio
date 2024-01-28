@@ -1,4 +1,4 @@
-import GoogleLoginButton from '../components/GoogleLoginButton'
+import GoogleLoginButton from '../components/GoogleLogin'
 import LoginForm from '../components/LoginForm'
 
 export default function Login() {
