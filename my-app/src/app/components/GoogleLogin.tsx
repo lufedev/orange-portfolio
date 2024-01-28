@@ -4,7 +4,7 @@ import { useGoogleLogin } from '@react-oauth/google'
 import Image from 'next/image'
 import LogoGoogle from '../assets/img/logo-google.svg'
 
-export default function GoogleLoginButton() {
+export default function GoogleLogin() {
   const login = useGoogleLogin({
     onSuccess: (tokenResponse) => console.log(tokenResponse)
   })
