@@ -25,6 +25,7 @@ interface RegisterData {
 
 export default function RegisterForm() {
   const [success, setSuccess] = useState(false)
+  const [handleLoading, setHandleLoading] = useState(false)
   const [error, setError] = useState({
     name: { status: false, message: '' },
     surname: { status: false, message: '' },
@@ -59,6 +60,7 @@ export default function RegisterForm() {
   }
 
   const handleRegister = async () => {
+    setHandleLoading(true)
     const fields = ['name', 'surname', 'email', 'password']
     let hasError = false
     fields.forEach((field) => {
@@ -96,11 +98,11 @@ export default function RegisterForm() {
       if (!response.ok) {
         throw new Error('Erro ao registrar usuário')
       }
-      console.log('Usuário registrado com sucesso!')
       setSuccess(true)
     } catch (error) {
       console.error('Erro durante o registro: ', error)
     }
+    setHandleLoading(false)
   }
   return (
     <div className="flex flex-col">
@@ -174,6 +176,7 @@ export default function RegisterForm() {
         variant="contained"
         color="primary"
         size="large"
+        loading={handleLoading}
         disabled={false}
         name="CADASTRAR"
         onClick={handleRegister}

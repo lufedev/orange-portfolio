@@ -20,6 +20,7 @@ import { redirect } from 'next/navigation'
 export default function LoginForm() {
   const [error, setError] = useState({ status: false, type: '', message: '' })
   const [email, setEmail] = useState('')
+  const [handleLoading, setHandleLoading] = useState(false)
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false)
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = React.useState(false)
@@ -43,6 +44,7 @@ export default function LoginForm() {
     setPassword(event.target.value)
   }
   const handleLogin = async () => {
+    setHandleLoading(true)
     const loginStatus = await signIn('credentials', {
       email,
       password,
@@ -65,6 +67,7 @@ export default function LoginForm() {
         })
       }
     }
+    setHandleLoading(false)
   }
   return (
     <div className="flex flex-col">
@@ -119,7 +122,7 @@ export default function LoginForm() {
         size="large"
         disabled={false}
         name="ENTRAR"
-        className="mb-[1.13rem]"
+        loading={handleLoading}
         onClick={handleLogin}
       />
       <a

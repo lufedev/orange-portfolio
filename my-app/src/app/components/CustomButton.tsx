@@ -11,10 +11,9 @@ export default function CustomButton({
   size,
   disabled,
   name,
+  loading,
   onClick
 }: TypeButton) {
-  const [loading, setLoading] = useState(false)
-
   return (
     <ThemeProvider theme={theme ? ContainedTheme : TextTheme}>
       <LoadingButton

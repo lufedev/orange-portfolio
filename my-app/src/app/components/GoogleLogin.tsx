@@ -1,26 +1,27 @@
-"use client";
+'use client'
 
-import React, { useState } from 'react';
-import { useGoogleLogin } from '@react-oauth/google';
-import Image from 'next/image';
-import LogoGoogle from '../assets/img/logo-google.svg';
-import LogoGoogleGray from '../assets/img/logo-google-gray.svg';
-  
+import React, { useState } from 'react'
+import { useGoogleLogin } from '@react-oauth/google'
+import Image from 'next/image'
+import LogoGoogle from '../assets/img/logo-google.svg'
+import LogoGoogleGray from '../assets/img/logo-google-gray.svg'
+
 export default function GoogleLogin() {
-  const [isButtonEnabled, setIsButtonEnabled] = useState(false); 
+  const [isButtonEnabled, setIsButtonEnabled] = useState(true)
 
   const login = useGoogleLogin({
     onSuccess: (tokenResponse) => console.log(tokenResponse)
-  });
+  })
 
   const handleButtonClick = () => {
-    login();
-  
-  };
-           
+    login()
+  }
+
   return (
     <div className="flex justify-center items-center">
-         <div className={`w-[181px] p-[0.1875rem] ${isButtonEnabled ? 'hover:bg-[rgba(66,133,244,0.1)]' : ''} active:bg-transparent`}>
+      <div
+        className={`w-[181px] p-[0.1875rem] ${isButtonEnabled ? 'hover:bg-[rgba(66,133,244,0.1)]' : ''} active:bg-transparent`}
+      >
         <button
           type="submit"
           aria-label="awdwadawd"
@@ -39,6 +40,5 @@ export default function GoogleLogin() {
         </button>
       </div>
     </div>
-  );
+  )
 }
-

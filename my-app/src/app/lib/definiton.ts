@@ -5,5 +5,6 @@ export type TypeButton = {
   color: string
   size: string
   disabled: boolean
+  loading: boolean
   name: string
 }
