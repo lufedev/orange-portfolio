@@ -61,6 +61,6 @@
     @apply active:bg-[#EEEEEE] active:outline-none active:shadow-[0_1px_1px_0px_rgba(0,0,0,0.17),0_0_1px_0_rgba(0,0,0,0.08)];
   }
   .GoogleLoginDisabled {
-    @apply disabled:outline-none disabled:bg-[rgba(0,0,0,0.08)];
+    @apply disabled:outline-none disabled:bg-[rgba(0,0,0,0.08)] disabled:shadow-[0_1px_1px_0px_rgba(0,0,0,0.17),0_0_1px_0_rgba(0,0,0,0.08)];
   }
 }
