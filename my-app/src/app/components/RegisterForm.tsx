@@ -14,8 +14,8 @@ import {
   OutlinedInput,
   TextField
 } from '@mui/material'
-import { register } from 'module'
 import { redirect } from 'next/navigation'
+import SuccessModel from './SuccessModal'
 
 interface RegisterData {
   name?: string
@@ -26,6 +26,7 @@ interface RegisterData {
 
 export default function RegisterForm() {
   const [success, setSuccess] = useState(false)
+  const [modalOpen, setModalOpen] = useState(true)
   const [error, setError] = useState({
     name: { status: false, message: '' },
     surname: { status: false, message: '' },
@@ -97,15 +98,16 @@ export default function RegisterForm() {
       if (!response.ok) {
         throw new Error('Erro ao registrar usuário')
       }
-
+      setModalOpen(true)
       console.log('Usuário registrado com sucesso!')
       setSuccess(true)
     } catch (error) {
-      console.error('Erro durante o registro:', error.message)
+      console.error('Erro durante o registro: ', error)
     }
   }
   return (
     <div className="flex flex-col">
+      <SuccessModel status={modalOpen} titulo="Cadastro"></SuccessModel>
       <ThemeProvider theme={TextFieldTheme}>
         <TextField
           name="name"
