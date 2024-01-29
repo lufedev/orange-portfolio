@@ -1,7 +1,8 @@
 import { ThemeProvider } from '@mui/material/styles'
-import Button from '@mui/material/Button'
 import { TypeButton } from '../lib/definiton'
 import { ContainedTheme, TextTheme } from '../themes/Button'
+import LoadingButton from '@mui/lab/LoadingButton'
+import React, { useState } from 'react'
 
 export default function CustomButton({
   theme,
@@ -9,22 +10,23 @@ export default function CustomButton({
   color,
   size,
   disabled,
-  className,
   name,
   onClick
 }: TypeButton) {
+  const [loading, setLoading] = useState(false)
+
   return (
     <ThemeProvider theme={theme ? ContainedTheme : TextTheme}>
-      <Button
-        onClick={onClick}
+      <LoadingButton
         variant={variant}
         color={color}
         size={size}
+        onClick={onClick}
+        loading={loading}
         disabled={disabled}
-        className={className}
       >
         {name}
-      </Button>
+      </LoadingButton>
     </ThemeProvider>
   )
 }
