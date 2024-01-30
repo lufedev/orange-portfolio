@@ -8,7 +8,6 @@ import CustomSnackbar from './CustomSnackbar'
 import React, { useEffect, useState } from 'react'
 import {
   FormControl,
-  FormHelperText,
   IconButton,
   InputAdornment,
   InputLabel,
@@ -24,7 +23,7 @@ export default function LoginForm() {
     message: '',
     severity: ''
   })
-  const [error, setError] = useState({ status: false, type: '', message: '' })
+  const [error, setError] = useState({ status: false, message: '' })
   const [email, setEmail] = useState('')
   const [handleLoading, setHandleLoading] = useState(false)
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false)
@@ -78,6 +77,7 @@ export default function LoginForm() {
   }
   const handleLogin = async () => {
     setHandleLoading(true)
+
     const loginStatus = await signIn('credentials', {
       email,
       password,
@@ -86,25 +86,19 @@ export default function LoginForm() {
     if (loginStatus?.ok) {
       setIsUserLoggedIn(true)
     } else {
-      if (loginStatus?.error?.includes('Email')) {
+      if (loginStatus?.error) {
         setError({
           status: true,
-          type: 'email',
           message: loginStatus?.error as string
         })
-      } else {
-        setError({
+        setHandleSnack({
           status: true,
-          type: 'pass',
-          message: loginStatus?.error as string
+          message: 'Usuário ou senha incorretos',
+          severity: 'error'
         })
       }
-      setHandleSnack({
-        status: true,
-        message: loginStatus?.error as string,
-        severity: 'error'
-      })
     }
+
     setHandleLoading(false)
   }
   return (
@@ -120,8 +114,7 @@ export default function LoginForm() {
           className="mb-4"
           type="email"
           onChange={handleEmailChange}
-          error={error.status && error.type === 'email'}
-          helperText={error.type === 'email' ? error.message : null}
+          error={error.status}
         />
         <FormControl variant="outlined" className="mb-4">
           <InputLabel htmlFor="outlined-adornment-password">
@@ -144,13 +137,8 @@ export default function LoginForm() {
               </InputAdornment>
             }
             label="Password *"
-            error={error.status && error.type === 'pass'}
+            error={error.status}
           />
-          {error.status && (
-            <FormHelperText id="outlined-adornment-password-helper">
-              {error.type === 'pass' ? error.message : null}
-            </FormHelperText>
-          )}
         </FormControl>
       </ThemeProvider>
       <CustomButton
