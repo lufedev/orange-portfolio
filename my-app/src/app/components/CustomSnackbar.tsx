@@ -10,6 +10,7 @@ export default function CustomSnackbar({
 }: TypeSnackBar) {
   return (
     <Snackbar
+      className="static translate-x-0"
       anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       open={state}
       autoHideDuration={6000}
