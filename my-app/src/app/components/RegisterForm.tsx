@@ -22,6 +22,7 @@ interface RegisterData {
   surname?: string
   email?: string
   password?: string
+  [key: string]: string | undefined
 }
 
 export default function RegisterForm() {
@@ -121,12 +122,13 @@ export default function RegisterForm() {
       }
       setSuccess(true)
     } catch (error) {
-      console.log(error)
-      setHandleSnack({
-        status: true,
-        message: error.message,
-        severity: 'error'
-      })
+      if (error instanceof Error) {
+        setHandleSnack({
+          status: true,
+          message: error.message,
+          severity: 'error'
+        })
+      }
     }
     setHandleLoading(false)
   }
