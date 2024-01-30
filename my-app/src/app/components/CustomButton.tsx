@@ -1,8 +1,10 @@
+'use client'
+
 import { ThemeProvider } from '@mui/material/styles'
 import { TypeButton } from '../lib/definiton'
 import { ContainedTheme, TextTheme } from '../themes/Button'
 import LoadingButton from '@mui/lab/LoadingButton'
-import React, { useState } from 'react'
+import * as React from 'react'
 
 export default function CustomButton({
   theme,
@@ -14,6 +16,13 @@ export default function CustomButton({
   loading,
   onClick
 }: TypeButton) {
+  const [state, setState] = React.useState(false)
+  const { vertical, horizontal, open } = state
+
+  const handleClick = () => () => {
+    setState(true)
+  }
+
   return (
     <ThemeProvider theme={theme ? ContainedTheme : TextTheme}>
       <LoadingButton

@@ -4,6 +4,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { TextFieldTheme } from '../themes/TextField'
 import { ThemeProvider } from '@mui/material/styles'
 import CustomButton from './CustomButton'
+import CustomSnackbar from './CustomSnackbar'
 import React, { useState } from 'react'
 import {
   FormControl,
@@ -18,12 +19,24 @@ import { signIn } from 'next-auth/react'
 import { redirect } from 'next/navigation'
 
 export default function LoginForm() {
+  const [handleState, setHandleState] = useState(false)
   const [error, setError] = useState({ status: false, type: '', message: '' })
   const [email, setEmail] = useState('')
   const [handleLoading, setHandleLoading] = useState(false)
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false)
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = React.useState(false)
+
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === 'clickaway') {
+      return
+    }
+
+    setHandleState(false)
+  }
 
   if (isUserLoggedIn) {
     redirect('/dashboard')
@@ -68,6 +81,7 @@ export default function LoginForm() {
       }
     }
     setHandleLoading(false)
+    setHandleState(true)
   }
   return (
     <div className="flex flex-col">
@@ -124,6 +138,12 @@ export default function LoginForm() {
         name="ENTRAR"
         loading={handleLoading}
         onClick={handleLogin}
+      />
+      <CustomSnackbar
+        handleClose={handleClose}
+        state={handleState}
+        text="Cadastro feito com sucesso"
+        severity="success"
       />
       <a
         href="../register"

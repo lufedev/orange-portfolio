@@ -8,3 +8,10 @@ export type TypeButton = {
   loading: boolean
   name: string
 }
+
+export type TypeSnackBar = {
+  handleClose?: () => void
+  state: boolean
+  text: string
+  severity: string
+}

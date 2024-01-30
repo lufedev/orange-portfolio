@@ -4,6 +4,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { TextFieldTheme } from '../themes/TextField'
 import { ThemeProvider } from '@mui/material/styles'
 import CustomButton from './CustomButton'
+import CustomSnackbar from './CustomSnackbar'
 import React, { useState } from 'react'
 import {
   FormControl,
@@ -24,6 +25,7 @@ interface RegisterData {
 }
 
 export default function RegisterForm() {
+  const [handleState, setHandleState] = useState(false)
   const [success, setSuccess] = useState(false)
   const [handleLoading, setHandleLoading] = useState(false)
   const [error, setError] = useState({
@@ -32,18 +34,28 @@ export default function RegisterForm() {
     email: { status: false, message: '' },
     password: { status: false, message: '' }
   })
-
   const [registerData, setRegisterData] = useState<RegisterData>({
     name: '',
     surname: '',
     email: '',
     password: ''
   })
-
   const [showPassword, setShowPassword] = React.useState(false)
+
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === 'clickaway') {
+      return
+    }
+
+    setHandleState(false)
+  }
   if (success) {
     redirect('/login')
   }
+
   const handleClickShowPassword = () => setShowPassword((show) => !show)
 
   const handleMouseDownPassword = (
@@ -51,6 +63,7 @@ export default function RegisterForm() {
   ) => {
     event.preventDefault()
   }
+
   const handleRegisterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target
     setRegisterData((prevState) => {
@@ -181,6 +194,16 @@ export default function RegisterForm() {
         name="CADASTRAR"
         onClick={handleRegister}
       />
+      <CustomSnackbar
+        handleClose={handleClose}
+        state={handleState}
+        text="Ocorreu um erro ao tentar realizar o cadastro"
+        severity="error"
+      />
+      <a
+        href="../register"
+        className="subtitle-1 mt-[1.13rem] text-color-neutral-100 !no-underline"
+      ></a>
     </div>
   )
 }
