@@ -24,10 +24,9 @@ export default function LoginForm() {
     severity: ''
   })
   const [error, setError] = useState({ status: false, message: '' })
-  const [email, setEmail] = useState('')
+  const [login, setLogin] = useState({ email: '', password: '' })
   const [handleLoading, setHandleLoading] = useState(false)
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false)
-  const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = React.useState(false)
 
   useEffect(() => {
@@ -68,19 +67,21 @@ export default function LoginForm() {
     event.preventDefault()
   }
 
-  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(event.target.value)
+  const handleLoginChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target
+    setLogin((prevState) => {
+      const updatedData = { ...prevState, [name]: value }
+      console.log(updatedData)
+      return updatedData
+    })
   }
 
-  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(event.target.value)
-  }
   const handleLogin = async () => {
     setHandleLoading(true)
 
     const loginStatus = await signIn('credentials', {
-      email,
-      password,
+      email: login.email,
+      password: login.password,
       redirect: false
     })
     if (loginStatus?.ok) {
@@ -108,12 +109,14 @@ export default function LoginForm() {
       </p>
       <ThemeProvider theme={TextFieldTheme}>
         <TextField
+          name="email"
           label="Email address"
           variant="outlined"
           size="medium"
           className="mb-4"
           type="email"
-          onChange={handleEmailChange}
+          value={login.email}
+          onChange={handleLoginChange}
           error={error.status}
         />
         <FormControl variant="outlined" className="mb-4">
@@ -121,9 +124,11 @@ export default function LoginForm() {
             Password
           </InputLabel>
           <OutlinedInput
+            name="password"
             id="outlined-adornment-password"
             type={showPassword ? 'text' : 'password'}
-            onChange={handlePasswordChange}
+            onChange={handleLoginChange}
+            value={login.password}
             endAdornment={
               <InputAdornment position="start">
                 <IconButton

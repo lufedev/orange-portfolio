@@ -29,14 +29,23 @@ export async function POST(request: Request) {
     await createUser(name, surname, email, hashedPass)
   } catch (error) {
     if (error instanceof Error) {
-      return NextResponse.json(
-        {
-          error: error.message
-        },
-        {
-          status: 400
-        }
-      )
+      if (error.message === 'Usuário já existe') {
+        return NextResponse.json(
+          {
+            error: error.message
+          },
+          { status: 409 }
+        )
+      } else if (error.message === 'Parametros faltando') {
+        return NextResponse.json(
+          {
+            error: error.message
+          },
+          {
+            status: 400
+          }
+        )
+      }
     }
   }
 
