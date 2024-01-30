@@ -17,8 +17,6 @@ export default async function Login() {
       <Image
         src={imgLogin}
         alt=""
-        width={525}
-        height={832}
         className="hidden md:block relative bottom-0 left-0 h-full w-auto"
       />
       <div className="w-full px-6 md:pr-[8.44rem] md:pl-[6.44rem]">

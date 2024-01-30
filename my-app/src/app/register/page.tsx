@@ -7,6 +7,7 @@ export default function Register() {
     <div className="flex items-center justify-between h-screen">
       <Image
         src={imgRegister}
+        alt=""
         className="hidden md:block relative bottom-0 left-0 h-full w-auto"
       />
       <div className="px-6 w-full md:pr-[8.44rem] md:pl-[4.94rem]">

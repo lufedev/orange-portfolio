@@ -116,7 +116,7 @@ export default function LoginForm() {
           onChange={handleEmailChange}
           error={error.status}
         />
-        <FormControl variant="outlined" className="mb-4">
+        <FormControl variant="outlined" className="mb-4" error={error.status}>
           <InputLabel htmlFor="outlined-adornment-password">
             Password
           </InputLabel>
@@ -137,7 +137,6 @@ export default function LoginForm() {
               </InputAdornment>
             }
             label="Password *"
-            error={error.status}
           />
         </FormControl>
       </ThemeProvider>
