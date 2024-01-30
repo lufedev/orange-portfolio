@@ -173,7 +173,11 @@ export default function RegisterForm() {
           error={error.email.status}
           helperText={error.email.message}
         />
-        <FormControl variant="outlined" className="mb-4">
+        <FormControl
+          variant="outlined"
+          className="mb-4"
+          error={error.password.status}
+        >
           <InputLabel htmlFor="outlined-adornment-password">
             Password
           </InputLabel>
@@ -182,7 +186,6 @@ export default function RegisterForm() {
             id="outlined-adornment-password"
             type={showPassword ? 'text' : 'password'}
             onChange={handleRegisterChange}
-            error={error.password.status}
             value={registerData.password}
             endAdornment={
               <InputAdornment position="start">
@@ -206,7 +209,7 @@ export default function RegisterForm() {
         </FormControl>
       </ThemeProvider>
       <CustomButton
-        theme={true}
+        theme="ContainedTheme"
         variant="contained"
         color="primary"
         size="large"

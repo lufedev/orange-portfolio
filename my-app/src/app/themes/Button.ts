@@ -1,4 +1,5 @@
-import { createTheme } from '@mui/material'
+'use client'
+import { createTheme } from '@mui/material/styles'
 
 export const ContainedTheme = createTheme({
   palette: {
@@ -21,6 +22,27 @@ export const TextTheme = createTheme({
   palette: {
     primary: {
       main: '#2196F3'
+    }
+  }
+})
+
+export const DisabledTheme = createTheme({
+  palette: {
+    primary: {
+      main: '#0000001F',
+      contrastText: '#00000061'
+    }
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          boxShadow: 'none',
+          '&:hover': {
+            boxShadow: 'none'
+          }
+        }
+      }
     }
   }
 })
