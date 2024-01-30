@@ -26,3 +26,26 @@ export const TextTheme = createTheme({
     }
   }
 })
+
+
+
+export const DisabledTheme = createTheme({
+  palette: {
+    primary: {
+      main: '#0000001F', 
+      contrastText: '#00000061'
+    }
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          boxShadow: 'none',
+          '&:hover': {
+            boxShadow: 'none',
+          },
+        },
+      },
+    },
+  },
+});

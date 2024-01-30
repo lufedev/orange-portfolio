@@ -172,7 +172,7 @@ export default function RegisterForm() {
         </FormControl>
       </ThemeProvider>
       <CustomButton
-        theme={true}
+        theme="ContainedTheme"
         variant="contained"
         color="primary"
         size="large"

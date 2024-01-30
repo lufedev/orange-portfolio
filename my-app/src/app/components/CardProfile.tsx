@@ -1,9 +1,10 @@
 import Image from 'next/image'
 import CustomButton from './CustomButton';
 import { UserProps } from '../lib/definiton';
+import { DisabledTheme } from '../themes/Button';
+import { ThemeProvider } from '@mui/material/styles'
 
-
-export default function CardProfile({user}: UserProps) {
+export default function CardProfile({ user, onClick }: UserProps) {
     return (
         <div className="inline-flex flex-wrap mx-auto justify-around content-around items-start">
             <Image
@@ -19,16 +20,17 @@ export default function CardProfile({user}: UserProps) {
                     <p className='mt-[8px] text-color-neutral-130'>{user.country}</p>
                 </section>
 
-
                 <CustomButton
-                    theme={true}
+                    theme="disabled"
                     variant="contained"
                     color="primary"
                     size="large"
-                    disabled={true}
+                    disabled={false}
                     name="ADICIONAR PROJETO"
                     loading={false}
+                    onClick={onClick}
                 />
+
             </div>
         </div>
     )

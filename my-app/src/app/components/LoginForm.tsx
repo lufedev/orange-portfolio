@@ -116,7 +116,7 @@ export default function LoginForm() {
         </FormControl>
       </ThemeProvider>
       <CustomButton
-        theme={true}
+        theme="ContainedTheme"
         variant="contained"
         color="primary"
         size="large"
