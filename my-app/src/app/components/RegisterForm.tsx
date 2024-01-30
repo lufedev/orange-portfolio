@@ -22,6 +22,7 @@ interface RegisterData {
   surname?: string
   email?: string
   password?: string
+  [key: string]: string | undefined
 }
 
 export default function RegisterForm() {
@@ -113,15 +114,21 @@ export default function RegisterForm() {
         body: JSON.stringify(registerData)
       })
       if (!response.ok) {
-        throw new Error('Erro ao registrar usuário')
+        if (response.status === 409) {
+          throw new Error('Email já cadastrado')
+        } else {
+          throw new Error('Ocorreu um erro ao tentar realizar o cadastro')
+        }
       }
       setSuccess(true)
     } catch (error) {
-      setHandleSnack({
-        status: true,
-        message: 'Ocorreu um erro ao tentar realizar o cadastro',
-        severity: 'error'
-      })
+      if (error instanceof Error) {
+        setHandleSnack({
+          status: true,
+          message: error.message,
+          severity: 'error'
+        })
+      }
     }
     setHandleLoading(false)
   }
@@ -136,6 +143,7 @@ export default function RegisterForm() {
             size="medium"
             className="mb-4 w-full md:w-[50%] md:mr-[1.13rem]"
             type="text"
+            value={registerData.name}
             onChange={handleRegisterChange}
             error={error.name.status}
             helperText={error.name.message}
@@ -148,6 +156,7 @@ export default function RegisterForm() {
             className="mb-4 w-full md:w-[50%]"
             type="text"
             onChange={handleRegisterChange}
+            value={registerData.surname}
             error={error.surname.status}
             helperText={error.surname.message}
           />
@@ -160,6 +169,7 @@ export default function RegisterForm() {
           className="mb-4"
           type="email"
           onChange={handleRegisterChange}
+          value={registerData.email}
           error={error.email.status}
           helperText={error.email.message}
         />
@@ -173,6 +183,7 @@ export default function RegisterForm() {
             type={showPassword ? 'text' : 'password'}
             onChange={handleRegisterChange}
             error={error.password.status}
+            value={registerData.password}
             endAdornment={
               <InputAdornment position="start">
                 <IconButton
