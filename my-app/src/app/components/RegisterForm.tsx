@@ -25,7 +25,11 @@ interface RegisterData {
 }
 
 export default function RegisterForm() {
-  const [handleState, setHandleState] = useState(false)
+  const [handleSnack, setHandleSnack] = useState({
+    status: false,
+    message: '',
+    severity: ''
+  })
   const [success, setSuccess] = useState(false)
   const [handleLoading, setHandleLoading] = useState(false)
   const [error, setError] = useState({
@@ -50,10 +54,10 @@ export default function RegisterForm() {
       return
     }
 
-    setHandleState(false)
+    setHandleSnack({ status: false, message: '', severity: '' })
   }
   if (success) {
-    redirect('/login')
+    redirect('/login?success=true')
   }
 
   const handleClickShowPassword = () => setShowPassword((show) => !show)
@@ -97,6 +101,7 @@ export default function RegisterForm() {
       }
     })
     if (hasError) {
+      setHandleLoading(false)
       return
     }
     try {
@@ -107,13 +112,16 @@ export default function RegisterForm() {
         },
         body: JSON.stringify(registerData)
       })
-      console.log(response)
       if (!response.ok) {
         throw new Error('Erro ao registrar usuário')
       }
       setSuccess(true)
     } catch (error) {
-      console.error('Erro durante o registro: ', error)
+      setHandleSnack({
+        status: true,
+        message: 'Ocorreu um erro ao tentar realizar o cadastro',
+        severity: 'error'
+      })
     }
     setHandleLoading(false)
   }
@@ -196,9 +204,9 @@ export default function RegisterForm() {
       />
       <CustomSnackbar
         handleClose={handleClose}
-        state={handleState}
-        text="Ocorreu um erro ao tentar realizar o cadastro"
-        severity="error"
+        state={handleSnack.status}
+        text={handleSnack.message}
+        severity={handleSnack.severity}
       />
       <a
         href="../register"

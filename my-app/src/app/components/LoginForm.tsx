@@ -5,7 +5,7 @@ import { TextFieldTheme } from '../themes/TextField'
 import { ThemeProvider } from '@mui/material/styles'
 import CustomButton from './CustomButton'
 import CustomSnackbar from './CustomSnackbar'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   FormControl,
   FormHelperText,
@@ -19,13 +19,31 @@ import { signIn } from 'next-auth/react'
 import { redirect } from 'next/navigation'
 
 export default function LoginForm() {
-  const [handleState, setHandleState] = useState(false)
+  const [handleSnack, setHandleSnack] = useState({
+    status: false,
+    message: '',
+    severity: ''
+  })
   const [error, setError] = useState({ status: false, type: '', message: '' })
   const [email, setEmail] = useState('')
   const [handleLoading, setHandleLoading] = useState(false)
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false)
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = React.useState(false)
+
+  // const urlParams = new URLSearchParams(window.location.search)
+  // console.log(urlParams)
+  // const successParam = urlParams.get('success')
+  // useEffect(() => {
+  //   if (successParam === 'true') {
+  //     setHandleSnack({
+  //       status: true,
+  //       message: 'Cadastro realizado com sucesso!',
+  //       severity: 'success'
+  //     })
+  //     window.history.replaceState({}, document.title, '/login')
+  //   }
+  // }, [successParam])
 
   const handleClose = (
     event?: React.SyntheticEvent | Event,
@@ -35,7 +53,7 @@ export default function LoginForm() {
       return
     }
 
-    setHandleState(false)
+    setHandleSnack({ status: false, message: '', severity: '' })
   }
 
   if (isUserLoggedIn) {
@@ -79,9 +97,13 @@ export default function LoginForm() {
           message: loginStatus?.error as string
         })
       }
+      setHandleSnack({
+        status: true,
+        message: loginStatus?.error as string,
+        severity: 'error'
+      })
     }
     setHandleLoading(false)
-    setHandleState(true)
   }
   return (
     <div className="flex flex-col">
@@ -141,9 +163,9 @@ export default function LoginForm() {
       />
       <CustomSnackbar
         handleClose={handleClose}
-        state={handleState}
-        text="Cadastro feito com sucesso"
-        severity="success"
+        state={handleSnack.status}
+        text={handleSnack.message}
+        severity={handleSnack.severity}
       />
       <a
         href="../register"
