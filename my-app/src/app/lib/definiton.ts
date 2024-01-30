@@ -8,3 +8,16 @@ export type TypeButton = {
   loading: boolean
   name: string
 }
+
+export type User = {
+  name: string
+  surname: string
+  email: string
+  password: string
+  country: string
+  image: string
+}
+
+export type UserProps = {
+  user: User
+}
