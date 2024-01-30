@@ -128,28 +128,30 @@ export default function RegisterForm() {
   return (
     <div className="flex flex-col">
       <ThemeProvider theme={TextFieldTheme}>
-        <TextField
-          name="name"
-          label="Nome"
-          variant="outlined"
-          size="medium"
-          className="mb-4"
-          type="text"
-          onChange={handleRegisterChange}
-          error={error.name.status}
-          helperText={error.name.message}
-        />
-        <TextField
-          name="surname"
-          label="Sobrenome"
-          variant="outlined"
-          size="medium"
-          className="mb-4"
-          type="text"
-          onChange={handleRegisterChange}
-          error={error.surname.status}
-          helperText={error.surname.message}
-        />
+        <div className="block md:flex">
+          <TextField
+            name="name"
+            label="Nome"
+            variant="outlined"
+            size="medium"
+            className="mb-4 w-full md:w-[50%] md:mr-[1.13rem]"
+            type="text"
+            onChange={handleRegisterChange}
+            error={error.name.status}
+            helperText={error.name.message}
+          />
+          <TextField
+            name="surname"
+            label="Sobrenome"
+            variant="outlined"
+            size="medium"
+            className="mb-4 w-full md:w-[50%]"
+            type="text"
+            onChange={handleRegisterChange}
+            error={error.surname.status}
+            helperText={error.surname.message}
+          />
+        </div>
         <TextField
           name="email"
           label="Email address"

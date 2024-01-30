@@ -107,7 +107,7 @@ export default function LoginForm() {
   }
   return (
     <div className="flex flex-col">
-      <p className="my-8 subtitle-1 text-color-neutral-110">
+      <p className="my-8 subtitle-1 text-color-neutral-110 md:h5">
         Faça login com email
       </p>
       <ThemeProvider theme={TextFieldTheme}>
