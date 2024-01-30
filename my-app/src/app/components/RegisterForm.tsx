@@ -57,7 +57,7 @@ export default function RegisterForm() {
     setHandleSnack({ status: false, message: '', severity: '' })
   }
   if (success) {
-    redirect('/login?success=true')
+    redirect('http://localhost:3000/login?success=true')
   }
 
   const handleClickShowPassword = () => setShowPassword((show) => !show)

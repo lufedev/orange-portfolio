@@ -31,19 +31,21 @@ export default function LoginForm() {
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = React.useState(false)
 
-  // const urlParams = new URLSearchParams(window.location.search)
-  // console.log(urlParams)
-  // const successParam = urlParams.get('success')
-  // useEffect(() => {
-  //   if (successParam === 'true') {
-  //     setHandleSnack({
-  //       status: true,
-  //       message: 'Cadastro realizado com sucesso!',
-  //       severity: 'success'
-  //     })
-  //     window.history.replaceState({}, document.title, '/login')
-  //   }
-  // }, [successParam])
+  useEffect(() => {
+    getParams()
+  }, [])
+  const getParams = async () => {
+    const urlParams = new URLSearchParams(window.location.search)
+    const success = urlParams.get('success')
+    if (success === 'true') {
+      setHandleSnack({
+        status: true,
+        message: 'Usuário cadastrado com sucesso!',
+        severity: 'success'
+      })
+    }
+    window.history.replaceState({}, document.title, '/login')
+  }
 
   const handleClose = (
     event?: React.SyntheticEvent | Event,
