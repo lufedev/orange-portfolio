@@ -45,7 +45,7 @@ export default function ModalAddProject({
     >
       <Box
         sx={{
-          position: 'absolute' as 'absolute',
+          position: 'absolute',
           bottom: '0',
           left: '50%',
           transform: 'translate(-50%)',
