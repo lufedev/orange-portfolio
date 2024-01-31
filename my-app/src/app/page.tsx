@@ -45,24 +45,22 @@ export default function Home() {
   return (
     <div>
       <Header user={user} />
-      <div className="flex flex-col items-start justify-start mt-[112px] mx-6 gap-8">
+      <div className="flex flex-col items-center justify-start mt-14 mx-6 gap-10">
         <CardProfile user={user} onClick={openModal} />
         <ModalAddProject
           project={project}
           states={modalOpen}
           onClose={closeModal}
         />
-        <div className="flex flex-col align-start justify-around content-around items-start gap-5">
-          <h4 className="h6 text-color-neutral-130 font-medium">
-            Meus projetos
-          </h4>
+        <div className="w-full mb-6">
+          <h4 className="h6 text-color-neutral-130 mb-4">Meus projetos</h4>
           <ThemeProvider theme={TextFieldTheme}>
             <TextField
               name="Buscar tags"
               label="Buscar tags"
               variant="outlined"
               size="medium"
-              className="mb-4 w-full sm:w-[512px] md:w-[513px]"
+              className="w-full"
               type="text"
             />
           </ThemeProvider>
