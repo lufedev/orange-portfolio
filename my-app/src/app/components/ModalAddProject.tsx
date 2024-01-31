@@ -110,7 +110,7 @@ export default function ModalAddProject({
                   alt={project?.title}
                   width={389}
                   height={304}
-                  className="mr-6 mb-[16px]"
+                  className="h-full w-full object-cover"
                 />
               ) : (
                 <ThemeProvider theme={DisabledTheme}>
