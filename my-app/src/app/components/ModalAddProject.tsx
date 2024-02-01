@@ -44,7 +44,21 @@ export default function ModalAddProject({
       aria-describedby="modal-modal-description"
       className="mx-6 md:px-[195px]"
     >
-      <div className="absolute bottom-0 left-1/2 translate-x-[-50%] bg-white w-full mb-6 max-h-[84vh] overflow-auto md:top-1/2 md:translate-y-[-50%] md:relative md:max-h-screen">
+      <Box
+        sx={{
+          position: { xs: 'absolute', md: 'relative' },
+          bottom: '0',
+          top: { md: '50%' },
+          left: '50%',
+          transform: { xs: 'translate(-50%)', md: 'translate(-50%, -50%)' },
+          width: '100%',
+          marginBottom: { xs: '24px', md: '0' },
+          maxHeight: { xs: '84vh', md: '100%' },
+          bgcolor: 'white',
+          overflow: 'auto'
+        }}
+        className="absolute bottom-0 left-1/2 translate-x-[-50%] bg-white w-full max-h-[84vh] overflow-auto md:top-1/2 md:translate-y-[-50%] md:relative md:max-h-screen"
+      >
         <div className="px-6 md:px-8 w-full">
           <h5 className="h5 my-4 md:my-6 w-full text-left">
             Adicionar projeto
@@ -150,7 +164,7 @@ export default function ModalAddProject({
             </div>
           </div>
         </div>
-      </div>
+      </Box>
     </Modal>
   )
 }
