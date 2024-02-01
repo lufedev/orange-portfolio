@@ -60,7 +60,7 @@ export default function Home() {
               label="Buscar tags"
               variant="outlined"
               size="medium"
-              className="w-full sm:w-[32rem]"
+              className="w-full md:w-[32rem]"
               type="text"
             />
           </ThemeProvider>
