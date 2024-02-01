@@ -42,29 +42,15 @@ export default function ModalAddProject({
       onClose={onClose}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
+      className="mx-6 md:px-[195px]"
     >
-      <Box
-        sx={{
-          position: 'absolute',
-          bottom: '0',
-          left: '50%',
-          transform: 'translate(-50%)',
-          width: '80%',
-          bgcolor: 'white',
-          border: 'none',
-          display: 'block',
-          flexDirection: 'column',
-          alignItems: 'end',
-          justifyContent: 'end',
-          marginBottom: '1.5rem',
-          maxHeight: '80vh',
-          overflowY: 'auto'
-        }}
-      >
-        <div className="px-6 w-full">
-          <h5 className="h5 my-4 w-full text-left">Adicionar projeto</h5>
-          <div className="w-full flex flex-col lg:flex-row-reverse lg:h-full lg:gap-3">
-            <div className="w-full flex flex-col justify-center items-stretch text-center gap-4 lg:w-3/5">
+      <div className="absolute bottom-0 left-1/2 translate-x-[-50%] bg-white w-full mb-6 max-h-[84vh] overflow-auto md:top-1/2 md:translate-y-[-50%] md:relative md:max-h-screen">
+        <div className="px-6 md:px-8 w-full">
+          <h5 className="h5 my-4 md:my-6 w-full text-left">
+            Adicionar projeto
+          </h5>
+          <div className="md:flex md:flex-row-reverse">
+            <div className="w-full flex flex-col justify-center text-center gap-4 md:w-[50vw]">
               <ThemeProvider theme={TextFieldTheme}>
                 <TextField
                   label="Título"
@@ -102,11 +88,11 @@ export default function ModalAddProject({
                 />
               </ThemeProvider>
             </div>
-            <div className="my-4 flex flex-col lg:w-3/5">
+            <div className="my-4 flex flex-col md:mr-6 md:w-[50vw] md:mt-0">
               <p className="subtitle-1 text-color-neutral-110 text-left w-full mb-4">
                 Selecione o conteúdo que você deseja fazer upload
               </p>
-              <div className="w-full h-[304px]">
+              <div className="w-full h-[304px] md:h-[307px]">
                 {isUrlImage ? (
                   <Image
                     src={project?.urlImage}
@@ -134,7 +120,6 @@ export default function ModalAddProject({
               </div>
             </div>
           </div>
-
           <div className="flex flex-col w-full items-start">
             <a
               href="https://www.youtube.com/"
@@ -142,7 +127,7 @@ export default function ModalAddProject({
             >
               Visualizar publicação
             </a>
-            <div className="flex mb-10 gap-4">
+            <div className="flex mb-10 md:mb-6 gap-4">
               <CustomButton
                 theme="ContainedTheme"
                 variant="contained"
@@ -165,7 +150,7 @@ export default function ModalAddProject({
             </div>
           </div>
         </div>
-      </Box>
+      </div>
     </Modal>
   )
 }
