@@ -1,9 +1,9 @@
 'use client'
 
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { TextFieldTheme } from '../themes/TextField';
-import { ThemeProvider } from '@mui/material/styles';
-import CustomButton from './CustomButton';
+import { Visibility, VisibilityOff } from '@mui/icons-material'
+import { TextFieldTheme } from '../themes/TextField'
+import { ThemeProvider } from '@mui/material/styles'
+import CustomButton from './CustomButton'
 import React, { useEffect, useState } from 'react'
 import {
   FormControl,
@@ -12,18 +12,17 @@ import {
   InputLabel,
   OutlinedInput,
   TextField
-} from '@mui/material';
-import { signIn } from 'next-auth/react';
+} from '@mui/material'
+import { signIn } from 'next-auth/react'
 import { redirect } from 'next/navigation'
-import { FormProps } from '../lib/definiton';
-
+import { FormProps } from '../lib/definiton'
 
 export default function LoginForm({ onSnackbarUpdate }: FormProps) {
-  const [error, setError] = useState({ status: false, message: '' });
-  const [login, setLogin] = useState({ email: '', password: '' });
-  const [handleLoading, setHandleLoading] = useState(false);
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false)
-  const [showPassword, setShowPassword] = React.useState(false);
+  const [error, setError] = useState({ status: false, message: '' })
+  const [login, setLogin] = useState({ email: '', password: '' })
+  const [handleLoading, setHandleLoading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
 
   useEffect(() => {
     getParams()
@@ -41,36 +40,34 @@ export default function LoginForm({ onSnackbarUpdate }: FormProps) {
     window.history.replaceState({}, document.title, '/login')
   }
 
-
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleClickShowPassword = () => setShowPassword((show) => !show)
 
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
-    event.preventDefault();
-  };
+    event.preventDefault()
+  }
 
   const handleLoginChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
+    const { name, value } = event.target
     setLogin((prevState) => {
-      const updatedData = { ...prevState, [name]: value };
-      console.log(updatedData)
-      return updatedData;
-    });
-  };
+      const updatedData = { ...prevState, [name]: value }
+      return updatedData
+    })
+  }
 
   if (isUserLoggedIn) {
     redirect('/dashboard')
   }
 
   const handleLogin = async () => {
-    setHandleLoading(true);
+    setHandleLoading(true)
 
     const loginStatus = await signIn('credentials', {
       email: login.email,
       password: login.password,
       redirect: false
-    });
+    })
     if (loginStatus?.ok) {
       setIsUserLoggedIn(true)
     } else {
@@ -78,17 +75,17 @@ export default function LoginForm({ onSnackbarUpdate }: FormProps) {
         setError({
           status: true,
           message: loginStatus?.error as string
-        });
+        })
         onSnackbarUpdate({
           status: true,
           message: 'Usuário ou senha incorretos',
           severity: 'error'
-        });
+        })
       }
     }
 
-    setHandleLoading(false);
-  };
+    setHandleLoading(false)
+  }
   return (
     <div className="flex flex-col">
       <p className="my-8 subtitle-1 text-color-neutral-110 md:h5">
@@ -149,5 +146,5 @@ export default function LoginForm({ onSnackbarUpdate }: FormProps) {
         Cadastre-se
       </a>
     </div>
-  );
+  )
 }

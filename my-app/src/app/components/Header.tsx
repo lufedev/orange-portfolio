@@ -1,10 +1,10 @@
 'use client'
 
-import * as React from 'react';
-import Logo from '../assets/img/logo-orangeportifolio.svg';
-import AvatarUser from '../assets/img/avatar.svg';
-import { ThemeProvider } from '@mui/material/styles';
-import { MainTheme } from '../themes/Theme';
+import * as React from 'react'
+import Logo from '../assets/img/logo-orangeportifolio.svg'
+import AvatarUser from '../assets/img/avatar.svg'
+import { ThemeProvider } from '@mui/material/styles'
+import { MainTheme } from '../themes/Theme'
 import {
   AppBar,
   Box,
@@ -21,40 +21,45 @@ import {
   useMediaQuery,
   Badge,
   ListItem
-} from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import LogoutIcon from '@mui/icons-material/Logout';
-import { UserProps } from '../lib/definiton';
+} from '@mui/material'
+import MenuIcon from '@mui/icons-material/Menu'
+import NotificationsIcon from '@mui/icons-material/Notifications'
+import LogoutIcon from '@mui/icons-material/Logout'
+import { UserProps } from '../lib/definiton'
 
-const pages = ['Meus projetos', 'Descobrir', 'Sair'];
+const pages = ['Meus projetos', 'Descobrir', 'Sair']
 
 export default function Header({ user }: UserProps) {
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+    null
+  )
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
+    setAnchorElNav(event.currentTarget)
   }
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
+    setAnchorElUser(event.currentTarget)
   }
 
   const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
+    setAnchorElNav(null)
   }
 
   const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
+    setAnchorElUser(null)
   }
 
-  const isMobile: boolean = useMediaQuery('(max-width: 899px)');
+  const isMobile: boolean = useMediaQuery('(max-width: 899px)')
 
   const renderMenuItem = (page: string, index: number) => (
     <div key={page}>
       {index !== 0 && page === 'Sair' && <Divider />}
-      <MenuItem onClick={handleCloseNavMenu} className="flex self-stretch items-start">
+      <MenuItem
+        onClick={handleCloseNavMenu}
+        className="flex self-stretch items-start"
+      >
         {page === 'Sair' ? (
           <>
             <LogoutIcon className="text-2xl mr-3" />
@@ -65,7 +70,7 @@ export default function Header({ user }: UserProps) {
         )}
       </MenuItem>
     </div>
-  );
+  )
 
   return (
     <ThemeProvider theme={MainTheme}>
@@ -102,7 +107,10 @@ export default function Header({ user }: UserProps) {
                     display: { xs: 'block', md: 'none' }
                   }}
                 >
-                  <ListItem align-items="flex-star" className="flex flex-col items-start">
+                  <ListItem
+                    align-items="flex-star"
+                    className="flex flex-col items-start"
+                  >
                     <p>{user.name}</p>
                     <p className="text-[#00000099]">{user.email}</p>
                   </ListItem>
@@ -115,7 +123,14 @@ export default function Header({ user }: UserProps) {
               <img src={Logo.src} alt="logo" className="ml-7 w-[6.9rem]" />
             )}
 
-            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, pl: '100px', gap: 3 }}>
+            <Box
+              sx={{
+                flexGrow: 1,
+                display: { xs: 'none', md: 'flex' },
+                pl: '100px',
+                gap: 3
+              }}
+            >
               {pages.slice(0, 2).map((page) => (
                 <Button
                   key={page}
@@ -127,7 +142,8 @@ export default function Header({ user }: UserProps) {
               ))}
             </Box>
 
-            <Box className="
+            <Box
+              className="
               flex-grow-0 flex justify-around
               content-between flex-row items-center
               gap-2 md:gap-4"
@@ -164,12 +180,12 @@ export default function Header({ user }: UserProps) {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {pages.filter(page => page === 'Sair').map(renderMenuItem)}
+                {pages.filter((page) => page === 'Sair').map(renderMenuItem)}
               </Menu>
             </Box>
           </Toolbar>
         </Container>
       </AppBar>
     </ThemeProvider>
-  );
+  )
 }

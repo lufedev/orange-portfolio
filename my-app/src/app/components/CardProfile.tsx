@@ -16,7 +16,9 @@ export default function CardProfile({ user, onClick }: UserProps) {
         <h3 className="h5 text-color-neutral-120 mb-2">
           {user.name} {user.surname}
         </h3>
-        <p className="subtitle-1 text-color-neutral-130 mb-2 sm:mb-5">{user.country}</p>
+        <p className="subtitle-1 text-color-neutral-130 mb-2 sm:mb-5">
+          {user.country}
+        </p>
         <CustomButton
           theme="disabled"
           variant="contained"

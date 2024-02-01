@@ -4,7 +4,6 @@ import { getServerSession } from 'next-auth/next'
 
 export default async function Dashboard() {
   const session = await getServerSession(options)
-  console.log(session + 'dentro da Dashboard')
 
   if (!session) {
     redirect('/login')

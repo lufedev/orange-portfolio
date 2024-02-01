@@ -27,7 +27,6 @@ interface RegisterData {
 }
 
 export default function RegisterForm({ onSnackbarUpdate }: FormProps) {
-
   const [success, setSuccess] = useState(false)
   const [handleLoading, setHandleLoading] = useState(false)
   const [error, setError] = useState({
@@ -43,7 +42,6 @@ export default function RegisterForm({ onSnackbarUpdate }: FormProps) {
     password: ''
   })
   const [showPassword, setShowPassword] = React.useState(false)
-
 
   if (success) {
     redirect('http://localhost:3000/login?success=true')

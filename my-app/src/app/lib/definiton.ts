@@ -49,11 +49,11 @@ export type ProjectProps = {
 }
 
 export type TypeSnackbarInfo = {
-  status: boolean;
-  message: string;
-  severity: string;
+  status: boolean
+  message: string
+  severity: string
 }
 
 export type FormProps = {
-  onSnackbarUpdate: (snackbarInfo: TypeSnackbarInfo) => void;
+  onSnackbarUpdate: (snackbarInfo: TypeSnackbarInfo) => void
 }
