@@ -1,10 +1,10 @@
 'use client'
 
-import * as React from 'react'
-import Logo from '../assets/img/logo-orangeportifolio.svg'
-import AvatarUser from '../assets/img/avatar.svg'
-import { ThemeProvider } from '@mui/material/styles'
-import { MainTheme } from '../themes/Theme'
+import * as React from 'react';
+import Logo from '../assets/img/logo-orangeportifolio.svg';
+import AvatarUser from '../assets/img/avatar.svg';
+import { ThemeProvider } from '@mui/material/styles';
+import { MainTheme } from '../themes/Theme';
 import {
   AppBar,
   Box,
@@ -21,35 +21,51 @@ import {
   useMediaQuery,
   Badge,
   ListItem
-} from '@mui/material'
-import MenuIcon from '@mui/icons-material/Menu'
-import NotificationsIcon from '@mui/icons-material/Notifications'
-import { UserProps } from '../lib/definiton'
+} from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { UserProps } from '../lib/definiton';
 
-const pages = ['Meus projetos', 'Descobrir', 'Sair']
-const settings = ['Perfil', 'Sair']
+const pages = ['Meus projetos', 'Descobrir', 'Sair'];
 
 export default function Header({ user }: UserProps) {
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null
-  )
+  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget)
+    setAnchorElNav(event.currentTarget);
   }
+
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget)
+    setAnchorElUser(event.currentTarget);
   }
 
   const handleCloseNavMenu = () => {
-    setAnchorElNav(null)
+    setAnchorElNav(null);
   }
 
   const handleCloseUserMenu = () => {
-    setAnchorElUser(null)
+    setAnchorElUser(null);
   }
-  const isMobile: boolean = useMediaQuery('(max-width: 899px)')
+
+  const isMobile: boolean = useMediaQuery('(max-width: 899px)');
+
+  const renderMenuItem = (page: string, index: number) => (
+    <div key={page}>
+      {index !== 0 && page === 'Sair' && <Divider />}
+      <MenuItem onClick={handleCloseNavMenu} className="flex self-stretch items-start">
+        {page === 'Sair' ? (
+          <>
+            <LogoutIcon className="text-2xl mr-3" />
+            <Typography textAlign="left">Sair</Typography>
+          </>
+        ) : (
+          <Typography textAlign="left">{page}</Typography>
+        )}
+      </MenuItem>
+    </div>
+  );
 
   return (
     <ThemeProvider theme={MainTheme}>
@@ -86,19 +102,12 @@ export default function Header({ user }: UserProps) {
                     display: { xs: 'block', md: 'none' }
                   }}
                 >
-                  <ListItem
-                    align-items="flex-star"
-                    className="flex flex-col items-start gap-0 flex-1"
-                  >
+                  <ListItem align-items="flex-star" className="flex flex-col items-start">
                     <p>{user.name}</p>
                     <p className="text-[#00000099]">{user.email}</p>
                   </ListItem>
                   <Divider />
-                  {pages.map((page) => (
-                    <MenuItem key={page} onClick={handleCloseNavMenu}>
-                      <Typography textAlign="left">{page}</Typography>
-                    </MenuItem>
-                  ))}
+                  {pages.map(renderMenuItem)}
                 </Menu>
                 <img src={Logo.src} alt="logo" className="w-[6rem] h=[3rem]" />
               </Box>
@@ -106,14 +115,7 @@ export default function Header({ user }: UserProps) {
               <img src={Logo.src} alt="logo" className="ml-7 w-[6.9rem]" />
             )}
 
-            <Box
-              sx={{
-                flexGrow: 1,
-                display: { xs: 'none', md: 'flex' },
-                pl: '100px',
-                gap: 3
-              }}
-            >
+            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, pl: '100px', gap: 3 }}>
               {pages.slice(0, 2).map((page) => (
                 <Button
                   key={page}
@@ -125,7 +127,11 @@ export default function Header({ user }: UserProps) {
               ))}
             </Box>
 
-            <Box className="flex-grow-0 flex justify-around content-between flex-row items-center gap-2 md:gap-4">
+            <Box className="
+              flex-grow-0 flex justify-around
+              content-between flex-row items-center
+              gap-2 md:gap-4"
+            >
               <Tooltip title="Abrir configurações">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar alt="Foto perfil" src={AvatarUser.src} />
@@ -140,32 +146,30 @@ export default function Header({ user }: UserProps) {
               </Box>
 
               <Menu
-                sx={{ mt: '45px' }}
+                sx={{
+                  mt: '45px',
+                  display: `${isMobile ? 'none' : ''}`
+                }}
                 id="menu-appbar"
                 anchorEl={anchorElUser}
                 anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right'
+                  vertical: 'top', // Alinha verticalmente ao centro
+                  horizontal: 'center' // Alinha horizontalmente à direita
                 }}
                 keepMounted
                 transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right'
+                  vertical: 'top', // Alinha verticalmente ao centro
+                  horizontal: 'center' // Alinha horizontalmente à esquerda
                 }}
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    {/* ADICIONAR O MÉTODO DE LOGOUT */}
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
-                ))}
+                {pages.filter(page => page === 'Sair').map(renderMenuItem)}
               </Menu>
             </Box>
           </Toolbar>
         </Container>
       </AppBar>
     </ThemeProvider>
-  )
+  );
 }

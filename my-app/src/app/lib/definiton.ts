@@ -48,34 +48,12 @@ export type ProjectProps = {
   states?: boolean
 }
 
-export type User = {
-  id?: number
-  name: string
-  surname: string
-  email: string
-  password: string
-  country: string
-  image: string
-  projects: Project[]
+export type TypeSnackbarInfo = {
+  status: boolean;
+  message: string;
+  severity: string;
 }
 
-export type UserProps = {
-  user: User
-  onClick?: () => void
-}
-
-export type Project = {
-  id?: number
-  title: string
-  tags: string[]
-  link: string
-  description: string
-  urlImage: string
-}
-
-export type ProjectProps = {
-  project?: Project
-  onClick?: () => void
-  onClose?: () => void
-  states?: boolean
+export type FormProps = {
+  onSnackbarUpdate: (snackbarInfo: TypeSnackbarInfo) => void;
 }

@@ -52,84 +52,89 @@ export default function ModalAddProject({
           width: '80%',
           bgcolor: 'white',
           border: 'none',
-          display: 'flex',
+          display: 'block',
           flexDirection: 'column',
           alignItems: 'end',
           justifyContent: 'end',
-          marginBottom: '1.5rem'
+          marginBottom: '1.5rem',
+          maxHeight: '80vh',
+          overflowY: 'auto'
         }}
       >
         <div className="px-6 w-full">
           <h5 className="h5 my-4 w-full text-left">Adicionar projeto</h5>
-          <div className="w-full flex flex-col justify-center items-stretch text-center gap-4">
-            <ThemeProvider theme={TextFieldTheme}>
-              <TextField
-                label="Título"
-                variant="outlined"
-                size="medium"
-                className=""
-                type="text"
-                value={project?.title || ''}
-              />
-              <TextField
-                label="Tags"
-                variant="outlined"
-                size="medium"
-                className=""
-                type="text"
-                value={project?.tags || ''}
-              />
-              <TextField
-                label="Link"
-                variant="outlined"
-                size="medium"
-                className=""
-                type="text"
-                value={project?.link || ''}
-              />
-              <TextField
-                label="Descrição"
-                variant="outlined"
-                size="medium"
-                className=""
-                type="text"
-                multiline
-                rows={3}
-                value={project?.description || ''}
-              />
-            </ThemeProvider>
-          </div>
-          <div className="my-4">
-            <p className="subtitle-1 text-color-neutral-110 text-left w-full mb-4">
-              Selecione o conteúdo que você deseja fazer upload
-            </p>
-            <div className="w-full h-[304px]">
-              {isUrlImage ? (
-                <Image
-                  src={project?.urlImage}
-                  alt={project?.title}
-                  width={389}
-                  height={304}
-                  className="h-full w-full object-cover"
+          <div className="w-full flex flex-col lg:flex-row-reverse lg:h-full lg:gap-3">
+            <div className="w-full flex flex-col justify-center items-stretch text-center gap-4 lg:w-3/5">
+              <ThemeProvider theme={TextFieldTheme}>
+                <TextField
+                  label="Título"
+                  variant="outlined"
+                  size="medium"
+                  className=""
+                  type="text"
+                  value={project?.title || ''}
                 />
-              ) : (
-                <ThemeProvider theme={DisabledTheme}>
-                  <Button
-                    component="label"
-                    disableElevation
-                    variant="contained"
-                    className="h-full px-2 py-0 flex flex-col text-color-neutral-120 leading-[0.875rem] tracking-[0.01563rem] font-normal normal-case"
-                  >
-                    <PhotoLibraryIcon className="text-5xl" />
-                    <p className="w-full text-left flex justify-center mt-4">
-                      Compartilhe seu talento com milhares de pessoas
-                    </p>
-                    <VisuallyHiddenInput type="file" />
-                  </Button>
-                </ThemeProvider>
-              )}
+                <TextField
+                  label="Tags"
+                  variant="outlined"
+                  size="medium"
+                  className=""
+                  type="text"
+                  value={project?.tags || ''}
+                />
+                <TextField
+                  label="Link"
+                  variant="outlined"
+                  size="medium"
+                  className=""
+                  type="text"
+                  value={project?.link || ''}
+                />
+                <TextField
+                  label="Descrição"
+                  variant="outlined"
+                  size="medium"
+                  className=""
+                  type="text"
+                  multiline
+                  rows={3}
+                  value={project?.description || ''}
+                />
+              </ThemeProvider>
+            </div>
+            <div className="my-4 flex flex-col lg:w-3/5">
+              <p className="subtitle-1 text-color-neutral-110 text-left w-full mb-4">
+                Selecione o conteúdo que você deseja fazer upload
+              </p>
+              <div className="w-full h-[304px]">
+                {isUrlImage ? (
+                  <Image
+                    src={project?.urlImage}
+                    alt={project?.title}
+                    width={389}
+                    height={304}
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  <ThemeProvider theme={DisabledTheme}>
+                    <Button
+                      component="label"
+                      disableElevation
+                      variant="contained"
+                      className="h-full px-2 py-0 flex flex-col text-color-neutral-120 leading-[0.875rem] tracking-[0.01563rem] font-normal normal-case"
+                    >
+                      <PhotoLibraryIcon className="text-5xl" />
+                      <p className="w-full text-left flex justify-center mt-4">
+                        Compartilhe seu talento com milhares de pessoas
+                      </p>
+                      <VisuallyHiddenInput type="file" />
+                    </Button>
+                  </ThemeProvider>
+                )}
+              </div>
             </div>
           </div>
+
           <div className="flex flex-col w-full items-start">
             <a
               href="https://www.youtube.com/"

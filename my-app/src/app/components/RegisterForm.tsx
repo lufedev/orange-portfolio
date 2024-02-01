@@ -16,6 +16,7 @@ import {
   TextField
 } from '@mui/material'
 import { redirect } from 'next/navigation'
+import { FormProps } from '../lib/definiton'
 
 interface RegisterData {
   name?: string
@@ -25,12 +26,8 @@ interface RegisterData {
   [key: string]: string | undefined
 }
 
-export default function RegisterForm() {
-  const [handleSnack, setHandleSnack] = useState({
-    status: false,
-    message: '',
-    severity: ''
-  })
+export default function RegisterForm({ onSnackbarUpdate }: FormProps) {
+
   const [success, setSuccess] = useState(false)
   const [handleLoading, setHandleLoading] = useState(false)
   const [error, setError] = useState({
@@ -47,16 +44,7 @@ export default function RegisterForm() {
   })
   const [showPassword, setShowPassword] = React.useState(false)
 
-  const handleClose = (
-    event?: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === 'clickaway') {
-      return
-    }
 
-    setHandleSnack({ status: false, message: '', severity: '' })
-  }
   if (success) {
     redirect('http://localhost:3000/login?success=true')
   }
@@ -123,7 +111,7 @@ export default function RegisterForm() {
       setSuccess(true)
     } catch (error) {
       if (error instanceof Error) {
-        setHandleSnack({
+        onSnackbarUpdate({
           status: true,
           message: error.message,
           severity: 'error'
@@ -217,12 +205,6 @@ export default function RegisterForm() {
         disabled={false}
         name="CADASTRAR"
         onClick={handleRegister}
-      />
-      <CustomSnackbar
-        handleClose={handleClose}
-        state={handleSnack.status}
-        text={handleSnack.message}
-        severity={handleSnack.severity}
       />
       <a
         href="../register"

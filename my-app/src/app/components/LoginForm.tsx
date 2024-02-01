@@ -1,10 +1,9 @@
 'use client'
 
-import { Visibility, VisibilityOff } from '@mui/icons-material'
-import { TextFieldTheme } from '../themes/TextField'
-import { ThemeProvider } from '@mui/material/styles'
-import CustomButton from './CustomButton'
-import CustomSnackbar from './CustomSnackbar'
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { TextFieldTheme } from '../themes/TextField';
+import { ThemeProvider } from '@mui/material/styles';
+import CustomButton from './CustomButton';
 import React, { useEffect, useState } from 'react'
 import {
   FormControl,
@@ -13,21 +12,18 @@ import {
   InputLabel,
   OutlinedInput,
   TextField
-} from '@mui/material'
-import { signIn } from 'next-auth/react'
+} from '@mui/material';
+import { signIn } from 'next-auth/react';
 import { redirect } from 'next/navigation'
+import { FormProps } from '../lib/definiton';
 
-export default function LoginForm() {
-  const [handleSnack, setHandleSnack] = useState({
-    status: false,
-    message: '',
-    severity: ''
-  })
-  const [error, setError] = useState({ status: false, message: '' })
-  const [login, setLogin] = useState({ email: '', password: '' })
-  const [handleLoading, setHandleLoading] = useState(false)
+
+export default function LoginForm({ onSnackbarUpdate }: FormProps) {
+  const [error, setError] = useState({ status: false, message: '' });
+  const [login, setLogin] = useState({ email: '', password: '' });
+  const [handleLoading, setHandleLoading] = useState(false);
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false)
-  const [showPassword, setShowPassword] = React.useState(false)
+  const [showPassword, setShowPassword] = React.useState(false);
 
   useEffect(() => {
     getParams()
@@ -36,7 +32,7 @@ export default function LoginForm() {
     const urlParams = new URLSearchParams(window.location.search)
     const success = urlParams.get('success')
     if (success === 'true') {
-      setHandleSnack({
+      onSnackbarUpdate({
         status: true,
         message: 'Usuário cadastrado com sucesso!',
         severity: 'success'
@@ -45,45 +41,36 @@ export default function LoginForm() {
     window.history.replaceState({}, document.title, '/login')
   }
 
-  const handleClose = (
-    event?: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === 'clickaway') {
-      return
-    }
 
-    setHandleSnack({ status: false, message: '', severity: '' })
-  }
-
-  if (isUserLoggedIn) {
-    redirect('/dashboard')
-  }
-  const handleClickShowPassword = () => setShowPassword((show) => !show)
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
-    event.preventDefault()
-  }
+    event.preventDefault();
+  };
 
   const handleLoginChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target
+    const { name, value } = event.target;
     setLogin((prevState) => {
-      const updatedData = { ...prevState, [name]: value }
+      const updatedData = { ...prevState, [name]: value };
       console.log(updatedData)
-      return updatedData
-    })
+      return updatedData;
+    });
+  };
+
+  if (isUserLoggedIn) {
+    redirect('/dashboard')
   }
 
   const handleLogin = async () => {
-    setHandleLoading(true)
+    setHandleLoading(true);
 
     const loginStatus = await signIn('credentials', {
       email: login.email,
       password: login.password,
       redirect: false
-    })
+    });
     if (loginStatus?.ok) {
       setIsUserLoggedIn(true)
     } else {
@@ -91,17 +78,17 @@ export default function LoginForm() {
         setError({
           status: true,
           message: loginStatus?.error as string
-        })
-        setHandleSnack({
+        });
+        onSnackbarUpdate({
           status: true,
           message: 'Usuário ou senha incorretos',
           severity: 'error'
-        })
+        });
       }
     }
 
-    setHandleLoading(false)
-  }
+    setHandleLoading(false);
+  };
   return (
     <div className="flex flex-col">
       <p className="my-8 subtitle-1 text-color-neutral-110 md:h5">
@@ -155,12 +142,6 @@ export default function LoginForm() {
         loading={handleLoading}
         onClick={handleLogin}
       />
-      <CustomSnackbar
-        handleClose={handleClose}
-        state={handleSnack.status}
-        text={handleSnack.message}
-        severity={handleSnack.severity}
-      />
       <a
         href="../register"
         className="subtitle-1 mt-[1.13rem] text-color-neutral-100 !no-underline"
@@ -168,5 +149,5 @@ export default function LoginForm() {
         Cadastre-se
       </a>
     </div>
-  )
+  );
 }
