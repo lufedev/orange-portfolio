@@ -26,6 +26,7 @@ import MenuIcon from '@mui/icons-material/Menu'
 import NotificationsIcon from '@mui/icons-material/Notifications'
 import LogoutIcon from '@mui/icons-material/Logout'
 import { UserProps } from '../lib/definiton'
+import { signOut } from 'next-auth/react'
 
 const pages = ['Meus projetos', 'Descobrir', 'Sair']
 
@@ -34,6 +35,10 @@ export default function Header({ user }: UserProps) {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   )
+
+  const handleLogout = () => {
+    signOut({ callbackUrl: 'http://localhost:3000/login' })
+  }
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget)
@@ -57,7 +62,7 @@ export default function Header({ user }: UserProps) {
     <div key={page}>
       {index !== 0 && page === 'Sair' && <Divider />}
       <MenuItem
-        onClick={handleCloseNavMenu}
+        onClick={page === 'Sair' ? handleLogout : handleCloseNavMenu}
         className="flex self-stretch items-start"
       >
         {page === 'Sair' ? (

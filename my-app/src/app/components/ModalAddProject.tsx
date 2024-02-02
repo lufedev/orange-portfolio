@@ -1,8 +1,8 @@
 'use client'
 
-import * as React from 'react'
+import React, { useState } from 'react'
 import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
+
 import Modal from '@mui/material/Modal'
 import CustomButton from './CustomButton'
 import { TextFieldTheme } from '../themes/TextField'
@@ -12,9 +12,10 @@ import { TextField } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import Button from '@mui/material/Button'
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary'
-import { Project, ProjectProps } from '../lib/definiton'
+import { ProjectProps } from '../lib/definiton'
 import Image from 'next/image'
-
+import { StaticImageData } from 'next/image'
+import sam from '../assets/img/images.jpg'
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
   clipPath: 'inset(50%)',
@@ -26,16 +27,81 @@ const VisuallyHiddenInput = styled('input')({
   whiteSpace: 'nowrap',
   width: 1
 })
-
+interface ProjectData {
+  title?: string
+  tags?: string
+  link?: string
+  description?: string
+  [key: string]: string | undefined
+}
 export default function ModalAddProject({
   project,
   states,
   onClose
 }: ProjectProps) {
   const handleToggle = () => onClose()
+  const isUrlImage = true
 
-  const isUrlImage = project?.urlImage !== undefined
+  const [image, setImage] = useState(sam)
 
+  const [handleLoading, setHandleLoading] = useState(false)
+  const [projectData, setProjectData] = useState<ProjectData>({
+    title: '',
+    tags: '',
+    link: '',
+    description: ''
+  })
+  const [error, setError] = useState({
+    title: { status: false, message: '' },
+    tags: { status: false, message: '' },
+    link: { status: false, message: '' },
+    description: { status: false, message: '' }
+  })
+
+  const handleProjectChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target
+    setProjectData((prevState) => {
+      const updatedData = { ...prevState, [name]: value }
+      return updatedData
+    })
+  }
+  const handleProject = async () => {
+    setHandleLoading(true)
+    const fields = ['title', 'tags', 'link', 'description']
+    let hasError = false
+    fields.forEach((field) => {
+      if (projectData[field] === '' || !projectData[field]) {
+        setError((prevState) => {
+          const updatedError = {
+            ...prevState,
+            [field]: { status: true, message: 'Campo obrigatório' }
+          }
+          return updatedError
+        })
+        hasError = true
+      } else {
+        setError((prevState) => {
+          const updatedError = {
+            ...prevState,
+            [field]: { status: false, message: '' }
+          }
+          return updatedError
+        })
+      }
+    })
+    if (hasError) return setHandleLoading(false)
+    try {
+      const response = await fetch('http://localhost:3000/api/portfolio', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(projectData)
+      })
+      handleToggle()
+    } catch (error) {}
+    setHandleLoading(false)
+  }
   return (
     <Modal
       open={states}
@@ -67,30 +133,43 @@ export default function ModalAddProject({
             <div className="w-full flex flex-col justify-center items-stretch text-center gap-4 lg:w-3/5">
               <ThemeProvider theme={TextFieldTheme}>
                 <TextField
+                  name="title"
                   label="Título"
                   variant="outlined"
                   size="medium"
                   className=""
                   type="text"
-                  value={project?.title || ''}
+                  onChange={handleProjectChange}
+                  error={error.title.status}
+                  helperText={error.title.message}
+                  value={projectData.title}
                 />
                 <TextField
+                  name="tags"
                   label="Tags"
                   variant="outlined"
                   size="medium"
                   className=""
                   type="text"
-                  value={project?.tags || ''}
+                  onChange={handleProjectChange}
+                  error={error.tags.status}
+                  helperText={error.tags.message}
+                  value={projectData.tags}
                 />
                 <TextField
+                  name="link"
                   label="Link"
                   variant="outlined"
                   size="medium"
                   className=""
                   type="text"
-                  value={project?.link || ''}
+                  onChange={handleProjectChange}
+                  error={error.link.status}
+                  helperText={error.link.message}
+                  value={projectData.link}
                 />
                 <TextField
+                  name="description"
                   label="Descrição"
                   variant="outlined"
                   size="medium"
@@ -98,7 +177,10 @@ export default function ModalAddProject({
                   type="text"
                   multiline
                   rows={3}
-                  value={project?.description || ''}
+                  onChange={handleProjectChange}
+                  error={error.description.status}
+                  helperText={error.description.message}
+                  value={projectData.description}
                 />
               </ThemeProvider>
             </div>
@@ -109,7 +191,7 @@ export default function ModalAddProject({
               <div className="w-full h-[304px]">
                 {isUrlImage ? (
                   <Image
-                    src={project?.urlImage}
+                    src={image}
                     alt={project?.title}
                     width={389}
                     height={304}
@@ -150,7 +232,8 @@ export default function ModalAddProject({
                 size="large"
                 disabled={false}
                 name="SALVAR"
-                loading={false}
+                loading={handleLoading}
+                onClick={handleProject}
               />
               <CustomButton
                 theme="disabled"
@@ -168,4 +251,11 @@ export default function ModalAddProject({
       </Box>
     </Modal>
   )
+}
+
+async function convertImageToBase64(image: StaticImageData): Promise<string> {
+  const imagePath = image.src
+  const imageBuffer = fs.readFileSync(imagePath)
+  const base64Image = imageBuffer.toString('base64')
+  return base64Image
 }

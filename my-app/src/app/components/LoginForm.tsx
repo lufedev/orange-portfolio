@@ -57,7 +57,7 @@ export default function LoginForm({ onSnackbarUpdate }: FormProps) {
   }
 
   if (isUserLoggedIn) {
-    redirect('/dashboard')
+    redirect('/')
   }
 
   const handleLogin = async () => {

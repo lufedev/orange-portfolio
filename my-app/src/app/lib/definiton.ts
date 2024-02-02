@@ -26,7 +26,12 @@ export type User = {
   image: string
   projects: Project[]
 }
-
+export type Session = {
+  sessionData: {
+    name: string
+    email: string
+  }
+}
 export type UserProps = {
   user: User
   onClick?: () => void
