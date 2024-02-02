@@ -2,7 +2,6 @@
 
 import * as React from 'react'
 import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
 import Modal from '@mui/material/Modal'
 import CustomButton from './CustomButton'
 import { TextFieldTheme } from '../themes/TextField'
@@ -14,6 +13,7 @@ import Button from '@mui/material/Button'
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary'
 import { Project, ProjectProps } from '../lib/definiton'
 import Image from 'next/image'
+import { useState } from 'react'
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -30,11 +30,25 @@ const VisuallyHiddenInput = styled('input')({
 export default function ModalAddProject({
   project,
   states,
-  onClose
+  onClose,
+  onCreateProject,
+  onUpdateProject
 }: ProjectProps) {
-  const handleToggle = () => onClose()
+  const [newProjectData, setNewProjectData] = useState(project || {} as Project);
 
-  const isUrlImage = project?.urlImage !== undefined
+  const handleToggle = () => onClose();
+
+  const handleSave = () => {
+    if (project && onUpdateProject !== undefined ) {
+      onUpdateProject(newProjectData as Project);
+    } 
+    if(onCreateProject !== undefined ){
+      onCreateProject(newProjectData as Project);
+    }
+    onClose();
+  };
+
+  const isUrlImage = project?.urlImage !== undefined;
 
   return (
     <Modal
@@ -72,7 +86,8 @@ export default function ModalAddProject({
                   size="medium"
                   className=""
                   type="text"
-                  value={project?.title || ''}
+                  value={newProjectData?.title || ''}
+                  onChange={(e) => setNewProjectData({ ...newProjectData, title: e.target.value })}
                 />
                 <TextField
                   label="Tags"
@@ -80,7 +95,8 @@ export default function ModalAddProject({
                   size="medium"
                   className=""
                   type="text"
-                  value={project?.tags || ''}
+                  value={newProjectData?.tags || ''}
+                  onChange={(e) => setNewProjectData({ ...newProjectData, tags: e.target.value as unknown as string[]})}
                 />
                 <TextField
                   label="Link"
@@ -88,7 +104,8 @@ export default function ModalAddProject({
                   size="medium"
                   className=""
                   type="text"
-                  value={project?.link || ''}
+                  value={newProjectData?.link || ''}
+                  onChange={(e) => setNewProjectData({ ...newProjectData, link: e.target.value })}
                 />
                 <TextField
                   label="Descrição"
@@ -98,7 +115,8 @@ export default function ModalAddProject({
                   type="text"
                   multiline
                   rows={3}
-                  value={project?.description || ''}
+                  value={newProjectData?.description || ''}
+                  onChange={(e) => setNewProjectData({ ...newProjectData, description: e.target.value })}
                 />
               </ThemeProvider>
             </div>
@@ -109,8 +127,8 @@ export default function ModalAddProject({
               <div className="w-full h-[304px] md:h-[307px]">
                 {isUrlImage ? (
                   <Image
-                    src={project?.urlImage}
-                    alt={project?.title}
+                    src={newProjectData?.urlImage}
+                    alt={newProjectData?.title}
                     width={389}
                     height={304}
                     className="h-full w-full object-cover"
@@ -150,6 +168,7 @@ export default function ModalAddProject({
                 disabled={false}
                 name="SALVAR"
                 loading={false}
+                onClick={handleSave}
               />
               <CustomButton
                 theme="disabled"
@@ -166,5 +185,5 @@ export default function ModalAddProject({
         </div>
       </Box>
     </Modal>
-  )
+  );
 }
