@@ -74,8 +74,8 @@ export default function Header({ user }: UserProps) {
 
   return (
     <ThemeProvider theme={MainTheme}>
-      <AppBar position="static" color="primary">
-        <Container maxWidth="xl">
+      <AppBar position="static" color="primary" className="rounded-b">
+        <Container maxWidth="xl" className="py-3 px-6 md:py-4 md:px-8">
           <Toolbar disableGutters>
             {isMobile ? (
               <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>

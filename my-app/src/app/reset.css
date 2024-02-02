@@ -65,9 +65,25 @@ h6 {
 
 /*
   10. Reset SnackBar Component
+  11. Reset Header Component
 */
+
+/* Reset SnackBar Component */
 @media (min-width: 600px) {
   .MuiSnackbar-root {
     transform: translateX(0);
+  }
+}
+
+/* Header Component */
+@media (min-width: 640px) {
+  .MuiContainer-root {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+@media (min-width: 640px) {
+  .MuiToolbar-root {
+    min-height: 56px;
   }
 }
