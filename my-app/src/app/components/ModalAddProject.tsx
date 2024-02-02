@@ -14,6 +14,7 @@ import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary'
 import { Project, ProjectProps } from '../lib/definiton'
 import Image from 'next/image'
 import { useState } from 'react'
+import { storage } from '../firebase/firebase'
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -28,6 +29,7 @@ const VisuallyHiddenInput = styled('input')({
 })
 
 export default function ModalAddProject({
+  user,
   project,
   states,
   onClose,
@@ -47,8 +49,30 @@ export default function ModalAddProject({
     }
     onClose();
   };
+  let isUrlImage: boolean = project?.urlImage !== undefined;
 
-  const isUrlImage = project?.urlImage !== undefined;
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const storageRef = storage.ref();
+      const projectFolder = `${user?.id}`;
+
+      const fileRef = storageRef.child(projectFolder + '/' + file.name + '/' + Date.now());
+
+      fileRef.put(file).then(() => {
+        console.log("Arquivo enviado com sucesso!");
+        fileRef.getDownloadURL().then((url: string) => {
+          setNewProjectData({ ...newProjectData, urlImage: url });
+          console.log(url)
+        });
+      }).catch(error => {
+        console.error("Erro ao enviar arquivo:", error);
+      });
+    }
+  };
+
+ 
 
   return (
     <Modal
@@ -145,7 +169,7 @@ export default function ModalAddProject({
                       <p className="w-full text-left flex justify-center mt-4">
                         Compartilhe seu talento com milhares de pessoas
                       </p>
-                      <VisuallyHiddenInput type="file" />
+                      <VisuallyHiddenInput type="file" onChange={handleFileChange} />
                     </Button>
                   </ThemeProvider>
                 )}

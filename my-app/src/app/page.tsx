@@ -58,7 +58,7 @@ function updateProject(updatedProject: Project) {
 
 
 const project: Project = user.projects[0];
-const isProject: boolean = user.projects.length > 0;
+const isProject: boolean = user.projects.length < 0;
 
 export default function Home() {
   const [modalOpen, setModalOpen] = React.useState(false)
@@ -77,7 +77,7 @@ export default function Home() {
       <div className="flex flex-col items-center justify-start mt-14 mx-6 gap-10">
         <CardProfile user={user} onClick={openModal} />
         <ModalAddProject
-          project={project}
+          user={user}
           states={modalOpen}
           onClose={closeModal}
           onCreateProject={addProject}

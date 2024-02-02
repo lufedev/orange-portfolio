@@ -169,13 +169,13 @@ export default function Header({ user }: UserProps) {
                 id="menu-appbar"
                 anchorEl={anchorElUser}
                 anchorOrigin={{
-                  vertical: 'top', // Alinha verticalmente ao centro
-                  horizontal: 'center' // Alinha horizontalmente à direita
+                  vertical: 'top', 
+                  horizontal: 'center'
                 }}
                 keepMounted
                 transformOrigin={{
-                  vertical: 'top', // Alinha verticalmente ao centro
-                  horizontal: 'center' // Alinha horizontalmente à esquerda
+                  vertical: 'top',
+                  horizontal: 'center' 
                 }}
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}

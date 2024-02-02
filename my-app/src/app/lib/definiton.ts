@@ -44,6 +44,7 @@ export type Project = {
 }
 
 export type ProjectProps = {
+  user?: User
   project?: Project
   onClick?: () => void
   onClose?: () => void
