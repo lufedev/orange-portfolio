@@ -1,6 +1,8 @@
 import { Alert, Snackbar } from '@mui/material'
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
 import { TypeSnackBar } from '../lib/definiton'
+import { SnackBar } from '../themes/Button'
+import { ThemeProvider } from 'styled-components'
 
 export default function CustomSnackbar({
   handleClose,
@@ -12,8 +14,8 @@ export default function CustomSnackbar({
     <Snackbar
       anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       open={state}
-      autoHideDuration={6000}
       onClose={handleClose}
+      className="absolute left-6 right-6 top-[49px] md:relative md:left-1/2 md:translate-x-[-50%] md:top-[109px] md:w-80"
     >
       <Alert
         iconMapping={{

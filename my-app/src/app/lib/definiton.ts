@@ -29,6 +29,7 @@ export type User = {
 
 export type UserProps = {
   user: User
+  project?: Project
   onClick?: () => void
 }
 
@@ -39,13 +40,18 @@ export type Project = {
   link: string
   description: string
   urlImage: string
+  date: string
 }
 
 export type ProjectProps = {
+  user?: User
   project?: Project
   onClick?: () => void
   onClose?: () => void
+  onUpdateProject?: (project: Project) => void;
+  onCreateProject?: (project: Project) => void; 
   states?: boolean
+
 }
 
 export type TypeSnackbarInfo = {

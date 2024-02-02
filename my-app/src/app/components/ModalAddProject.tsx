@@ -2,7 +2,6 @@
 
 import * as React from 'react'
 import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
 import Modal from '@mui/material/Modal'
 import CustomButton from './CustomButton'
 import { TextFieldTheme } from '../themes/TextField'
@@ -14,6 +13,8 @@ import Button from '@mui/material/Button'
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary'
 import { Project, ProjectProps } from '../lib/definiton'
 import Image from 'next/image'
+import { useState } from 'react'
+import { storage } from '../firebase/firebase'
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -28,13 +29,50 @@ const VisuallyHiddenInput = styled('input')({
 })
 
 export default function ModalAddProject({
+  user,
   project,
   states,
-  onClose
+  onClose,
+  onCreateProject,
+  onUpdateProject
 }: ProjectProps) {
-  const handleToggle = () => onClose()
+  const [newProjectData, setNewProjectData] = useState(project || {} as Project);
 
-  const isUrlImage = project?.urlImage !== undefined
+  const handleToggle = () => onClose();
+
+  const handleSave = () => {
+    if (project && onUpdateProject !== undefined ) {
+      onUpdateProject(newProjectData as Project);
+    } 
+    if(onCreateProject !== undefined ){
+      onCreateProject(newProjectData as Project);
+    }
+    onClose();
+  };
+  let isUrlImage: boolean = project?.urlImage !== undefined;
+
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const storageRef = storage.ref();
+      const projectFolder = `${user?.id}`;
+
+      const fileRef = storageRef.child(projectFolder + '/' + file.name + '/' + Date.now());
+
+      fileRef.put(file).then(() => {
+        console.log("Arquivo enviado com sucesso!");
+        fileRef.getDownloadURL().then((url: string) => {
+          setNewProjectData({ ...newProjectData, urlImage: url });
+          console.log(url)
+        });
+      }).catch(error => {
+        console.error("Erro ao enviar arquivo:", error);
+      });
+    }
+  };
+
+ 
 
   return (
     <Modal
@@ -42,29 +80,29 @@ export default function ModalAddProject({
       onClose={onClose}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
+      className="mx-6 md:px-[195px]"
     >
       <Box
         sx={{
-          position: 'absolute',
+          position: { xs: 'absolute', md: 'relative' },
           bottom: '0',
+          top: { md: '50%' },
           left: '50%',
-          transform: 'translate(-50%)',
-          width: '80%',
+          transform: { xs: 'translate(-50%)', md: 'translate(-50%, -50%)' },
+          width: '100%',
+          marginBottom: { xs: '24px', md: '0' },
+          maxHeight: { xs: '84vh', md: '100%' },
           bgcolor: 'white',
-          border: 'none',
-          display: 'block',
-          flexDirection: 'column',
-          alignItems: 'end',
-          justifyContent: 'end',
-          marginBottom: '1.5rem',
-          maxHeight: '80vh',
-          overflowY: 'auto'
+          overflow: 'auto'
         }}
+        className="absolute bottom-0 left-1/2 translate-x-[-50%] bg-white w-full max-h-[84vh] overflow-auto md:top-1/2 md:translate-y-[-50%] md:relative md:max-h-screen"
       >
-        <div className="px-6 w-full">
-          <h5 className="h5 my-4 w-full text-left">Adicionar projeto</h5>
-          <div className="w-full flex flex-col lg:flex-row-reverse lg:h-full lg:gap-3">
-            <div className="w-full flex flex-col justify-center items-stretch text-center gap-4 lg:w-3/5">
+        <div className="px-6 md:px-8 w-full">
+          <h5 className="h5 my-4 md:my-6 w-full text-left">
+            Adicionar projeto
+          </h5>
+          <div className="md:flex md:flex-row-reverse">
+            <div className="w-full flex flex-col justify-center text-center gap-4 md:w-[50vw]">
               <ThemeProvider theme={TextFieldTheme}>
                 <TextField
                   label="Título"
@@ -72,7 +110,8 @@ export default function ModalAddProject({
                   size="medium"
                   className=""
                   type="text"
-                  value={project?.title || ''}
+                  value={newProjectData?.title || ''}
+                  onChange={(e) => setNewProjectData({ ...newProjectData, title: e.target.value })}
                 />
                 <TextField
                   label="Tags"
@@ -80,7 +119,8 @@ export default function ModalAddProject({
                   size="medium"
                   className=""
                   type="text"
-                  value={project?.tags || ''}
+                  value={newProjectData?.tags || ''}
+                  onChange={(e) => setNewProjectData({ ...newProjectData, tags: e.target.value as unknown as string[]})}
                 />
                 <TextField
                   label="Link"
@@ -88,7 +128,8 @@ export default function ModalAddProject({
                   size="medium"
                   className=""
                   type="text"
-                  value={project?.link || ''}
+                  value={newProjectData?.link || ''}
+                  onChange={(e) => setNewProjectData({ ...newProjectData, link: e.target.value })}
                 />
                 <TextField
                   label="Descrição"
@@ -98,19 +139,20 @@ export default function ModalAddProject({
                   type="text"
                   multiline
                   rows={3}
-                  value={project?.description || ''}
+                  value={newProjectData?.description || ''}
+                  onChange={(e) => setNewProjectData({ ...newProjectData, description: e.target.value })}
                 />
               </ThemeProvider>
             </div>
-            <div className="my-4 flex flex-col lg:w-3/5">
+            <div className="my-4 flex flex-col md:mr-6 md:w-[50vw] md:mt-0">
               <p className="subtitle-1 text-color-neutral-110 text-left w-full mb-4">
                 Selecione o conteúdo que você deseja fazer upload
               </p>
-              <div className="w-full h-[304px]">
+              <div className="w-full h-[304px] md:h-[307px]">
                 {isUrlImage ? (
                   <Image
-                    src={project?.urlImage}
-                    alt={project?.title}
+                    src={newProjectData?.urlImage}
+                    alt={newProjectData?.title}
                     width={389}
                     height={304}
                     className="h-full w-full object-cover"
@@ -127,14 +169,13 @@ export default function ModalAddProject({
                       <p className="w-full text-left flex justify-center mt-4">
                         Compartilhe seu talento com milhares de pessoas
                       </p>
-                      <VisuallyHiddenInput type="file" />
+                      <VisuallyHiddenInput type="file" onChange={handleFileChange} />
                     </Button>
                   </ThemeProvider>
                 )}
               </div>
             </div>
           </div>
-
           <div className="flex flex-col w-full items-start">
             <a
               href="https://www.youtube.com/"
@@ -142,7 +183,7 @@ export default function ModalAddProject({
             >
               Visualizar publicação
             </a>
-            <div className="flex mb-10 gap-4">
+            <div className="flex mb-10 md:mb-6 gap-4">
               <CustomButton
                 theme="ContainedTheme"
                 variant="contained"
@@ -151,6 +192,7 @@ export default function ModalAddProject({
                 disabled={false}
                 name="SALVAR"
                 loading={false}
+                onClick={handleSave}
               />
               <CustomButton
                 theme="disabled"
@@ -167,5 +209,5 @@ export default function ModalAddProject({
         </div>
       </Box>
     </Modal>
-  )
+  );
 }
