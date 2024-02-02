@@ -45,7 +45,7 @@ export default function Home() {
   return (
     <div>
       <Header user={user} />
-      <div className="flex flex-col items-center justify-start mt-14 mx-6 gap-10">
+      <div className="flex flex-col items-center justify-start mt-14 mx-6 gap-10 md:mt-28 md:mx-8">
         <CardProfile user={user} onClick={openModal} />
         <ModalAddProject
           project={project}

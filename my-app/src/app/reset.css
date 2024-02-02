@@ -74,16 +74,3 @@ h6 {
     transform: translateX(0);
   }
 }
-
-/* Header Component */
-@media (min-width: 640px) {
-  .MuiContainer-root {
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-}
-@media (min-width: 640px) {
-  .MuiToolbar-root {
-    min-height: 56px;
-  }
-}
