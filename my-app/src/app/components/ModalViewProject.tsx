@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import * as React from 'react'
 import CustomButton from './CustomButton'
 import { TextFieldTheme } from '../themes/TextField'
 import { DisabledTheme } from '../themes/Button'
@@ -11,8 +11,6 @@ import Button from '@mui/material/Button'
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary'
 import { ProjectProps } from '../lib/definiton'
 import Image from 'next/image'
-import { storage } from '../firebase/firebase'
-import { set } from 'firebase/database'
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -25,75 +23,15 @@ const VisuallyHiddenInput = styled('input')({
   whiteSpace: 'nowrap',
   width: 1
 })
-export default function ModalAddProject({
-  user,
+
+export default function ModalViewProject({
   project,
   states,
   onClose
 }: ProjectProps) {
-  const [newProjectData, setNewProjectData] = useState(
-    project || ({} as Project)
-  )
-  const [loading, setLoading] = useState(false)
-  const [isimagepath, setIsimagepath] = useState(false)
   const handleToggle = () => onClose()
 
-  const handleSave = () => {
-    setLoading(true)
-
-    createProject(newProjectData as Project)
-    //updateProject ainda nao foi criado
-    setLoading(false)
-    onClose()
-  }
-
-  const createProject = async (project: Project) => {
-    try {
-      const response = await fetch('http://localhost:3000/api/portfolio', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(newProjectData)
-      })
-      handleToggle()
-      setNewProjectData({} as Project)
-      setIsimagepath(false)
-    } catch (error) {}
-  }
-
-  const updateProject = async (project: Project) => {
-    console.log(project)
-  }
-
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    if (file) {
-      const storageRef = storage.ref()
-      const projectFolder = `${user?.id}`
-
-      const fileRef = storageRef.child(
-        projectFolder + '/' + file.name + '/' + Date.now()
-      )
-
-
-      fileRef
-        .put(file)
-        .then(() => {
-          console.log('Arquivo enviado com sucesso!')
-          fileRef.getDownloadURL().then((url: string) => {
-            //Caso o campo é preenchido durante o upload da imagem, o valor é limpo
-            setNewProjectData({ ...newProjectData, imagepath: url })
-            setIsimagepath(true)
-            console.log(url)
-          })
-        })
-        .catch((error) => {
-          console.error('Erro ao enviar arquivo:', error)
-        })
-
-    }
-  }
+  const isUrlImage = project?.urlImage !== undefined
 
   return (
     <Modal
@@ -126,52 +64,30 @@ export default function ModalAddProject({
             <div className="w-full flex flex-col justify-center text-center gap-4 md:w-[50vw]">
               <ThemeProvider theme={TextFieldTheme}>
                 <TextField
-                  name="title"
                   label="Título"
                   variant="outlined"
                   size="medium"
                   className=""
                   type="text"
-                  value={newProjectData?.title || ''}
-                  onChange={(e) =>
-                    setNewProjectData({
-                      ...newProjectData,
-                      title: e.target.value
-                    })
-                  }
+                  value={project?.title || ''}
                 />
                 <TextField
-                  name="tags"
                   label="Tags"
                   variant="outlined"
                   size="medium"
                   className=""
                   type="text"
-                  value={newProjectData?.tags || ''}
-                  onChange={(e) =>
-                    setNewProjectData({
-                      ...newProjectData,
-                      tags: e.target.value as unknown as string[]
-                    })
-                  }
+                  value={project?.tags || ''}
                 />
                 <TextField
-                  name="link"
                   label="Link"
                   variant="outlined"
                   size="medium"
                   className=""
                   type="text"
-                  value={newProjectData?.link || ''}
-                  onChange={(e) =>
-                    setNewProjectData({
-                      ...newProjectData,
-                      link: e.target.value
-                    })
-                  }
+                  value={project?.link || ''}
                 />
                 <TextField
-                  name="description"
                   label="Descrição"
                   variant="outlined"
                   size="medium"
@@ -179,13 +95,7 @@ export default function ModalAddProject({
                   type="text"
                   multiline
                   rows={3}
-                  value={newProjectData?.description || ''}
-                  onChange={(e) =>
-                    setNewProjectData({
-                      ...newProjectData,
-                      description: e.target.value
-                    })
-                  }
+                  value={project?.description || ''}
                 />
               </ThemeProvider>
             </div>
@@ -194,10 +104,10 @@ export default function ModalAddProject({
                 Selecione o conteúdo que você deseja fazer upload
               </p>
               <div className="w-full h-[304px] md:h-[307px]">
-                {isimagepath ? (
+                {isUrlImage ? (
                   <Image
-                    src={newProjectData?.imagepath}
-                    alt={newProjectData?.title}
+                    src={project?.urlImage}
+                    alt={project?.title}
                     width={389}
                     height={304}
                     className="h-full w-full object-cover"
@@ -214,10 +124,7 @@ export default function ModalAddProject({
                       <p className="w-full text-left flex justify-center mt-4">
                         Compartilhe seu talento com milhares de pessoas
                       </p>
-                      <VisuallyHiddenInput
-                        type="file"
-                        onChange={handleFileChange}
-                      />
+                      <VisuallyHiddenInput type="file" />
                     </Button>
                   </ThemeProvider>
                 )}
@@ -240,7 +147,6 @@ export default function ModalAddProject({
                 disabled={false}
                 name="SALVAR"
                 loading={false}
-                onClick={handleSave}
               />
               <CustomButton
                 theme="disabled"

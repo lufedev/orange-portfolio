@@ -26,6 +26,7 @@ import MenuIcon from '@mui/icons-material/Menu'
 import NotificationsIcon from '@mui/icons-material/Notifications'
 import LogoutIcon from '@mui/icons-material/Logout'
 import { UserProps } from '../lib/definiton'
+import { signOut } from 'next-auth/react'
 
 const pages = ['Meus projetos', 'Descobrir', 'Sair']
 
@@ -34,6 +35,10 @@ export default function Header({ user }: UserProps) {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   )
+
+  const handleLogout = () => {
+    signOut({ callbackUrl: 'http://localhost:3000/login' })
+  }
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget)
@@ -51,13 +56,11 @@ export default function Header({ user }: UserProps) {
     setAnchorElUser(null)
   }
 
-  const isMobile: boolean = useMediaQuery('(max-width: 899px)')
-
   const renderMenuItem = (page: string, index: number) => (
     <div key={page}>
       {index !== 0 && page === 'Sair' && <Divider />}
       <MenuItem
-        onClick={handleCloseNavMenu}
+        onClick={page === 'Sair' ? handleLogout : handleCloseNavMenu}
         className="flex self-stretch items-start"
       >
         {page === 'Sair' ? (
@@ -74,63 +77,76 @@ export default function Header({ user }: UserProps) {
 
   return (
     <ThemeProvider theme={MainTheme}>
-      <AppBar position="static" color="primary">
-        <Container maxWidth="xl">
-          <Toolbar disableGutters>
-            {isMobile ? (
-              <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-                <IconButton
-                  size="large"
-                  aria-label="account of current user"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  onClick={handleOpenNavMenu}
-                  color="inherit"
+      <AppBar position="static" color="primary" className="rounded-b">
+        <Container
+          maxWidth="xl"
+          className="py-3 px-6 md:py-4 md:px-8"
+          sx={{ maxWidth: { xl: '100%' } }}
+        >
+          <Toolbar
+            disableGutters
+            sx={{
+              minHeight: { xs: '100%', sm: '100%' }
+            }}
+          >
+            <Box
+              sx={{
+                flexGrow: 1,
+                display: { xs: 'flex', md: 'none' }
+              }}
+            >
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleOpenNavMenu}
+                color="inherit"
+              >
+                <MenuIcon />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorElNav}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left'
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left'
+                }}
+                open={Boolean(anchorElNav)}
+                onClose={handleCloseNavMenu}
+                sx={{
+                  display: { xs: 'block', md: 'none' }
+                }}
+              >
+                <ListItem
+                  align-items="flex-star"
+                  className="flex flex-col items-start"
                 >
-                  <MenuIcon />
-                </IconButton>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorElNav}
-                  anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left'
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'left'
-                  }}
-                  open={Boolean(anchorElNav)}
-                  onClose={handleCloseNavMenu}
-                  sx={{
-                    display: { xs: 'block', md: 'none' }
-                  }}
-                >
-                  <ListItem
-                    align-items="flex-star"
-                    className="flex flex-col items-start"
-                  >
-                    <p>{user.name}</p>
-                    <p className="text-[#00000099]">{user.email}</p>
-                  </ListItem>
-                  <Divider />
-                  {pages.map(renderMenuItem)}
-                </Menu>
-                <img src={Logo.src} alt="logo" className="w-[6rem] h=[3rem]" />
-              </Box>
-            ) : (
-              <img src={Logo.src} alt="logo" className="ml-7 w-[6.9rem]" />
-            )}
-
+                  <p>{user.name}</p>
+                  <p className="text-[#00000099]">{user.email}</p>
+                </ListItem>
+                <Divider />
+                {pages.map(renderMenuItem)}
+              </Menu>
+              <img src={Logo.src} alt="logo" className="w-[6rem] h=[3rem]" />
+            </Box>
             <Box
               sx={{
                 flexGrow: 1,
                 display: { xs: 'none', md: 'flex' },
-                pl: '100px',
                 gap: 3
               }}
             >
+              <img
+                src={Logo.src}
+                alt="logo"
+                className="ml-7 w-[6.9rem] mr-[100px]"
+              />
               {pages.slice(0, 2).map((page) => (
                 <Button
                   key={page}
@@ -148,7 +164,7 @@ export default function Header({ user }: UserProps) {
               content-between flex-row items-center
               gap-2 md:gap-4"
             >
-              <Tooltip title="Abrir configurações">
+              <Tooltip>
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar alt="Foto perfil" src={AvatarUser.src} />
                 </IconButton>
@@ -160,22 +176,21 @@ export default function Header({ user }: UserProps) {
                   </IconButton>
                 </Badge>
               </Box>
-
               <Menu
                 sx={{
                   mt: '45px',
-                  display: `${isMobile ? 'none' : ''}`
+                  display: { xs: 'none', md: 'block' }
                 }}
                 id="menu-appbar"
                 anchorEl={anchorElUser}
                 anchorOrigin={{
-                  vertical: 'top', 
+                  vertical: 'top',
                   horizontal: 'center'
                 }}
                 keepMounted
                 transformOrigin={{
                   vertical: 'top',
-                  horizontal: 'center' 
+                  horizontal: 'center'
                 }}
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}

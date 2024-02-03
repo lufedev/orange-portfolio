@@ -88,8 +88,7 @@ export default function RegisterForm({ onSnackbarUpdate }: FormProps) {
       }
     })
     if (hasError) {
-      setHandleLoading(false)
-      return
+      return setHandleLoading(false)
     }
     try {
       const response = await fetch('http://localhost:3000/api/user', {

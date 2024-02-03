@@ -1,22 +1,34 @@
-import Image from "next/image";
-import { UserProps } from "../lib/definiton";
-import { Button, Chip, IconButton, ListItem, Menu, Stack, ThemeProvider } from "@mui/material";
+
+import Image from 'next/image'
+import { UserProps } from '../lib/definiton'
+import {
+  Button,
+  Chip,
+  IconButton,
+  ListItem,
+  Menu,
+  Stack,
+  ThemeProvider
+} from '@mui/material'
 import { ChipTheme, MenuTheme } from "../themes/Button";
-import EditIcon from '@mui/icons-material/Edit';
+import EditIcon from '@mui/icons-material/Edit'
 import * as React from 'react'
 import CustomChip from "./CustomChip";
 import { MainTheme } from "../themes/Theme";
 
+
 export default function CardProject({ user, project, view }: UserProps) {
     const [anchorElMenu, setAnchorElMenu] = React.useState<null | HTMLElement>(null);
 
-    const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorElMenu(event.currentTarget);
-    };
 
-    const handleCloseMenu = () => {
-        setAnchorElMenu(null);
-    };
+  const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElMenu(event.currentTarget)
+  }
+
+  const handleCloseMenu = () => {
+    setAnchorElMenu(null)
+  }
+
 
     const renderMenu: string = () => {
         if (view !== undefined) {
@@ -25,17 +37,16 @@ export default function CardProject({ user, project, view }: UserProps) {
     }
 
 
-
-    return (
-        <div className="h-[19.75rem] w-full md:w-[24.31rem] md:h-[17.87rem] mt-6">
-            <Image
-                src={project?.urlImage}
-                alt={project?.title}
-                width={312}
-                height={258}
-                className="w-full h-[16.12rem] object-cover"
-            />
-            <div className="flex mt-[.5rem] md:items-center gap-2 relative">
+  return (
+    <div className="h-[19.75rem] w-full md:w-[24.31rem] md:h-[17.87rem] mt-6">
+      <Image
+        src={project?.imagepath}
+        alt={project?.title}
+        width={312}
+        height={258}
+        className="w-full h-[16.12rem] object-cover"
+      />
+       <div className="flex mt-[.5rem] md:items-center gap-2 relative">
                 <Image
                     src={user.image}
                     alt={user.name}
@@ -103,17 +114,22 @@ export default function CardProject({ user, project, view }: UserProps) {
                     </Menu>
                 </div>
 
-                <div className="flex flex-col md:flex-row gap-2">
-                    <h6 className="h6 text-color-neutral-120 md:text-color-neutral-110">
-                        {user.name} {user.surname}
-                    </h6>
-                    <p className="hidden md:flex">•</p>
-                    <p className="text-color-neutral-110">{project?.date}</p>
-                </div>
+        <div className="flex flex-col md:flex-row gap-2">
+          <h6 className="h6 text-color-neutral-120 md:text-color-neutral-110">
+            {user.name} {user.surname}
+          </h6>
+          <p className="hidden md:flex">•</p>
+          <p className="text-color-neutral-110">{project?.date}</p>
 
-                <Stack direction="row" spacing={1} className="flex items-center grow justify-end">
-                    <ThemeProvider theme={MainTheme}>
-                        {project?.tags.map((tag: string) => (
+        </div>
+
+        <Stack
+          direction="row"
+          spacing={1}
+          className="flex items-center grow justify-end"
+        >
+          {/* <ThemeProvider theme={ChipTheme}>
+            {project?.tags.map((tag: string) => (
                             <CustomChip
                                 key={tag}
                                 variant="filled"
@@ -124,11 +140,10 @@ export default function CardProject({ user, project, view }: UserProps) {
                                 label={tag}
 
                             />
-
-                        ))}
-                    </ThemeProvider>
-                </Stack>
-            </div>
-        </div>
-    );
+            ))}
+          </ThemeProvider> */}
+        </Stack>
+      </div>
+    </div>
+  )
 }

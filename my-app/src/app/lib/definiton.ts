@@ -19,14 +19,19 @@ export type TypeSnackBar = {
 export type User = {
   id?: number
   name: string
-  surname: string
+  sname: string
   email: string
   password: string
   country: string
   image: string
   projects: Project[]
 }
-
+export type Session = {
+  sessionData: {
+    name: string
+    email: string
+  }
+}
 export type UserProps = {
   user: User
   project?: Project
@@ -37,10 +42,10 @@ export type UserProps = {
 export type Project = {
   id?: number
   title: string
-  tags: string[]
+  tags: string
   link: string
   description: string
-  urlImage: string
+  imagepath: string
   date: string
 }
 
@@ -49,10 +54,7 @@ export type ProjectProps = {
   project?: Project
   onClick?: () => void
   onClose?: () => void
-  onUpdateProject?: (project: Project) => void;
-  onCreateProject?: (project: Project) => void; 
   states?: boolean
-
 }
 
 export type TypeSnackbarInfo = {

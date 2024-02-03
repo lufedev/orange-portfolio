@@ -56,8 +56,7 @@ export const ChipTheme = createTheme({
     primary: {
       main: '#00000014',
       contrastText: '#000000DE'
-    },
-
+    }
   }
 })
 
