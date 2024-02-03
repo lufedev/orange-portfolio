@@ -43,9 +43,11 @@ export default function ModalAddProject({
   const handleSave = () => {
     if (project && onUpdateProject !== undefined ) {
       onUpdateProject(newProjectData as Project);
+
     } 
     if(onCreateProject !== undefined ){
       onCreateProject(newProjectData as Project);
+     
     }
     onClose();
   };
@@ -63,8 +65,8 @@ export default function ModalAddProject({
       fileRef.put(file).then(() => {
         console.log("Arquivo enviado com sucesso!");
         fileRef.getDownloadURL().then((url: string) => {
-          setNewProjectData({ ...newProjectData, urlImage: url });
-          console.log(url)
+          newProjectData.urlImage = url 
+          localStorage.setItem("teste", JSON.stringify((newProjectData)))
         });
       }).catch(error => {
         console.error("Erro ao enviar arquivo:", error);

@@ -31,6 +31,7 @@ export type UserProps = {
   user: User
   project?: Project
   onClick?: () => void
+  view?: boolean
 }
 
 export type Project = {
@@ -62,4 +63,15 @@ export type TypeSnackbarInfo = {
 
 export type FormProps = {
   onSnackbarUpdate: (snackbarInfo: TypeSnackbarInfo) => void
+}
+
+
+export type TypeChip = {
+  variant: string
+  color: string
+  size: string
+  disabled: boolean
+  className: string
+  label: string
+  onDelete?: () => void; 
 }

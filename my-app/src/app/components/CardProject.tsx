@@ -1,11 +1,13 @@
 import Image from "next/image";
 import { UserProps } from "../lib/definiton";
 import { Button, Chip, IconButton, ListItem, Menu, Stack, ThemeProvider } from "@mui/material";
-import { ChipTheme } from "../themes/Button";
+import { ChipTheme, MenuTheme } from "../themes/Button";
 import EditIcon from '@mui/icons-material/Edit';
 import * as React from 'react'
+import CustomChip from "./CustomChip";
+import { MainTheme } from "../themes/Theme";
 
-export default function CardProject({ user, project }: UserProps) {
+export default function CardProject({ user, project, view }: UserProps) {
     const [anchorElMenu, setAnchorElMenu] = React.useState<null | HTMLElement>(null);
 
     const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -15,6 +17,14 @@ export default function CardProject({ user, project }: UserProps) {
     const handleCloseMenu = () => {
         setAnchorElMenu(null);
     };
+
+    const renderMenu: string = () => {
+        if (view !== undefined) {
+            return view ? 'flex' : 'hidden';
+        }
+    }
+
+
 
     return (
         <div className="h-[19.75rem] w-full md:w-[24.31rem] md:h-[17.87rem] mt-6">
@@ -43,6 +53,7 @@ export default function CardProject({ user, project }: UserProps) {
                         className="text-color-neutral-120"
                         title="Configurações do projeto"
                         onClick={handleOpenMenu}
+                        className={renderMenu()}
                     >
                         <EditIcon className="bg-color-secondary-70 rounded-full" />
                     </IconButton>
@@ -51,26 +62,43 @@ export default function CardProject({ user, project }: UserProps) {
                         anchorEl={anchorElMenu}
                         anchorOrigin={{
                             vertical: 'bottom',
-                            horizontal: 'left'
+                            horizontal: 'right'
                         }}
                         keepMounted
                         transformOrigin={{
                             vertical: 'top',
-                            horizontal: 'center'
+                            horizontal: 'right'
                         }}
                         open={Boolean(anchorElMenu)}
                         onClose={handleCloseMenu}
                         sx={{
-                            display: { xs: 'block'},
-                            width: '13rem'
+                            display: { xs: 'flex' },
+                            width: '53%',
+                            right: '-50%'
+                          
                         }}
                     >
                         <ListItem
                             align-items="flex-star"
-                            className="flex flex-col items-start"
+                            className="
+                            flex flex-col
+                            items-start w-full"
                         >
-                            <Button onClick={() => console.log("Editar")}>Editar</Button>
-                            <Button onClick={() => console.log("excluir")}>Excluir</Button>
+                            <ThemeProvider theme={MenuTheme}>
+                                <Button
+                                    onClick={() => console.log("Editar")}
+                                    color="primary"
+                                >
+                                    Editar
+                                </Button>
+                                <Button
+                                    onClick={() => console.log("excluir")}
+                                    color="primary"
+                                >
+                                    Excluir
+                                </Button>
+                            </ThemeProvider>
+
                         </ListItem>
                     </Menu>
                 </div>
@@ -84,9 +112,19 @@ export default function CardProject({ user, project }: UserProps) {
                 </div>
 
                 <Stack direction="row" spacing={1} className="flex items-center grow justify-end">
-                    <ThemeProvider theme={ChipTheme}>
+                    <ThemeProvider theme={MainTheme}>
                         {project?.tags.map((tag: string) => (
-                            <Chip key={tag} label={tag} color="primary" />
+                            <CustomChip
+                                key={tag}
+                                variant="filled"
+                                color="default"
+                                size="large"
+                                disabled={false}
+                                className="mb-[1.13rem]"
+                                label={tag}
+
+                            />
+
                         ))}
                     </ThemeProvider>
                 </Stack>

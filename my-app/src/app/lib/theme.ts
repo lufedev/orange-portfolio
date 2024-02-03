@@ -9,6 +9,7 @@ interface CustomColorOptions {
 
 export interface CustomTheme extends Theme {
   palette: {
+    default?: CustomColorOptions
     colorPrincipal?: CustomColorOptions
     colorSecondary?: CustomColorOptions
     colorNeutral?: CustomColorOptions
