@@ -10,6 +10,7 @@ import {
   ThemeProvider
 } from '@mui/material'
 import { ChipTheme } from '../themes/Button'
+import sam from '../assets/img/images.jpg'
 import EditIcon from '@mui/icons-material/Edit'
 import * as React from 'react'
 
@@ -29,7 +30,9 @@ export default function CardProject({ user, project }: UserProps) {
   return (
     <div className="h-[19.75rem] w-full md:w-[24.31rem] md:h-[17.87rem] mt-6">
       <Image
-        src={project?.imagepath}
+        //POR ENQUANTO TÁ O SAM PORTER BRIDGES PRECISA FAZER A VALIDAÇÃO CASO TENHA IMAGEM E CASO NAO TENHA
+        //project?.imagepath
+        src={sam}
         alt={project?.title}
         width={312}
         height={258}
