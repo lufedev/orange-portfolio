@@ -24,7 +24,7 @@ const VisuallyHiddenInput = styled('input')({
   width: 1
 })
 
-export default function ModalAddProject({
+export default function ModalViewProject({
   project,
   states,
   onClose
