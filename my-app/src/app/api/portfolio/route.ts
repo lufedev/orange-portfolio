@@ -23,11 +23,20 @@ export async function POST(request: Request) {
       data: 'No data received'
     })
   }
-  const { title, tags, link, description } = data
+  if (data.imagePath === undefined) {
+    data.imagePath = ''
+  }
+  const { title, tags, link, description, imagePath } = data
   try {
     if (!title || !tags || !link || !description)
       throw new Error('Parametros faltando')
-    const response = await createPortfolio(title, tags, link, description)
+    const response = await createPortfolio(
+      title,
+      tags,
+      link,
+      description,
+      imagePath
+    )
   } catch (error) {
     if (error instanceof Error) {
       if (error.message === 'Parametros faltando') {

@@ -31,6 +31,10 @@ export const DisabledTheme = createTheme({
     primary: {
       main: '#0000001F',
       contrastText: '#00000061'
+    },
+    secondary: {
+      main: '#E6E9F2',
+      contrastText: '#303133'
     }
   },
   components: {
@@ -43,6 +47,27 @@ export const DisabledTheme = createTheme({
           }
         }
       }
+    }
+  }
+})
+
+export const ChipTheme = createTheme({
+  palette: {
+    primary: {
+      main: '#00000014',
+      contrastText: '#000000DE'
+    }
+  }
+})
+
+export const SnackBar = createTheme({
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 768,
+      md: 768,
+      lg: 1024,
+      xl: 1280
     }
   }
 })

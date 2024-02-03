@@ -62,3 +62,12 @@ h6 {
 #__next {
   isolation: isolate;
 }
+
+/*
+  10. Reset SnackBar Component
+*/
+@media (min-width: 600px) {
+  .MuiSnackbar-root {
+    transform: translateX(0);
+  }
+}

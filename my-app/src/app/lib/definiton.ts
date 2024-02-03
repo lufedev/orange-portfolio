@@ -19,7 +19,7 @@ export type TypeSnackBar = {
 export type User = {
   id?: number
   name: string
-  surname: string
+  sname: string
   email: string
   password: string
   country: string
@@ -34,19 +34,22 @@ export type Session = {
 }
 export type UserProps = {
   user: User
+  project?: Project
   onClick?: () => void
 }
 
 export type Project = {
   id?: number
   title: string
-  tags: string[]
+  tags: string
   link: string
   description: string
-  urlImage: string
+  imagePath: string
+  date: string
 }
 
 export type ProjectProps = {
+  user?: User
   project?: Project
   onClick?: () => void
   onClose?: () => void

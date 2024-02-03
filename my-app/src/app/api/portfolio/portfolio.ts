@@ -18,12 +18,13 @@ export const createPortfolio = async (
   title: string,
   tags: string,
   link: string,
-  description: string
+  description: string,
+  imagePath: string
 ) => {
   const session = await getServerSession(options)
   const email = session.user?.email
   const portfolio =
-    await sql`INSERT INTO portfolio (title, tags, link, description, email ) VALUES (${title}, ${tags}, ${link}, ${description}, ${email})`
+    await sql`INSERT INTO portfolio (title, tags, link, description, email, image_path ) VALUES (${title}, ${tags}, ${link}, ${description}, ${email}, ${imagePath}) `
   return portfolio.rows[0]
 }
 
