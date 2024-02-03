@@ -44,7 +44,7 @@ export type Project = {
   tags: string
   link: string
   description: string
-  imagePath: string
+  imagepath: string
   date: string
 }
 

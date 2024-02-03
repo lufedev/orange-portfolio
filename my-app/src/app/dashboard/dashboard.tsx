@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useEffect } from 'react'
 import CardProfile from '../components/CardProfile'
 import Header from '../components/Header'
 import AvatarUser from '.././assets/img/avatar.svg'
@@ -12,16 +12,33 @@ import ContainerProjects from '../components/ContainerProjects'
 import ButtonFirstProject from '../components/ButtonAddFirstProject'
 
 export default function Home({ sessionData }: Session) {
-  const [modalOpen, setModalOpen] = React.useState(false)
+  const [projects, setProjects] = React.useState<Project[]>([])
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/portfolio')
 
+        if (!response.ok) {
+          throw new Error('Erro ao obter os dados da API')
+        }
+        const data = await response.json()
+        setProjects(data.data)
+      } catch (error) {
+        console.error('Erro ao obter dados:', error.message)
+      }
+    }
+
+    fetchData()
+  }, [])
+  const [modalOpen, setModalOpen] = React.useState(false)
   const user: User = {
     name: sessionData.name,
     email: sessionData.email,
-    projects: [],
+    projects: projects,
     image: AvatarUser
   }
   const project: Project = user.projects[0]
-  const isProject: boolean = user.projects.length < 0
+  const isProject: boolean = user.projects.length > 0
 
   const openModal = () => {
     setModalOpen(true)

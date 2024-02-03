@@ -23,10 +23,10 @@ export async function POST(request: Request) {
       data: 'No data received'
     })
   }
-  if (data.imagePath === undefined) {
-    data.imagePath = ''
+  if (data.imagepath === undefined) {
+    data.imagepath = ''
   }
-  const { title, tags, link, description, imagePath } = data
+  const { title, tags, link, description, imagepath } = data
   try {
     if (!title || !tags || !link || !description)
       throw new Error('Parametros faltando')
@@ -35,7 +35,7 @@ export async function POST(request: Request) {
       tags,
       link,
       description,
-      imagePath
+      imagepath
     )
   } catch (error) {
     if (error instanceof Error) {

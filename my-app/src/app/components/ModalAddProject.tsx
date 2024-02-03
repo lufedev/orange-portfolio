@@ -37,6 +37,7 @@ export default function ModalAddProject({
     project || ({} as Project)
   )
   const [loading, setLoading] = useState(false)
+  const [isimagepath, setIsimagepath] = useState(false)
   const handleToggle = () => onClose()
 
   const handleSave = () => {
@@ -59,14 +60,13 @@ export default function ModalAddProject({
       })
       handleToggle()
       setNewProjectData({} as Project)
+      setIsimagepath(false)
     } catch (error) {}
   }
 
   const updateProject = async (project: Project) => {
     console.log(project)
   }
-
-  let isimagePath: boolean = project?.imagePath !== undefined
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
@@ -83,7 +83,9 @@ export default function ModalAddProject({
         .then(() => {
           console.log('Arquivo enviado com sucesso!')
           fileRef.getDownloadURL().then((url: string) => {
-            setNewProjectData({ ...newProjectData, imagePath: url })
+            //Caso o campo é preenchido durante o upload da imagem, o valor é limpo
+            setNewProjectData({ ...newProjectData, imagepath: url })
+            setIsimagepath(true)
             console.log(url)
           })
         })
@@ -192,9 +194,9 @@ export default function ModalAddProject({
                 Selecione o conteúdo que você deseja fazer upload
               </p>
               <div className="w-full h-[304px] md:h-[307px]">
-                {isimagePath ? (
+                {isimagepath ? (
                   <Image
-                    src={newProjectData?.imagePath}
+                    src={newProjectData?.imagepath}
                     alt={newProjectData?.title}
                     width={389}
                     height={304}

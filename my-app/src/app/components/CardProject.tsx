@@ -29,7 +29,7 @@ export default function CardProject({ user, project }: UserProps) {
   return (
     <div className="h-[19.75rem] w-full md:w-[24.31rem] md:h-[17.87rem] mt-6">
       <Image
-        src={project?.imagePath}
+        src={project?.imagepath}
         alt={project?.title}
         width={312}
         height={258}
@@ -98,11 +98,11 @@ export default function CardProject({ user, project }: UserProps) {
           spacing={1}
           className="flex items-center grow justify-end"
         >
-          <ThemeProvider theme={ChipTheme}>
+          {/* <ThemeProvider theme={ChipTheme}>
             {project?.tags.map((tag: string) => (
               <Chip key={tag} label={tag} color="primary" />
             ))}
-          </ThemeProvider>
+          </ThemeProvider> */}
         </Stack>
       </div>
     </div>
