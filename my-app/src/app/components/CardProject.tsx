@@ -15,12 +15,18 @@ import EditIcon from '@mui/icons-material/Edit'
 import * as React from 'react'
 import CustomChip from './CustomChip'
 import { MainTheme } from '../themes/Theme'
+import ModalAddProject from './ModalAddProject'
+import { redirect } from 'next/navigation'
 
 export default function CardProject({ user, project, view }: UserProps) {
+  const [modalOpen, setModalOpen] = React.useState(false)
+  const [success, setSuccess] = React.useState(false)
   const [anchorElMenu, setAnchorElMenu] = React.useState<null | HTMLElement>(
     null
   )
-
+  if (success) {
+    redirect('http://localhost:3000/')
+  }
   const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElMenu(event.currentTarget)
   }
@@ -34,13 +40,35 @@ export default function CardProject({ user, project, view }: UserProps) {
       return view ? 'flex' : 'hidden'
     }
   }
+  const openModal = () => {
+    setModalOpen(true)
+    handleCloseMenu()
+  }
+
+  const closeModal = () => {
+    setModalOpen(false)
+  }
+  const deleteProject = async () => {
+    handleCloseMenu()
+    try {
+      const response = await fetch('http://localhost:3000/api/portfolio', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id: project?.id })
+      })
+      setSuccess(true)
+    } catch (error) {}
+  }
 
   return (
     <div className="h-[19.75rem] w-full md:w-[24.31rem] md:h-[17.87rem] mt-6">
       <Image
         //POR ENQUANTO TÁ O SAM PORTER BRIDGES PRECISA FAZER A VALIDAÇÃO CASO TENHA IMAGEM E CASO NAO TENHA
         //project?.imagepath
-        src={sam}
+
+        src={project?.imagepath ? project.imagepath : sam}
         alt={project?.title}
         width={312}
         height={258}
@@ -95,12 +123,19 @@ export default function CardProject({ user, project, view }: UserProps) {
                             items-start w-full"
             >
               <ThemeProvider theme={MenuTheme}>
-                <Button onClick={() => console.log('Editar')} color="primary">
+                <Button onClick={openModal} color="primary">
                   Editar
                 </Button>
-                <Button onClick={() => console.log('excluir')} color="primary">
+                <Button onClick={deleteProject} color="primary">
                   Excluir
                 </Button>
+                <ModalAddProject
+                  editing={true}
+                  user={user}
+                  project={project}
+                  states={modalOpen}
+                  onClose={closeModal}
+                />
               </ThemeProvider>
             </ListItem>
           </Menu>

@@ -5,7 +5,7 @@ import { options } from '../auth/[...nextauth]/options'
 export const getAllPortfoliosFromUser = async () => {
   const session = await getServerSession(options)
   const portfolio =
-    await sql`SELECT * FROM portfolio WHERE email = ${session.user?.email}`
+    await sql`SELECT * FROM portfolio WHERE email = ${session.user?.email} order by id asc`
 
   return portfolio.rows
 }
@@ -33,7 +33,8 @@ export const editPortfolio = async (
   title: string,
   tags: string,
   link: string,
-  description: string
+  description: string,
+  imagepath: string
 ) => {
   const session = await getServerSession(options)
   const checkUser = await getPortfolio(id)
@@ -41,7 +42,7 @@ export const editPortfolio = async (
     throw new Error('Usuário não autorizado')
   }
   const portfolio =
-    await sql`UPDATE portfolio SET title = ${title}, tags = ${tags}, link = ${link}, description = ${description} WHERE id = ${id}`
+    await sql`UPDATE portfolio SET title = ${title}, tags = ${tags}, link = ${link}, description = ${description}, imagepath = ${imagepath} WHERE id = ${id}`
   return portfolio.rows[0]
 }
 

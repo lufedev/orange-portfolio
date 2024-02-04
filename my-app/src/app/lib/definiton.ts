@@ -55,6 +55,7 @@ export type ProjectProps = {
   onClick?: () => void
   onClose?: () => void
   states?: boolean
+  editing: boolean
 }
 
 export type TypeSnackbarInfo = {

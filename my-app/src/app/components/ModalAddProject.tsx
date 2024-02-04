@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Modal from '@mui/material/Modal'
@@ -15,6 +15,8 @@ import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary'
 import { Project, ProjectProps } from '../lib/definiton'
 import Image from 'next/image'
 import { storage } from '../firebase/firebase'
+import { redirect } from 'next/navigation'
+import loadingImage from '../assets/img/loading.gif'
 import { set } from 'firebase/database'
 
 const VisuallyHiddenInput = styled('input')({
@@ -32,24 +34,47 @@ export default function ModalAddProject({
   user,
   project,
   states,
+  editing,
   onClose
 }: ProjectProps) {
+  const [enableButton, setEnableButton] = useState(true)
   const [newProjectData, setNewProjectData] = useState(
     project || ({} as Project)
   )
-  const [loading, setLoading] = useState(false)
-  const [isimagepath, setIsimagepath] = useState(false)
-  const handleToggle = () => onClose()
+  const currentProject = project || ({} as Project)
 
+  const [loading, setLoading] = useState(false)
+  const [success, setSuccess] = useState(false)
+
+  const handleToggle = () => {
+    setNewProjectData(currentProject)
+    onClose()
+  }
+  if (success) {
+    redirect('http://localhost:3000/')
+  }
   const handleSave = () => {
     setLoading(true)
-
-    createProject(newProjectData as Project)
-    //updateProject ainda nao foi criado
+    if (editing) {
+      updateProject(newProjectData as Project)
+    } else {
+      createProject(newProjectData as Project)
+    }
     setLoading(false)
     onClose()
   }
-
+  useEffect(() => {
+    if (
+      newProjectData.title === '' ||
+      newProjectData.tags === '' ||
+      newProjectData.link === '' ||
+      newProjectData.description === ''
+    ) {
+      setEnableButton(true)
+    } else {
+      setEnableButton(false)
+    }
+  }, [newProjectData])
   const createProject = async (project: Project) => {
     try {
       const response = await fetch('http://localhost:3000/api/portfolio', {
@@ -61,15 +86,26 @@ export default function ModalAddProject({
       })
       handleToggle()
       setNewProjectData({} as Project)
-      setIsimagepath(false)
+      setSuccess(true)
     } catch (error) {}
   }
 
   const updateProject = async (project: Project) => {
-    console.log(project)
+    try {
+      const response = await fetch('http://localhost:3000/api/portfolio', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newProjectData)
+      })
+      handleToggle()
+      setSuccess(true)
+    } catch (error) {}
   }
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setLoading(true)
     const file = event.target.files?.[0]
     if (file) {
       const storageRef = storage.ref()
@@ -86,14 +122,13 @@ export default function ModalAddProject({
           fileRef.getDownloadURL().then((url: string) => {
             //Caso o campo é preenchido durante o upload da imagem, o valor é limpo
             setNewProjectData({ ...newProjectData, imagepath: url })
-            setIsimagepath(true)
-            console.log(url)
           })
         })
         .catch((error) => {
           console.error('Erro ao enviar arquivo:', error)
         })
     }
+    setLoading(false)
   }
 
   return (
@@ -134,6 +169,10 @@ export default function ModalAddProject({
                   className=""
                   type="text"
                   value={newProjectData?.title || ''}
+                  error={newProjectData?.title === '' ? true : false}
+                  helperText={
+                    newProjectData?.title === '' ? 'Campo obrigatório' : ''
+                  }
                   onChange={(e) =>
                     setNewProjectData({
                       ...newProjectData,
@@ -149,6 +188,10 @@ export default function ModalAddProject({
                   className=""
                   type="text"
                   value={newProjectData?.tags || ''}
+                  error={newProjectData?.tags === '' ? true : false}
+                  helperText={
+                    newProjectData?.tags === '' ? 'Campo obrigatório' : ''
+                  }
                   onChange={(e) =>
                     setNewProjectData({
                       ...newProjectData,
@@ -164,6 +207,10 @@ export default function ModalAddProject({
                   className=""
                   type="text"
                   value={newProjectData?.link || ''}
+                  error={newProjectData?.link === '' ? true : false}
+                  helperText={
+                    newProjectData?.link === '' ? 'Campo obrigatório' : ''
+                  }
                   onChange={(e) =>
                     setNewProjectData({
                       ...newProjectData,
@@ -181,6 +228,12 @@ export default function ModalAddProject({
                   multiline
                   rows={3}
                   value={newProjectData?.description || ''}
+                  error={newProjectData?.description === '' ? true : false}
+                  helperText={
+                    newProjectData?.description === ''
+                      ? 'Campo obrigatório'
+                      : ''
+                  }
                   onChange={(e) =>
                     setNewProjectData({
                       ...newProjectData,
@@ -195,14 +248,24 @@ export default function ModalAddProject({
                 Selecione o conteúdo que você deseja fazer upload
               </p>
               <div className="w-full h-[304px] md:h-[307px]">
-                {isimagepath ? (
-                  <Image
-                    src={newProjectData?.imagepath}
-                    alt={newProjectData?.title}
-                    width={389}
-                    height={304}
-                    className="h-full w-full object-cover"
-                  />
+                {newProjectData?.imagepath ? (
+                  <Button
+                    component="label"
+                    disableElevation
+                    className="h-full px-2 py-0 flex flex-col text-color-neutral-120 leading-[0.875rem] tracking-[0.01563rem] font-normal normal-case"
+                  >
+                    <Image
+                      src={loading ? loadingImage : newProjectData?.imagepath}
+                      alt={newProjectData?.title}
+                      width={389}
+                      height={304}
+                      className="h-full w-full object-cover"
+                    />
+                    <VisuallyHiddenInput
+                      type="file"
+                      onChange={handleFileChange}
+                    />
+                  </Button>
                 ) : (
                   <ThemeProvider theme={DisabledTheme}>
                     <Button
@@ -238,7 +301,7 @@ export default function ModalAddProject({
                 variant="contained"
                 color="primary"
                 size="large"
-                disabled={false}
+                disabled={enableButton}
                 name="SALVAR"
                 loading={false}
                 onClick={handleSave}
