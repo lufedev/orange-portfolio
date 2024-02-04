@@ -11,11 +11,10 @@ export default function ContainerProjects({ user }: UserProps) {
             key={'project-' + project.id}
             project={project}
             user={user}
-             view={true}
+            view={true}
           />
         )
       })}
     </div>
   )
 }
-

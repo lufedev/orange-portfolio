@@ -11,5 +11,4 @@ export default async function Dashboard() {
     redirect('/login')
   }
   return <Home sessionData={user} />
-
 }

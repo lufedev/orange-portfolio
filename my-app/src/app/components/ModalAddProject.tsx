@@ -79,7 +79,6 @@ export default function ModalAddProject({
         projectFolder + '/' + file.name + '/' + Date.now()
       )
 
-
       fileRef
         .put(file)
         .then(() => {
@@ -94,7 +93,6 @@ export default function ModalAddProject({
         .catch((error) => {
           console.error('Erro ao enviar arquivo:', error)
         })
-
     }
   }
 
