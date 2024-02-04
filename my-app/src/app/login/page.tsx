@@ -56,7 +56,7 @@ export default function Login() {
             text={snackbarInfo.message}
             severity={snackbarInfo.severity}
           />
-          <div className='w-full h-screen flex flex-col justify-center'>
+          <div className="w-full h-screen flex flex-col justify-center">
             <h5 className="h5 text-color-principal-90 text-center mb-8 md:h3">
               Entre no Orange Portfólio
             </h5>
