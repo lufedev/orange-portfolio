@@ -34,12 +34,12 @@ export default function CardProject({ user, project, view }: UserProps) {
   const handleCloseMenu = () => {
     setAnchorElMenu(null)
   }
-
   const renderMenu: string = () => {
     if (view !== undefined) {
       return view ? 'flex' : 'hidden'
     }
   }
+  const tagsString = project?.tags; 
   const openModal = () => {
     setModalOpen(true)
     handleCloseMenu()
@@ -61,14 +61,10 @@ export default function CardProject({ user, project, view }: UserProps) {
       setSuccess(true)
     } catch (error) {}
   }
-
   return (
     <div className="h-[19.75rem] w-full md:w-[24.31rem] md:h-[17.87rem] mt-6">
       <Image
-        //POR ENQUANTO TÁ O SAM PORTER BRIDGES PRECISA FAZER A VALIDAÇÃO CASO TENHA IMAGEM E CASO NAO TENHA
-        //project?.imagepath
-
-        src={project?.imagepath ? project.imagepath : sam}
+        src={project?.imagepath || NotFoundImage}
         alt={project?.title}
         width={312}
         height={258}
@@ -143,7 +139,7 @@ export default function CardProject({ user, project, view }: UserProps) {
 
         <div className="flex flex-col md:flex-row gap-2">
           <h6 className="h6 text-color-neutral-120 md:text-color-neutral-110">
-            {user.name} {user.surname}
+            {user.name} {user.sname}
           </h6>
           <p className="hidden md:flex">•</p>
           <p className="text-color-neutral-110">{project?.date}</p>
@@ -154,20 +150,19 @@ export default function CardProject({ user, project, view }: UserProps) {
           spacing={1}
           className="flex items-center grow justify-end"
         >
-          {/* <ThemeProvider theme={ChipTheme}>
-            {project?.tags.map((tag: string) => (
-                            <CustomChip
-                                key={tag}
-                                variant="filled"
-                                color="default"
-                                size="large"
-                                disabled={false}
-                                className="mb-[1.13rem]"
-                                label={tag}
-
-                            />
+          <ThemeProvider theme={ChipTheme}>
+            {tagsString && tagsString.split(",").map((tag: string) => (
+              <CustomChip
+                key={tag.trim()} 
+                variant="filled"
+                color="default"
+                size="large"
+                disabled={false}
+                className="mb-[1.13rem]"
+                label={tag.trim()}
+              />
             ))}
-          </ThemeProvider> */}
+          </ThemeProvider>
         </Stack>
       </div>
     </div>

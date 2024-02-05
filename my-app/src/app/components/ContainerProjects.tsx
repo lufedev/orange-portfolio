@@ -3,7 +3,7 @@ import CardProject from './CardProject'
 
 export default function ContainerProjects({ user }: UserProps) {
   return (
-    <div className="h-[19.75rem] w-full mt-[24px] md:flex md:gap-6">
+    <div className="h-[19.75rem] w-full mt-[24px] md:flex md:gap-6 md:flex-wrap">
       {user?.projects.map((project: Project, index: number) => {
         return (
           <CardProject
