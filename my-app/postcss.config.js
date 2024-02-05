@@ -1,15 +1,12 @@
 module.exports = {
   plugins: [
     'tailwindcss',
-    'postcss-preset-env',
     [
-      'postcss-normalize',
       {
         allowDuplicates: false,
       },
     ],
     [
-      '@fullhuman/postcss-purgecss',
       {
         content: [
           './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
