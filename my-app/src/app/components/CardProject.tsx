@@ -18,12 +18,7 @@ import { storage } from '../firebase/firebase'
 import NotFoundImageProject from '../assets/img/no-picture-available.svg'
 import SuccessModel from './SuccessModal'
 
-export default function CardProject({
-  user,
-  project,
-  view,
-  editable
-}: UserProps) {
+export default function CardProject({ user, project, editable }: UserProps) {
   const [modalOpen, setModalOpen] = React.useState(false)
   const [success, setSuccess] = React.useState(false)
   const [showSuccessModal, setShowSuccessModal] = useState(false)

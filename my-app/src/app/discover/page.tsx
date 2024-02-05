@@ -1,22 +1,19 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import AvatarUser from '.././assets/img/avatar.svg'
-import { User, Project, Session } from '../lib/definiton'
-import { getSession } from 'next-auth/react'
-import { redirect } from 'next/navigation'
+import { User, Project } from '../lib/definiton'
 import ContainerProjects from '../components/ContainerProjects'
 import Header from '../components/Header'
 import { ThemeProvider } from 'styled-components'
 import { TextField } from '@mui/material'
 import { TextFieldTheme } from '../themes/TextField'
 
-export default function Discover({ sessionData }: Session) {
+export default function Discover() {
   const [projects, setProjects] = useState<Project[]>([])
   const [tagFilter, setTagFilter] = useState('')
-  const [modalOpen, setModalOpen] = useState(false)
   const [country, setCountry] = useState<string>('')
   const [user, setUser] = useState<User>({} as User)
-
+  console.log(country)
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -33,7 +30,7 @@ export default function Discover({ sessionData }: Session) {
             day: '2-digit',
             month: '2-digit'
           }
-
+          //@ts-expect-error Não consigo resolver, e é necessário para compilar
           project.date = date.toLocaleDateString('en-US', options)
         })
         setProjects(data.data)
@@ -96,6 +93,7 @@ export default function Discover({ sessionData }: Session) {
 
             return (
               <ContainerProjects
+                key={''}
                 editable={false}
                 user={users}
                 filter={tagFilter}

@@ -77,7 +77,7 @@ export type TypeChip = {
   color: string
   size: string
   disabled: boolean
-  className: string
+  className?: string
   label: string
   onDelete?: () => void
 }
@@ -88,8 +88,7 @@ export type TypeModal = {
   onClick?: () => void
 }
 
-
 export type Page = {
-  name: string,
+  name: string
   path: string
 }

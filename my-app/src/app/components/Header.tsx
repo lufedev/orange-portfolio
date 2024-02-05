@@ -28,6 +28,7 @@ import { Page, UserProps } from '../lib/definiton'
 import { signOut } from 'next-auth/react'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import ts from 'typescript'
 
 const pages: Page[] = [
   {
@@ -51,7 +52,7 @@ export default function Header({ user }: UserProps) {
   )
 
   const handleLogout = () => {
-    signOut({ callbackUrl: 'http://localhost:3000/login' })
+    signOut({ callbackUrl: '/login' })
   }
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -70,12 +71,8 @@ export default function Header({ user }: UserProps) {
     setAnchorElUser(null)
   }
 
-  const renderPage = (
-    page: Page,
-    index: number,
-    array: Page[]
-  ): React.ReactElement => {
-    const redirectPage = (pageName, path) => {
+  const renderPage = (page: Page, index: number): React.ReactElement => {
+    const redirectPage = (pageName) => {
       if (pageName === 'Descobrir') {
         redirect('/discover')
       } else if (pageName === 'Meus projetos') {
@@ -98,7 +95,7 @@ export default function Header({ user }: UserProps) {
           ) : (
             <Link
               href={page.path}
-              onClick={() => redirectPage(page.name, '/discover')}
+              onClick={() => redirectPage(page.name)}
               className="text-[#000000DE] text-base normal-case no-underline"
             >
               <Typography textAlign="left">{page.name}</Typography>
