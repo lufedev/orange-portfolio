@@ -28,7 +28,7 @@ export const options: NextAuthOptions = {
           placeholder: 'Password'
         }
       },
-      // @ts-ignore
+      // @ts-expect-error Não consigo resolver, e é necessário para compilar
       async authorize(credentials) {
         try {
           const user = await getEmail(credentials?.email as string)
