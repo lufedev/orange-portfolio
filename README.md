@@ -11,14 +11,6 @@
 | Paulo     | Frontend  | [<img src="https://i.pinimg.com/originals/b1/5e/ed/b15eedbdafbbdbca3249e3942f4faf3b.png" alt="Paulo" width="40"/>](https://github.com/Paul0Ant0ni0) [<img src="https://cdn-icons-png.flaticon.com/256/174/174857.png" alt="Paulo" width="40"/>](https://www.linkedin.com/in/pauloantonio2310/)||
 | Tomás     | Frontend  | [<img src="https://i.pinimg.com/originals/b1/5e/ed/b15eedbdafbbdbca3249e3942f4faf3b.png" alt="Tomás" width="40"/>](https://github.com/tleones) [<img src="https://cdn-icons-png.flaticon.com/256/174/174857.png" alt="Tomás" width="40"/>](https://www.linkedin.com/in/tomasleones/) ||
 
-
-## Índice
-
-- [Sobre](#sobre)
-- [Recursos](#recursos)
-- [Instalação](#instalação)
-- [Licença](#licença)
-
 ## Sobre
 
 O Orange Portfólio é um agregador de projetos, onde vários usuários podem salvar seus projetos em sua conta e ao mesmo tempo podem visualizar projetos de outros usuários.
