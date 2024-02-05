@@ -55,6 +55,25 @@ export default function Home({ sessionData }: Session) {
       .catch((error) => console.error('Erro ao obter o nome do país:', error))
   }, [])
 
+
+  const user: User = {
+    name: sessionData.name,
+    email: sessionData.email,
+    projects: projects,
+    image: AvatarUser,
+    sname: '',
+    password: '',
+    country: country || 'Brasil'
+  }
+
+
+  useEffect(() => {
+   
+    if (user) {
+      localStorage.setItem('user', JSON.stringify(user));
+    }
+  }, [user]);
+
   const openModal = () => {
     setModalOpen(true)
   }
@@ -67,22 +86,13 @@ export default function Home({ sessionData }: Session) {
     setTagFilter(event.target.value)
   }
 
-  const user: User = {
-    name: sessionData.name,
-    email: sessionData.email,
-    projects: projects,
-    image: AvatarUser,
-    sname: '',
-    password: '',
-    country: country
-  }
 
   const isProject: boolean = user.projects.length > 0
 
   return (
     <div>
       <Header user={user} />
-      <div className="flex flex-col items-center justify-start mt-14 mx-6 gap-10">
+      <div className="flex flex-col items-center justify-start mt-14 md:mt-28 px-6 gap-10 md:gap-14 md:px-8">
         <CardProfile user={user} onClick={openModal} />
         <ModalAddProject
           editing={false}
@@ -90,7 +100,7 @@ export default function Home({ sessionData }: Session) {
           states={modalOpen}
           onClose={closeModal}
         />
-        <div className="w-full mb-6">
+        <div className="w-full mb-[43px] md:mb-[39px]">
           <h4 className="h6 text-color-neutral-130 mb-4">Meus projetos</h4>
           <ThemeProvider theme={TextFieldTheme}>
             <TextField

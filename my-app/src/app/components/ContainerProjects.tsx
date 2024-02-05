@@ -9,7 +9,7 @@ export default function ContainerProjects({
   const normalizedFilter: string = filter?.toLowerCase() as string
 
   return (
-    <div className="h-[19.75rem] w-full mt-[24px] md:flex md:gap-6 md:flex-wrap">
+    <div className="flex flex-col mt-6 md:mt-10 gap-6 md:gap-8 md:grid grid-cols-3">
       {user?.projects
         .filter((project: Project) => {
           const normalizedTags = project.tags.toLowerCase().split(',')

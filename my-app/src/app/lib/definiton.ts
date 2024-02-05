@@ -28,6 +28,7 @@ export type User = {
 }
 export type Session = {
   sessionData: {
+    sessionData: string
     name: string
     email: string
   }
@@ -42,6 +43,7 @@ export type UserProps = {
 }
 
 export type Project = {
+  usuario?: string
   id?: number
   title: string
   tags: string
@@ -84,4 +86,10 @@ export type TypeModal = {
   status: boolean
   title: string
   onClick?: () => void
+}
+
+
+export type Page = {
+  name: string,
+  path: string
 }
