@@ -28,7 +28,7 @@ export const options: NextAuthOptions = {
           placeholder: 'Password'
         }
       },
-      // eslint-disable-next-line
+      // @ts-ignore
       async authorize(credentials) {
         try {
           const user = await getEmail(credentials?.email as string)
