@@ -31,7 +31,7 @@ export const getAllUsers = async () => {
   }
 
   const users = await sql`SELECT (name, email) FROM users`
-  //Aviso de erro, não sei como resolver ainda
+  // @ts-expect-error Não consigo resolver, e é necessário para compilar
   return transformData(users)
 }
 
@@ -88,7 +88,7 @@ export const editUser = async (
       userOld[field] = eval(field)
     }
   })
-  if (bcrypt.compare(password, userOld.password) !== true) {
+  if ((await bcrypt.compare(password as string, userOld.password)) !== true) {
     userOld.password = await hashpass(password)
   }
   const userNew =
