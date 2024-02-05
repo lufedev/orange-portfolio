@@ -16,13 +16,6 @@ export default function CustomButton({
   loading,
   onClick
 }: TypeButton) {
-  const [state, setState] = React.useState(false)
-  const { vertical, horizontal, open } = state
-
-  const handleClick = () => () => {
-    setState(true)
-  }
-
   const getTheme = (theme: string) => {
     if (theme === 'contained') {
       return ContainedTheme

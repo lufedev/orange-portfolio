@@ -2,7 +2,6 @@ import Image from 'next/image'
 import { UserProps } from '../lib/definiton'
 import {
   Button,
-  Chip,
   IconButton,
   ListItem,
   Menu,
@@ -34,7 +33,6 @@ export default function CardProject({
   if (success) {
     redirect('http://localhost:3000/')
   }
-  console.log(editable)
   const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElMenu(event.currentTarget)
   }
@@ -42,11 +40,7 @@ export default function CardProject({
   const handleCloseMenu = () => {
     setAnchorElMenu(null)
   }
-  const renderMenu: string = () => {
-    if (view !== undefined) {
-      return view ? 'flex' : 'hidden'
-    }
-  }
+
   const tagsString = project?.tags
   const openModal = () => {
     setModalOpen(true)
@@ -59,7 +53,7 @@ export default function CardProject({
   const deleteProject = async () => {
     handleCloseMenu()
     try {
-      const response = await fetch('http://localhost:3000/api/portfolio', {
+      await fetch('http://localhost:3000/api/portfolio', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'
@@ -112,10 +106,13 @@ export default function CardProject({
                 aria-controls="menu-project"
                 aria-haspopup="true"
                 color="inherit"
-                className="text-color-neutral-120"
+                className={
+                  view
+                    ? 'text-color-neutral-120'
+                    : 'text-color-neutral-120 hidden'
+                }
                 title="Configurações do projeto"
                 onClick={handleOpenMenu}
-                className={renderMenu()}
               >
                 <EditIcon className="bg-color-secondary-70 rounded-full" />
               </IconButton>

@@ -18,7 +18,7 @@ export default function ContainerProjects({
             normalizedTags.some((tag: string) => tag.includes(normalizedFilter))
           )
         })
-        .map((project: Project, index: number) => (
+        .map((project: Project) => (
           <CardProject
             key={'project-' + project.id}
             project={project}

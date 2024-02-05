@@ -28,29 +28,22 @@ export const options: NextAuthOptions = {
           placeholder: 'Password'
         }
       },
-      async authorize(credentials: any) {
-        // Fazer conexão com o BD aqui
-        //next-auth.js.org/configuration/providers/credentials
-
-        // RECEBENDO USUÁRIOS DO BANCO DE DADOS
-        //Falta como saber se o usuário existe no banco de dados
+      async authorize(credentials) {
         try {
           const user = await getEmail(credentials?.email as string)
           if (user === null) {
             return null
           }
-          return (
-            bcrypt
-              .compare(credentials?.password, user.password)
-              //Aviso de erro, não sei como resolver ainda
-              .then((match) => {
-                if (!match) {
-                  throw new Error('Senha incorreta')
-                } else {
-                  return user
-                }
-              })
-          )
+          return await bcrypt
+            .compare(credentials?.password, user.password)
+            //Aviso de erro, não sei como resolver ainda
+            .then((match: boolean) => {
+              if (!match) {
+                throw new Error('Senha incorreta')
+              } else {
+                return user
+              }
+            })
         } catch (error) {
           throw new Error('Email não encontrado')
         }

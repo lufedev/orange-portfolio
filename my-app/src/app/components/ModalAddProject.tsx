@@ -14,7 +14,6 @@ import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary'
 import { Project, ProjectProps } from '../lib/definiton'
 import Image from 'next/image'
 import { storage } from '../firebase/firebase'
-import { redirect } from 'next/navigation'
 import ModalProjectPreview from './ModalProjectPreview'
 import Link from 'next/link'
 import loadingImage from '../assets/img/loading.gif'
@@ -46,7 +45,6 @@ export default function ModalAddProject({
   const currentProject = project || ({} as Project)
 
   const [loading, setLoading] = useState(false)
-  const [isimagepath, setIsimagepath] = useState(false)
   const [isAddProjectModalOpen, setAddProjectModalOpen] = useState(states)
   const [isPreviewModalOpen, setPreviewModalOpen] = useState(false)
   const [imageLoading, setImageLoading] = useState(false)
@@ -69,9 +67,9 @@ export default function ModalAddProject({
     setAddProjectModalOpen(states)
   }, [states])
 
-  const createProject = async (project: Project) => {
+  const createProject = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/portfolio', {
+      await fetch('http://localhost:3000/api/portfolio', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -80,13 +78,12 @@ export default function ModalAddProject({
       })
 
       setNewProjectData({} as Project)
-      setIsimagepath(false)
     } catch (error) {}
   }
 
-  const updateProject = async (project: Project) => {
+  const updateProject = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/portfolio', {
+      await fetch('http://localhost:3000/api/portfolio', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -114,7 +111,6 @@ export default function ModalAddProject({
         .then(() => {
           console.log('Arquivo enviado com sucesso!')
           fileRef.getDownloadURL().then((url: string) => {
-            setIsimagepath(true)
             setNewProjectData({ ...newProjectData, imagepath: url })
             setImageLoading(false)
           })
@@ -153,11 +149,10 @@ export default function ModalAddProject({
     setLoading(true)
 
     if (editing) {
-      updateProject(newProjectData as Project)
-      setIsimagepath(true)
+      updateProject()
       setMessageShowSuccessModal('Edição concluída com sucesso!')
     } else {
-      createProject(newProjectData as Project)
+      createProject()
       setMessageShowSuccessModal('Projeto adicionado com sucesso!')
     }
     setLoading(false)

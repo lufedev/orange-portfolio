@@ -18,7 +18,6 @@ import {
   Tooltip,
   MenuItem,
   Divider,
-  useMediaQuery,
   Badge,
   ListItem
 } from '@mui/material'
@@ -27,7 +26,6 @@ import NotificationsIcon from '@mui/icons-material/Notifications'
 import LogoutIcon from '@mui/icons-material/Logout'
 import { UserProps } from '../lib/definiton'
 import { signOut } from 'next-auth/react'
-import { redirect } from 'next/navigation'
 
 const pages = ['Meus projetos', 'Descobrir', 'Sair']
 
@@ -36,9 +34,7 @@ export default function Header({ user }: UserProps) {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   )
-  const handleNavigate = () => {
-    console.log('TESTE')
-  }
+
   const handleLogout = () => {
     signOut({ callbackUrl: 'http://localhost:3000/login' })
   }
