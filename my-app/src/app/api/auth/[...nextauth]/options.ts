@@ -28,16 +28,16 @@ export const options: NextAuthOptions = {
           placeholder: 'Password'
         }
       },
+      // eslint-disable-next-line
       async authorize(credentials) {
         try {
           const user = await getEmail(credentials?.email as string)
           if (user === null) {
             return null
           }
-          return await bcrypt
-            .compare(credentials.password, user.password)
-            //Aviso de erro, não sei como resolver ainda
-            .then((match: boolean) => {
+          return bcrypt
+            .compare(credentials?.password, user.password)
+            .then((match) => {
               if (!match) {
                 throw new Error('Senha incorreta')
               } else {
