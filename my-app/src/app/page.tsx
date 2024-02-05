@@ -10,6 +10,7 @@ export default async function Dashboard() {
   if (!session) {
     redirect('/login')
   }
+  console.log(process.env.VERCEL_URL)
   //@ts-expect-error  Ignorando Props Obrigatórias
   return <Home sessionData={user} />
 }
