@@ -35,7 +35,7 @@ export const options: NextAuthOptions = {
             return null
           }
           return await bcrypt
-            .compare(credentials?.password, user.password)
+            .compare(credentials.password, user.password)
             //Aviso de erro, não sei como resolver ainda
             .then((match: boolean) => {
               if (!match) {

@@ -1,14 +1,14 @@
 'use client'
 
-import React, { useState } from 'react'
+import React from 'react'
 import { useGoogleLogin } from '@react-oauth/google'
 import Image from 'next/image'
 import LogoGoogle from '../assets/img/logo-google.svg'
 import LogoGoogleGray from '../assets/img/logo-google-gray.svg'
 
 export default function GoogleLogin() {
-  const [isButtonEnabled, setIsButtonEnabled] = useState(true)
-  setIsButtonEnabled(true)
+  const isButtonEnabled = true
+
   const login = useGoogleLogin({
     onSuccess: (tokenResponse) => console.log(tokenResponse)
   })
