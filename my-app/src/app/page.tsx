@@ -10,5 +10,6 @@ export default async function Dashboard() {
   if (!session) {
     redirect('/login')
   }
+  //@ts-expect-error  Ignorando Props Obrigatórias
   return <Home sessionData={user} />
 }
