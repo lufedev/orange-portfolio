@@ -65,12 +65,13 @@ h6 {
 
 /*
   10. Reset SnackBar Component
-  11. Reset Header Component
+  11. Reset Icon Component
 */
-
-/* Reset SnackBar Component */
 @media (min-width: 600px) {
   .MuiSnackbar-root {
     transform: translateX(0);
   }
+}
+.css-1pz7awu-MuiButtonBase-root-MuiIconButton-root {
+  padding: 0;
 }

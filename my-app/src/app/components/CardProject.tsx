@@ -87,23 +87,16 @@ export default function CardProject({
   }
 
   return (
-    <div className="h-[19.75rem] w-full md:w-[24.31rem] md:h-[17.87rem] mt-6">
-      <Image
-        src={project?.imagepath || NotFoundImageProject}
-        alt={project?.title}
-        width={312}
-        height={258}
-        className="w-full h-[16.12rem] object-cover"
-      />
-      <div className="flex mt-[.5rem] md:items-center gap-2 relative">
+    <div>
+      <div className="mb-2 relative">
         <Image
-          src={user.image}
-          alt={user.name}
-          width={40}
-          height={40}
-          className="my-[.31rem] rounded"
+          src={project?.imagepath || NotFoundImageProject}
+          alt={project?.title}
+          width={312}
+          height={258}
+          className="w-full h-[19.5rem] md:h-[24.31rem] object-cover"
         />
-        <div className="absolute bottom-[16rem] right-[1rem] fixed  rounded-full">
+        <div className="absolute bottom-0 top-0 right-0">
           {editable ? (
             <>
               <IconButton
@@ -112,14 +105,13 @@ export default function CardProject({
                 aria-controls="menu-project"
                 aria-haspopup="true"
                 color="inherit"
-                className="text-color-neutral-120"
+                className="text-color-neutral-120 p-0"
                 title="Configurações do projeto"
                 onClick={handleOpenMenu}
                 className={renderMenu()}
               >
-                <EditIcon className="bg-color-secondary-70 rounded-full" />
+                <EditIcon className="bg-color-secondary-70 h-[28px] w-[28px] rounded-full p-[5px] mr-4 mt-4" />
               </IconButton>
-
               <Menu
                 id="menu-appbar"
                 anchorEl={anchorElMenu}
@@ -143,8 +135,8 @@ export default function CardProject({
                 <ListItem
                   align-items="flex-star"
                   className="
-                            flex flex-col
-                            items-start w-full"
+                                flex flex-col
+                                items-start w-full"
                 >
                   <ThemeProvider theme={MenuTheme}>
                     <Button onClick={openModal} color="primary">
@@ -168,20 +160,27 @@ export default function CardProject({
             <></>
           )}
         </div>
-
-        <div className="flex flex-col md:flex-row gap-2">
-          <h6 className="h6 text-color-neutral-120 md:text-color-neutral-110">
-            {user.name} {user.sname}
-          </h6>
-          <p className="hidden md:flex">•</p>
-          <p className="text-color-neutral-110">{project?.date}</p>
+      </div>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center py-[5px]">
+          <Image
+            src={user.image}
+            alt={user.name}
+            width={40}
+            height={40}
+            className="mr-2 rounded"
+          />
+          <div className="flex flex-col gap-2 md:flex-row">
+            <h6 className="subtitle-1 text-color-neutral-120 md:text-color-neutral-110">
+              {user.name} {user.sname}
+            </h6>
+            <p className="subtitle-1 hidden text-color-neutral-110 md:block">
+              •
+            </p>
+            <p className="text-color-neutral-110 subtitle-1">{project?.date}</p>
+          </div>
         </div>
-
-        <Stack
-          direction="row"
-          spacing={1}
-          className="flex items-center grow justify-end"
-        >
+        <Stack direction="row" spacing={1}>
           <ThemeProvider theme={ChipTheme}>
             {tagsString &&
               tagsString
@@ -193,7 +192,6 @@ export default function CardProject({
                     color="default"
                     size="large"
                     disabled={false}
-                    className="mb-[1.13rem]"
                     label={tag.trim()}
                   />
                 ))}
