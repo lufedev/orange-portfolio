@@ -36,7 +36,7 @@ export const options: NextAuthOptions = {
             return null
           }
           return bcrypt
-            .compare(credentials?.password, user.password)
+            .compare(credentials?.password as string, user.password)
             .then((match) => {
               if (!match) {
                 throw new Error('Senha incorreta')
