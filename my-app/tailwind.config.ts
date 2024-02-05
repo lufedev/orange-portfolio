@@ -2,8 +2,8 @@ import type { Config } from 'tailwindcss'
 
 const config: Config = {
   content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/Components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}'
   ],
   theme: {
@@ -85,4 +85,6 @@ const config: Config = {
     preflight: false
   }
 }
-export default config
+
+// Exportando o módulo no formato CommonJS
+module.exports = config
