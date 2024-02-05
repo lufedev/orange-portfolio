@@ -20,7 +20,7 @@ export default function Login() {
     }
     fetchData()
   }, [])
-
+  console.log(process.env.VERCEL_URL)
   if (isUserLoggedIn) {
     redirect('/')
   }
