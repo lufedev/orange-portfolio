@@ -25,11 +25,27 @@ import {
 import MenuIcon from '@mui/icons-material/Menu'
 import NotificationsIcon from '@mui/icons-material/Notifications'
 import LogoutIcon from '@mui/icons-material/Logout'
-import { UserProps } from '../lib/definiton'
+import { Page, UserProps } from '../lib/definiton'
 import { signOut } from 'next-auth/react'
 import { redirect } from 'next/navigation'
+import Link from 'next/link'
 
-const pages = ['Meus projetos', 'Descobrir', 'Sair']
+
+const pages: Page[] = [
+  {
+    name: 'Meus projetos',
+    path: '/'
+  },
+  {
+    name: 'Descobrir',
+    path: '/discover'
+  },
+  {
+    name: 'Sair',
+    path: ''
+  }
+
+]
 
 export default function Header({ user }: UserProps) {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
@@ -59,24 +75,40 @@ export default function Header({ user }: UserProps) {
     setAnchorElUser(null)
   }
 
-  const renderMenuItem = (page: string, index: number) => (
-    <div key={page}>
-      {index !== 0 && page === 'Sair' && <Divider />}
-      <MenuItem
-        onClick={page === 'Sair' ? handleLogout : handleCloseNavMenu}
-        className="flex self-stretch items-start"
-      >
-        {page === 'Sair' ? (
-          <>
-            <LogoutIcon className="text-2xl mr-3" />
-            <Typography textAlign="left">Sair</Typography>
-          </>
-        ) : (
-          <Typography textAlign="left">{page}</Typography>
-        )}
-      </MenuItem>
-    </div>
-  )
+  const renderPage = (page: Page, index: number, array: Page[]): React.ReactElement => {
+    const redirectPage = (pageName, path) => {
+      if (pageName === "Descobrir") {
+        redirect('/discover');
+      } else if (pageName === "Meus projetos") {
+        redirect('/');
+      }
+    };
+
+    return (
+      <div>
+        {index !== 0 && page.name === 'Sair' && <Divider />}
+        <MenuItem
+          onClick={page.name === 'Sair' ? handleLogout : handleCloseNavMenu}
+          className="flex self-stretch items-start"
+        >
+          {page.name === 'Sair' ? (
+            <>
+              <LogoutIcon className="text-2xl mr-3" />
+              <Typography textAlign="left">Sair</Typography>
+            </>
+          ) : (
+            <Link href={page.path} 
+            onClick={() => redirectPage(page.name, '/discover')} 
+            className="text-[#000000DE] text-base normal-case no-underline">
+              <Typography textAlign="left">
+                {page.name}
+              </Typography>
+            </Link>
+          )}
+        </MenuItem>
+      </div>
+    )
+  }
 
   return (
     <ThemeProvider theme={MainTheme}>
@@ -128,13 +160,13 @@ export default function Header({ user }: UserProps) {
               >
                 <ListItem
                   align-items="flex-star"
-                  className="flex flex-col items-start"
+                  className="flex flex-col items-start text-start"
                 >
                   <p>{user.name}</p>
                   <p className="text-[#00000099]">{user.email}</p>
                 </ListItem>
                 <Divider />
-                {pages.map(renderMenuItem)}
+                {pages.map(renderPage)}
               </Menu>
               <img src={Logo.src} alt="logo" className="w-[6rem] h=[3rem]" />
             </Box>
@@ -152,11 +184,15 @@ export default function Header({ user }: UserProps) {
               />
               {pages.slice(0, 2).map((page) => (
                 <Button
-                  key={page}
+                  key={page.name}
                   onClick={handleCloseNavMenu}
-                  className="text-white block text-base normal-case mt-2 mb-2"
+                  className="block mt-2 mb-2"
                 >
-                  {page}
+                  <Link href={page.path} onClick={() => renderPage(page.name, '/')} className="text-white text-base normal-case no-underline">
+                    <Typography textAlign="left">
+                      {page.name}
+                    </Typography>
+                  </Link>
                 </Button>
               ))}
             </Box>
@@ -198,7 +234,7 @@ export default function Header({ user }: UserProps) {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {pages.filter((page) => page === 'Sair').map(renderMenuItem)}
+                {pages.filter((page: Page) => page.name === 'Sair').map(renderPage)}
               </Menu>
             </Box>
           </Toolbar>

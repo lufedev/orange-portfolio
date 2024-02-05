@@ -1,19 +1,22 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import AvatarUser from '.././assets/img/avatar.svg'
-import { User, Project } from '../lib/definiton'
-import CardProject from '../components/CardProject'
+import { User, Project, Session } from '../lib/definiton'
+import { getSession } from 'next-auth/react'
+import { redirect } from 'next/navigation'
 import ContainerProjects from '../components/ContainerProjects'
 import Header from '../components/Header'
 import { ThemeProvider } from 'styled-components'
 import { TextField } from '@mui/material'
 import { TextFieldTheme } from '../themes/TextField'
 
-export default function Discover() {
+
+export default function Discover( { sessionData }: Session) {
   const [projects, setProjects] = useState<Project[]>([])
   const [tagFilter, setTagFilter] = useState('')
   const [modalOpen, setModalOpen] = useState(false)
   const [country, setCountry] = useState<string>('')
+  const [user, setUser] = useState<User>({} as User);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,8 +58,18 @@ export default function Discover() {
     setTagFilter(event.target.value)
   }
 
+  useEffect(() => {
+    const userFromLocalStorage = localStorage.getItem('user');
+    if (userFromLocalStorage) {
+      setUser(JSON.parse(userFromLocalStorage));
+    }
+  }, []);
+
+   
+
   return (
     <div>
+       <Header user={user} />
       <div className="flex flex-col items-center justify-start mt-14 mx-6 gap-10">
         <div className="w-full mb-6">
           <h4 className="h6 text-color-neutral-130 mb-4">Meus projetos</h4>
@@ -74,17 +87,20 @@ export default function Discover() {
             />
           </ThemeProvider>
           {projects.map((project: Project) => {
-            const user: User = {
-              name: project?.usuario,
+            const users: User = {
+              name: project?.usuario as string,
               email: 'default',
               projects: [project],
-              image: AvatarUser
+              image: AvatarUser,
+              sname: '',
+              password: '',
+              country: ''
             }
 
             return (
               <ContainerProjects
                 editable={false}
-                user={user}
+                user={users}
                 filter={tagFilter}
               />
             )
