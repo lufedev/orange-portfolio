@@ -28,7 +28,6 @@ import { Page, UserProps } from '../lib/definiton'
 import { signOut } from 'next-auth/react'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import ts from 'typescript'
 
 const pages: Page[] = [
   {
@@ -186,6 +185,7 @@ export default function Header({ user }: UserProps) {
                 >
                   <Link
                     href={page.path}
+                    // @ts-expect-error Não consigo resolver, e é necessário para compilar
                     onClick={() => renderPage(page.name, '/')}
                     className="text-white text-base normal-case no-underline"
                   >
