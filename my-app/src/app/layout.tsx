@@ -23,7 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <GoogleOAuthProvider clientId={ClientId}>
-      <html lang="en" className="bg-black">
+      <html lang="en">
         <body>{children}</body>
       </html>
     </GoogleOAuthProvider>
