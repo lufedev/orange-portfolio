@@ -5,7 +5,12 @@ import { options } from '../auth/[...nextauth]/options'
 export const getAllPortfoliosFromUser = async () => {
   const session = await getServerSession(options)
   const portfolio =
-    await sql`SELECT * FROM portfolio WHERE email = ${session.user?.email} order by id asc`
+    await sql`SELECT id, title, tags, link, description, email, imagepath,date 
+              AT TIME ZONE 'UTC' AT TIME ZONE 'America/Sao_Paulo' AS date
+              FROM portfolio 
+              WHERE email = ${session.user?.email}
+              ORDER BY id ASC;
+              `
 
   return portfolio.rows
 }
