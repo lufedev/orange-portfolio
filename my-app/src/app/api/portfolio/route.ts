@@ -6,7 +6,6 @@ import {
   editPortfolio,
   getAllPortfoliosFromUser
 } from './portfolio'
-import { revalidatePath } from 'next/cache'
 
 export async function GET() {
   const data = await getAllPortfoliosFromUser()
@@ -49,7 +48,7 @@ export async function POST(request: Request) {
       }
     }
   }
-  revalidateTag('get-user-portfolios')
+
   return NextResponse.json({
     data: 'Portfolio adicionado'
   })
@@ -78,7 +77,6 @@ export async function DELETE(request: Request) {
       }
     }
   }
-  revalidatePath('/', 'page')
   return NextResponse.json({
     data: 'Portfolio deletado'
   })
@@ -111,7 +109,6 @@ export async function PUT(request: Request) {
       }
     }
   }
-  // revalidatePath('/', 'layout')
   return NextResponse.json({
     data: 'Portfolio editado'
   })
