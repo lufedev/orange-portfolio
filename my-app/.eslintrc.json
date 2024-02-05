@@ -4,14 +4,12 @@
     "plugin:@typescript-eslint/recommended",
     "prettier"
   ],
-  "plugins": [
-    "react-hooks",
-    "prettier"
-  ],
+  "plugins": ["react-hooks", "prettier"],
   "rules": {
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
     "prettier/prettier": "warn",
     "react/no-unescaped-entities": "off",
     "@next/next/no-page-custom-font": "off"
+  }
 }
