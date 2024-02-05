@@ -11,7 +11,7 @@ import {
 } from '@mui/material'
 import { ChipTheme, MenuTheme } from '../themes/Button'
 import EditIcon from '@mui/icons-material/Edit'
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import CustomChip from './CustomChip'
 import ModalAddProject from './ModalAddProject'
 import { redirect } from 'next/navigation'
@@ -19,16 +19,22 @@ import { storage } from '../firebase/firebase'
 import NotFoundImageProject from '../assets/img/no-picture-available.svg'
 import SuccessModel from './SuccessModal'
 
-export default function CardProject({ user, project, view }: UserProps) {
+export default function CardProject({
+  user,
+  project,
+  view,
+  editable
+}: UserProps) {
   const [modalOpen, setModalOpen] = React.useState(false)
   const [success, setSuccess] = React.useState(false)
-  const [showSuccessModal, setShowSuccessModal] = useState(false); 
+  const [showSuccessModal, setShowSuccessModal] = useState(false)
   const [anchorElMenu, setAnchorElMenu] = React.useState<null | HTMLElement>(
     null
   )
   if (success) {
     redirect('http://localhost:3000/')
   }
+  console.log(editable)
   const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElMenu(event.currentTarget)
   }
@@ -41,7 +47,7 @@ export default function CardProject({ user, project, view }: UserProps) {
       return view ? 'flex' : 'hidden'
     }
   }
-  const tagsString = project?.tags; 
+  const tagsString = project?.tags
   const openModal = () => {
     setModalOpen(true)
     handleCloseMenu()
@@ -68,17 +74,17 @@ export default function CardProject({ user, project, view }: UserProps) {
 
   const removeImageFromDatabase = () => {
     if (project?.imagepath) {
-      const imageRef = storage.refFromURL(project?.imagepath as string);
-      imageRef.delete()
+      const imageRef = storage.refFromURL(project?.imagepath as string)
+      imageRef
+        .delete()
         .then(() => {
-          console.log('Imagem removida do Firebase Storage com sucesso.');
+          console.log('Imagem removida do Firebase Storage com sucesso.')
         })
         .catch((error) => {
-          console.error('Erro ao remover a imagem do Firebase Storage:', error);
-        });
+          console.error('Erro ao remover a imagem do Firebase Storage:', error)
+        })
     }
   }
-
 
   return (
     <div className="h-[19.75rem] w-full md:w-[24.31rem] md:h-[17.87rem] mt-6">
@@ -98,62 +104,69 @@ export default function CardProject({ user, project, view }: UserProps) {
           className="my-[.31rem] rounded"
         />
         <div className="absolute bottom-[16rem] right-[1rem] fixed  rounded-full">
-          <IconButton
-            size="large"
-            aria-label="account of current user"
-            aria-controls="menu-project"
-            aria-haspopup="true"
-            color="inherit"
-            className="text-color-neutral-120"
-            title="Configurações do projeto"
-            onClick={handleOpenMenu}
-            className={renderMenu()}
-          >
-            <EditIcon className="bg-color-secondary-70 rounded-full" />
-          </IconButton>
-          <Menu
-            id="menu-appbar"
-            anchorEl={anchorElMenu}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'right'
-            }}
-            keepMounted
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'right'
-            }}
-            open={Boolean(anchorElMenu)}
-            onClose={handleCloseMenu}
-            sx={{
-              display: { xs: 'flex' },
-              width: '53%',
-              right: '-50%'
-            }}
-          >
-            <ListItem
-              align-items="flex-star"
-              className="
+          {editable ? (
+            <>
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-project"
+                aria-haspopup="true"
+                color="inherit"
+                className="text-color-neutral-120"
+                title="Configurações do projeto"
+                onClick={handleOpenMenu}
+                className={renderMenu()}
+              >
+                <EditIcon className="bg-color-secondary-70 rounded-full" />
+              </IconButton>
+
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorElMenu}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right'
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right'
+                }}
+                open={Boolean(anchorElMenu)}
+                onClose={handleCloseMenu}
+                sx={{
+                  display: { xs: 'flex' },
+                  width: '53%',
+                  right: '-50%'
+                }}
+              >
+                <ListItem
+                  align-items="flex-star"
+                  className="
                             flex flex-col
                             items-start w-full"
-            >
-              <ThemeProvider theme={MenuTheme}>
-                <Button onClick={openModal} color="primary">
-                  Editar
-                </Button>
-                <Button onClick={deleteProject} color="primary">
-                  Excluir
-                </Button>
-                <ModalAddProject
-                  editing={true}
-                  user={user}
-                  project={project}
-                  states={modalOpen}
-                  onClose={closeModal}
-                />
-              </ThemeProvider>
-            </ListItem>
-          </Menu>
+                >
+                  <ThemeProvider theme={MenuTheme}>
+                    <Button onClick={openModal} color="primary">
+                      Editar
+                    </Button>
+                    <Button onClick={deleteProject} color="primary">
+                      Excluir
+                    </Button>
+                    <ModalAddProject
+                      editing={true}
+                      user={user}
+                      project={project}
+                      states={modalOpen}
+                      onClose={closeModal}
+                    />
+                  </ThemeProvider>
+                </ListItem>
+              </Menu>
+            </>
+          ) : (
+            <></>
+          )}
         </div>
 
         <div className="flex flex-col md:flex-row gap-2">
@@ -170,23 +183,26 @@ export default function CardProject({ user, project, view }: UserProps) {
           className="flex items-center grow justify-end"
         >
           <ThemeProvider theme={ChipTheme}>
-            {tagsString && tagsString.split(",").map((tag: string) => (
-              <CustomChip
-                key={tag.trim()} 
-                variant="filled"
-                color="default"
-                size="large"
-                disabled={false}
-                className="mb-[1.13rem]"
-                label={tag.trim()}
-              />
-            ))}
+            {tagsString &&
+              tagsString
+                .split(',')
+                .map((tag: string) => (
+                  <CustomChip
+                    key={tag.trim()}
+                    variant="filled"
+                    color="default"
+                    size="large"
+                    disabled={false}
+                    className="mb-[1.13rem]"
+                    label={tag.trim()}
+                  />
+                ))}
           </ThemeProvider>
         </Stack>
       </div>
       <SuccessModel
         status={showSuccessModal}
-        title='Projeto deletado com sucesso!'
+        title="Projeto deletado com sucesso!"
       />
     </div>
   )

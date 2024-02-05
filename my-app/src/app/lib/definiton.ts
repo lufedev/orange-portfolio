@@ -38,6 +38,7 @@ export type UserProps = {
   onClick?: () => void
   view?: boolean
   filter?: string
+  editable?: boolean
 }
 
 export type Project = {
@@ -78,7 +79,6 @@ export type TypeChip = {
   label: string
   onDelete?: () => void
 }
-
 
 export type TypeModal = {
   status: boolean

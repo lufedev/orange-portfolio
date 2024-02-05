@@ -18,9 +18,8 @@ import { redirect } from 'next/navigation'
 import ModalProjectPreview from './ModalProjectPreview'
 import Link from 'next/link'
 import loadingImage from '../assets/img/loading.gif'
-import CircularProgress from '@mui/material/CircularProgress';
+import CircularProgress from '@mui/material/CircularProgress'
 import SuccessModel from './SuccessModal'
-
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -47,17 +46,12 @@ export default function ModalAddProject({
   const currentProject = project || ({} as Project)
 
   const [loading, setLoading] = useState(false)
-  const [success, setSuccess] = useState(false)
   const [isimagepath, setIsimagepath] = useState(false)
-  const [isAddProjectModalOpen, setAddProjectModalOpen] = useState(states);
-  const [isPreviewModalOpen, setPreviewModalOpen] = useState(false);
-  const [imageLoading, setImageLoading] = useState(false);
-  const [showSuccessModal, setShowSuccessModal] = useState(false); 
-  const [messageSuccessModal, setMessageShowSuccessModal] = useState(''); 
-
-  if (success) {
-    redirect('http://localhost:3000/')
-  }
+  const [isAddProjectModalOpen, setAddProjectModalOpen] = useState(states)
+  const [isPreviewModalOpen, setPreviewModalOpen] = useState(false)
+  const [imageLoading, setImageLoading] = useState(false)
+  const [showSuccessModal, setShowSuccessModal] = useState(false)
+  const [messageSuccessModal, setMessageShowSuccessModal] = useState('')
 
   useEffect(() => {
     if (
@@ -72,8 +66,8 @@ export default function ModalAddProject({
   }, [newProjectData])
 
   useEffect(() => {
-    setAddProjectModalOpen(states);
-  }, [states]);
+    setAddProjectModalOpen(states)
+  }, [states])
 
   const createProject = async (project: Project) => {
     try {
@@ -86,11 +80,8 @@ export default function ModalAddProject({
       })
 
       setNewProjectData({} as Project)
-      setSuccess(true)
       setIsimagepath(false)
-     
-
-    } catch (error) { }
+    } catch (error) {}
   }
 
   const updateProject = async (project: Project) => {
@@ -102,54 +93,51 @@ export default function ModalAddProject({
         },
         body: JSON.stringify(newProjectData)
       })
-      setSuccess(true)
-    
-    
-    } catch (error) { }
+    } catch (error) {}
   }
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setLoading(true);
-    const file = event.target.files?.[0];
+    setLoading(true)
+    const file = event.target.files?.[0]
     if (file !== undefined) {
       if (editing) {
-        removeImageFromDatabase();
+        removeImageFromDatabase()
       }
-      const storageRef = storage.ref();
-      const projectFolder = `${user?.email}`;
-      const fileRef = storageRef.child(projectFolder + '/' + Date.now());
+      const storageRef = storage.ref()
+      const projectFolder = `${user?.email}`
+      const fileRef = storageRef.child(projectFolder + '/' + Date.now())
 
-      setImageLoading(true);
+      setImageLoading(true)
 
       fileRef
         .put(file)
         .then(() => {
-          console.log('Arquivo enviado com sucesso!');
+          console.log('Arquivo enviado com sucesso!')
           fileRef.getDownloadURL().then((url: string) => {
-            setIsimagepath(true);
-            setNewProjectData({ ...newProjectData, imagepath: url });
-            setImageLoading(false);
-          });
+            setIsimagepath(true)
+            setNewProjectData({ ...newProjectData, imagepath: url })
+            setImageLoading(false)
+          })
         })
         .catch((error) => {
-          console.error('Erro ao enviar arquivo:', error);
-          setImageLoading(false);
-        });
+          console.error('Erro ao enviar arquivo:', error)
+          setImageLoading(false)
+        })
     }
-    setLoading(false);
-  };
-
+    setLoading(false)
+  }
 
   const removeImageFromDatabase = () => {
     if (newProjectData.imagepath) {
-      const imageRef = storage.refFromURL(newProjectData.imagepath);
-      imageRef.delete()
+      const imageRef = storage.refFromURL(newProjectData.imagepath)
+      imageRef
+        .delete()
         .then(() => {
-          console.log('Imagem removida do Firebase Storage com sucesso.');
+          console.log('Imagem removida do Firebase Storage com sucesso.')
         })
         .catch((error) => {
-          console.error('Erro ao remover a imagem do Firebase Storage:', error);
-        });
+          console.error('Erro ao remover a imagem do Firebase Storage:', error)
+        })
     }
   }
 
@@ -159,42 +147,36 @@ export default function ModalAddProject({
     if (!editing) {
       removeImageFromDatabase()
     }
-
-
   }
 
   const handleSave = () => {
     setLoading(true)
 
     if (editing) {
-
       updateProject(newProjectData as Project)
       setIsimagepath(true)
-      setMessageShowSuccessModal('Edição concluída com sucesso!');
-
+      setMessageShowSuccessModal('Edição concluída com sucesso!')
     } else {
       createProject(newProjectData as Project)
-      setMessageShowSuccessModal('Projeto adicionado com sucesso!');
+      setMessageShowSuccessModal('Projeto adicionado com sucesso!')
     }
     setLoading(false)
     onClose()
-    setShowSuccessModal(true); 
+    setShowSuccessModal(true)
   }
 
-
   const openPreviewModal = () => {
-    setPreviewModalOpen(true);
+    setPreviewModalOpen(true)
     setAddProjectModalOpen(false)
-  };
+  }
 
   const closePreviewModal = () => {
-    setPreviewModalOpen(false);
+    setPreviewModalOpen(false)
     setAddProjectModalOpen(true)
-  };
+  }
 
   return (
     <div>
-
       {isAddProjectModalOpen && (
         <Modal
           open={states}
@@ -320,7 +302,9 @@ export default function ModalAddProject({
                         className="h-full w-full  px-2 py-0 flex flex-col text-color-neutral-120 leading-[0.875rem] tracking-[0.01563rem] font-normal normal-case"
                       >
                         <Image
-                          src={loading ? loadingImage : newProjectData?.imagepath}
+                          src={
+                            loading ? loadingImage : newProjectData?.imagepath
+                          }
                           alt={newProjectData?.title}
                           width={389}
                           height={304}
@@ -362,7 +346,9 @@ export default function ModalAddProject({
               <div className="flex flex-col w-full items-start">
                 <Link
                   onClick={openPreviewModal}
-                  className="subtitle-1 text-color-neutral-100 !no-underline mb-4 hover:none" href={''}                >
+                  className="subtitle-1 text-color-neutral-100 !no-underline mb-4 hover:none"
+                  href={''}
+                >
                   Visualizar publicação
                 </Link>
                 <div className="flex mb-10 md:mb-6 gap-4">
@@ -397,13 +383,12 @@ export default function ModalAddProject({
           user={user}
           project={newProjectData as Project}
           onClose={closePreviewModal}
-          states={isPreviewModalOpen} editing={false} />
+          states={isPreviewModalOpen}
+          editing={false}
+        />
       )}
 
-      <SuccessModel
-        status={showSuccessModal}
-        title={messageSuccessModal}
-      />
+      <SuccessModel status={showSuccessModal} title={messageSuccessModal} />
     </div>
   )
 }

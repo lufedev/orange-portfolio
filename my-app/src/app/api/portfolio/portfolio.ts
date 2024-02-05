@@ -3,12 +3,24 @@ import { getServerSession } from 'next-auth'
 import { options } from '../auth/[...nextauth]/options'
 
 export const getAllPortfolios = async () => {
-  const portfolio =
-    await sql`SELECT id, title, tags, link, description, email, imagepath,date 
-              AT TIME ZONE 'UTC' AT TIME ZONE 'America/Sao_Paulo' AS date
-              FROM portfolio 
-              ORDER BY id ASC;
-              `
+  const portfolio = await sql`
+            SELECT 
+              p.id, 
+              p.title, 
+              p.tags, 
+              p.link, 
+              p.description, 
+              p.email, 
+              u.Name || ' ' || u.Surname AS Usuario, -- Adiciona a coluna Usuário
+              p.imagepath, 
+              p.date AT TIME ZONE 'UTC' AT TIME ZONE 'America/Sao_Paulo' AS date
+          FROM 
+              portfolio p
+          JOIN 
+              users u ON p.email = u.email -- Faz o JOIN usando a coluna EMAIL
+          ORDER BY 
+              p.id ASC;
+  `
   return portfolio.rows
 }
 export const getAllPortfoliosFromUser = async () => {
