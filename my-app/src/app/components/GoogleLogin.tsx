@@ -8,7 +8,7 @@ import LogoGoogleGray from '../assets/img/logo-google-gray.svg'
 
 export default function GoogleLogin() {
   const [isButtonEnabled, setIsButtonEnabled] = useState(true)
-
+  setIsButtonEnabled(true)
   const login = useGoogleLogin({
     onSuccess: (tokenResponse) => console.log(tokenResponse)
   })

@@ -24,7 +24,6 @@ export default function ModalProjectPreview({
   onClose,
   states
 }: ProjectProps) {
-  const [open, setOpen] = useState(states)
   const handleClose = () => onClose()
   const isDesktop: boolean = useMediaQuery('(min-width:900px)')
   const EMPTY_FIELDS_MESSAGE = 'Por favor, preencha todos os campos.'
@@ -34,7 +33,7 @@ export default function ModalProjectPreview({
     <div>
       <Modal
         keepMounted
-        open={open}
+        open={states}
         onClose={handleClose}
         aria-labelledby="keep-mounted-modal-title"
         aria-describedby="keep-mounted-modal-description"

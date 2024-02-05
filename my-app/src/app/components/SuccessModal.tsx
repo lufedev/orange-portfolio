@@ -10,11 +10,10 @@ import { TypeModal } from '../lib/definiton'
 import { redirect } from 'next/navigation'
 
 export default function SuccessModel({ status, title }: TypeModal) {
-  const [open, setOpen] = React.useState(false)
   const [succes, setSucces] = React.useState(false)
-  const handleOpen = () => setOpen(true)
+
   const handleClose = () => {
-    setSucces(true), setOpen(false)
+    setSucces(true)
   }
   if (succes) {
     redirect('http://localhost:3000/')
@@ -28,7 +27,7 @@ export default function SuccessModel({ status, title }: TypeModal) {
     >
       <Box
         sx={{
-          position: 'absolute' as 'absolute',
+          position: 'absolute',
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
