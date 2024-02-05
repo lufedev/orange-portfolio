@@ -55,6 +55,7 @@ export type ProjectProps = {
   onClick?: () => void
   onClose?: () => void
   states?: boolean
+  editing: boolean
 }
 
 export type TypeSnackbarInfo = {
@@ -67,7 +68,6 @@ export type FormProps = {
   onSnackbarUpdate: (snackbarInfo: TypeSnackbarInfo) => void
 }
 
-
 export type TypeChip = {
   variant: string
   color: string
@@ -75,5 +75,5 @@ export type TypeChip = {
   disabled: boolean
   className: string
   label: string
-  onDelete?: () => void; 
+  onDelete?: () => void
 }

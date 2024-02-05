@@ -1,3 +1,4 @@
+'use server'
 import { NextResponse } from 'next/server'
 import {
   createPortfolio,
@@ -23,7 +24,7 @@ export async function POST(request: Request) {
       data: 'No data received'
     })
   }
-  if (data.imagepath === undefined) {
+  if (data.imagepath === undefined || data.imagepath === null) {
     data.imagepath = ''
   }
   const { title, tags, link, description, imagepath } = data
@@ -47,6 +48,7 @@ export async function POST(request: Request) {
       }
     }
   }
+
   return NextResponse.json({
     data: 'Portfolio adicionado'
   })
@@ -89,11 +91,14 @@ export async function PUT(request: Request) {
       data: 'No data received'
     })
   }
-  const { id, title, tags, link, description } = data
+  if (data.imagepath === undefined || data.imagepath === null) {
+    data.imagepath = ''
+  }
+  const { id, title, tags, link, description, imagepath } = data
   try {
     if (!id || !title || !tags || !link || !description)
       throw new Error('Parametros faltando')
-    await editPortfolio(id, title, tags, link, description)
+    await editPortfolio(id, title, tags, link, description, imagepath)
   } catch (error) {
     if (error instanceof Error) {
       if (error.message === 'Parametros faltando') {

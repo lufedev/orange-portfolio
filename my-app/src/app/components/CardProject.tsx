@@ -1,4 +1,3 @@
-
 import Image from 'next/image'
 import { UserProps } from '../lib/definiton'
 import {
@@ -10,17 +9,24 @@ import {
   Stack,
   ThemeProvider
 } from '@mui/material'
-import { ChipTheme, MenuTheme } from "../themes/Button";
+import { ChipTheme, MenuTheme } from '../themes/Button'
+import sam from '../assets/img/images.jpg'
 import EditIcon from '@mui/icons-material/Edit'
 import * as React from 'react'
-import CustomChip from "./CustomChip";
-import { MainTheme } from "../themes/Theme";
-import NotFoundImage from '../assets/img/no-picture-available.svg'
+import CustomChip from './CustomChip'
+import { MainTheme } from '../themes/Theme'
+import ModalAddProject from './ModalAddProject'
+import { redirect } from 'next/navigation'
 
 export default function CardProject({ user, project, view }: UserProps) {
-  const [anchorElMenu, setAnchorElMenu] = React.useState<null | HTMLElement>(null);
-
-
+  const [modalOpen, setModalOpen] = React.useState(false)
+  const [success, setSuccess] = React.useState(false)
+  const [anchorElMenu, setAnchorElMenu] = React.useState<null | HTMLElement>(
+    null
+  )
+  if (success) {
+    redirect('http://localhost:3000/')
+  }
   const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElMenu(event.currentTarget)
   }
@@ -28,15 +34,33 @@ export default function CardProject({ user, project, view }: UserProps) {
   const handleCloseMenu = () => {
     setAnchorElMenu(null)
   }
-
-
   const renderMenu: string = () => {
     if (view !== undefined) {
-      return view ? 'flex' : 'hidden';
+      return view ? 'flex' : 'hidden'
     }
   }
   const tagsString = project?.tags; 
+  const openModal = () => {
+    setModalOpen(true)
+    handleCloseMenu()
+  }
 
+  const closeModal = () => {
+    setModalOpen(false)
+  }
+  const deleteProject = async () => {
+    handleCloseMenu()
+    try {
+      const response = await fetch('http://localhost:3000/api/portfolio', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id: project?.id })
+      })
+      setSuccess(true)
+    } catch (error) {}
+  }
   return (
     <div className="h-[19.75rem] w-full md:w-[24.31rem] md:h-[17.87rem] mt-6">
       <Image
@@ -86,7 +110,6 @@ export default function CardProject({ user, project, view }: UserProps) {
               display: { xs: 'flex' },
               width: '53%',
               right: '-50%'
-
             }}
           >
             <ListItem
@@ -96,20 +119,20 @@ export default function CardProject({ user, project, view }: UserProps) {
                             items-start w-full"
             >
               <ThemeProvider theme={MenuTheme}>
-                <Button
-                  onClick={() => console.log("Editar")}
-                  color="primary"
-                >
+                <Button onClick={openModal} color="primary">
                   Editar
                 </Button>
-                <Button
-                  onClick={() => console.log("excluir")}
-                  color="primary"
-                >
+                <Button onClick={deleteProject} color="primary">
                   Excluir
                 </Button>
+                <ModalAddProject
+                  editing={true}
+                  user={user}
+                  project={project}
+                  states={modalOpen}
+                  onClose={closeModal}
+                />
               </ThemeProvider>
-
             </ListItem>
           </Menu>
         </div>
@@ -120,7 +143,6 @@ export default function CardProject({ user, project, view }: UserProps) {
           </h6>
           <p className="hidden md:flex">•</p>
           <p className="text-color-neutral-110">{project?.date}</p>
-
         </div>
 
         <Stack

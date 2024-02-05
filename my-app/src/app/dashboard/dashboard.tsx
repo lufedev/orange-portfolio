@@ -24,8 +24,18 @@ export default function Home({ sessionData }: Session) {
         if (!response.ok) {
           throw new Error('Erro ao obter os dados da API');
         }
-        const data = await response.json();
-        setProjects(data.data);
+        const data = await response.json()
+        data.data.map((project: Project) => {
+          const date = new Date(project.date)
+          const options = {
+            timeZone: 'America/Sao_Paulo',
+            day: '2-digit',
+            month: '2-digit'
+          }
+
+          project.date = date.toLocaleDateString('en-US', options)
+        })
+        setProjects(data.data)
       } catch (error) {
         console.error('Erro ao obter dados:', error.message);
       }
@@ -75,7 +85,12 @@ export default function Home({ sessionData }: Session) {
       <Header user={user} />
       <div className="flex flex-col items-center justify-start mt-14 mx-6 gap-10">
         <CardProfile user={user} onClick={openModal} />
-        <ModalAddProject user={user} states={modalOpen} onClose={closeModal} />
+        <ModalAddProject
+          editing={false}
+          user={user}
+          states={modalOpen}
+          onClose={closeModal}
+        />
         <div className="w-full mb-6">
           <h4 className="h6 text-color-neutral-130 mb-4">Meus projetos</h4>
           <ThemeProvider theme={TextFieldTheme}>

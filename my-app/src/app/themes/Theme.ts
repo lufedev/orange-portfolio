@@ -12,7 +12,7 @@ export const MainTheme: CustomTheme = createTheme({
     }
   },
   palette: {
-    default:{
+    default: {
       light: '#EDEFF2',
       main: '#00000014',
       dark: '#00000033',
