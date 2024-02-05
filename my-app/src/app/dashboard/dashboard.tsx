@@ -55,6 +55,25 @@ export default function Home({ sessionData }: Session) {
       .catch((error) => console.error('Erro ao obter o nome do país:', error))
   }, [])
 
+
+  const user: User = {
+    name: sessionData.name,
+    email: sessionData.email,
+    projects: projects,
+    image: AvatarUser,
+    sname: '',
+    password: '',
+    country: country || 'Brasil'
+  }
+
+
+  useEffect(() => {
+   
+    if (user) {
+      localStorage.setItem('user', JSON.stringify(user));
+    }
+  }, [user]);
+
   const openModal = () => {
     setModalOpen(true)
   }
@@ -67,15 +86,6 @@ export default function Home({ sessionData }: Session) {
     setTagFilter(event.target.value)
   }
 
-  const user: User = {
-    name: sessionData.name,
-    email: sessionData.email,
-    projects: projects,
-    image: AvatarUser,
-    sname: '',
-    password: '',
-    country: country || 'Brasil'
-  }
 
   const isProject: boolean = user.projects.length > 0
 
