@@ -69,7 +69,7 @@ export default function ModalAddProject({
 
   const createProject = async () => {
     try {
-      await fetch('http://localhost:3000/api/portfolio', {
+      await fetch('/api/portfolio', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -83,7 +83,7 @@ export default function ModalAddProject({
 
   const updateProject = async () => {
     try {
-      await fetch('http://localhost:3000/api/portfolio', {
+      await fetch('/api/portfolio', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'

@@ -10,6 +10,7 @@ import { getSession } from 'next-auth/react'
 import { redirect } from 'next/navigation'
 
 export default function Login() {
+  console.log(process.env.NEXAUTH_URL)
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false)
   useEffect(() => {
     const fetchData = async () => {

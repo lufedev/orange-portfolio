@@ -43,7 +43,7 @@ export default function RegisterForm({ onSnackbarUpdate }: FormProps) {
   const [showPassword, setShowPassword] = React.useState(false)
 
   if (success) {
-    redirect('http://localhost:3000/login?success=true')
+    redirect('/login?success=true')
   }
 
   const handleClickShowPassword = () => setShowPassword((show) => !show)
@@ -90,7 +90,7 @@ export default function RegisterForm({ onSnackbarUpdate }: FormProps) {
       return setHandleLoading(false)
     }
     try {
-      const response = await fetch('http://localhost:3000/api/user', {
+      const response = await fetch('/api/user', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

@@ -31,7 +31,7 @@ export default function CardProject({
     null
   )
   if (success) {
-    redirect('http://localhost:3000/')
+    redirect('/')
   }
   const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElMenu(event.currentTarget)
@@ -53,7 +53,7 @@ export default function CardProject({
   const deleteProject = async () => {
     handleCloseMenu()
     try {
-      await fetch('http://localhost:3000/api/portfolio', {
+      await fetch('/api/portfolio', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'

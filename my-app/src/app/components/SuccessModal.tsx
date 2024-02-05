@@ -10,13 +10,13 @@ import { TypeModal } from '../lib/definiton'
 import { redirect } from 'next/navigation'
 
 export default function SuccessModel({ status, title }: TypeModal) {
-  const [succes, setSucces] = React.useState(false)
+  const [success, setSucces] = React.useState(false)
 
   const handleClose = () => {
     setSucces(true)
   }
-  if (succes) {
-    redirect('http://localhost:3000/')
+  if (success) {
+    redirect('/')
   }
   return (
     <Modal

@@ -1,3 +1,4 @@
+'use server'
 import { getAllPortfolios } from '../portfolio'
 import { NextResponse } from 'next/server'
 export async function GET() {
