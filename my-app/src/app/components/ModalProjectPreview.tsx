@@ -8,7 +8,6 @@ import {
   Typography,
   useMediaQuery
 } from '@mui/material'
-import { useState } from 'react'
 import { ProjectProps, User } from '../lib/definiton'
 import CloseIcon from '@mui/icons-material/Close'
 import CardProject from './CardProject'
