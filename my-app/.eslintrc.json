@@ -11,6 +11,7 @@
   "rules": {
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
-    "prettier/prettier": "warn"
-  }
+    "prettier/prettier": "warn",
+    "react/no-unescaped-entities": "off",
+    "@next/next/no-page-custom-font": "off"
 }
