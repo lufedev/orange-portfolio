@@ -8,6 +8,7 @@ export default function CustomSnackbar({
   text,
   severity
 }: TypeSnackBar) {
+  const validSeverity = severity as 'success' | 'error' | 'warning' | 'info'
   return (
     <Snackbar
       anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
@@ -19,7 +20,7 @@ export default function CustomSnackbar({
         iconMapping={{
           success: <CheckCircleOutlineIcon fontSize="inherit" />
         }}
-        severity={severity}
+        severity={validSeverity}
         variant="filled"
         sx={{ width: '100%' }}
       >

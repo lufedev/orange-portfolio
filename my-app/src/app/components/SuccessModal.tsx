@@ -47,16 +47,18 @@ export default function SuccessModel({ status, title }: TypeModal) {
             {title}
           </Typography>
           <CheckCircleIcon color="success" className="text-[40px]" />
-          <CustomButton
-            theme={true}
-            variant="contained"
-            color="primary"
-            size="large"
-            disabled={false}
-            name="VOLTAR PARA PROJETOS"
-            className="mb-[1.13rem]"
-            onClick={handleClose}
-          />
+          <div className="mb-[1.13rem]">
+            <CustomButton
+              theme={''}
+              variant="contained"
+              color="primary"
+              size="large"
+              disabled={false}
+              loading={false}
+              name="VOLTAR PARA PROJETOS"
+              onClick={handleClose}
+            />
+          </div>
         </div>
       </Box>
     </Modal>

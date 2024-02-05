@@ -26,6 +26,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications'
 import LogoutIcon from '@mui/icons-material/Logout'
 import { UserProps } from '../lib/definiton'
 import { signOut } from 'next-auth/react'
+import Image from 'next/image'
 
 const pages = ['Meus projetos', 'Descobrir', 'Sair']
 
@@ -163,7 +164,7 @@ export default function Header({ user }: UserProps) {
               content-between flex-row items-center
               gap-2 md:gap-4"
             >
-              <Tooltip>
+              <Tooltip title="">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar alt="Foto perfil" src={AvatarUser.src} />
                 </IconButton>

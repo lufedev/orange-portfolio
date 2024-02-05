@@ -236,7 +236,7 @@ export default function ModalAddProject({
                       onChange={(e) =>
                         setNewProjectData({
                           ...newProjectData,
-                          tags: e.target.value as unknown as string[]
+                          tags: e.target.value as unknown as string
                         })
                       }
                     />
