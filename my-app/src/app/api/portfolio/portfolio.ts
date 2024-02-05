@@ -2,8 +2,20 @@ import { sql } from '@vercel/postgres'
 import { getServerSession } from 'next-auth'
 import { options } from '../auth/[...nextauth]/options'
 
+export const getAllPortfolios = async () => {
+  const portfolio =
+    await sql`SELECT id, title, tags, link, description, email, imagepath,date 
+              AT TIME ZONE 'UTC' AT TIME ZONE 'America/Sao_Paulo' AS date
+              FROM portfolio 
+              ORDER BY id ASC;
+              `
+  return portfolio.rows
+}
 export const getAllPortfoliosFromUser = async () => {
   const session = await getServerSession(options)
+  if (session === null) {
+    throw new Error('Usuário não autorizado')
+  }
   const portfolio =
     await sql`SELECT id, title, tags, link, description, email, imagepath,date 
               AT TIME ZONE 'UTC' AT TIME ZONE 'America/Sao_Paulo' AS date
@@ -17,6 +29,9 @@ export const getAllPortfoliosFromUser = async () => {
 
 export const getPortfolio = async (id: number) => {
   const portfolio = await sql`SELECT * FROM portfolio WHERE id = ${id}`
+  if (portfolio.rows.length === 0) {
+    throw new Error('Projeto não encontrado')
+  }
   return portfolio
 }
 export const createPortfolio = async (
@@ -27,6 +42,9 @@ export const createPortfolio = async (
   imagepath: string
 ) => {
   const session = await getServerSession(options)
+  if (session === null) {
+    throw new Error('Usuário não autorizado')
+  }
   const email = session.user?.email
 
   const portfolio =
@@ -42,31 +60,26 @@ export const editPortfolio = async (
   description: string,
   imagepath: string
 ) => {
-  const session = await getServerSession(options)
-  const checkUser = await getPortfolio(id)
-  if (!checkUser) {
-    throw new Error('Usuário não autorizado')
-  }
+  await checkUser(id)
   const portfolio =
     await sql`UPDATE portfolio SET title = ${title}, tags = ${tags}, link = ${link}, description = ${description}, imagepath = ${imagepath} WHERE id = ${id}`
   return portfolio.rows[0]
 }
 
 export const deletePortfolio = async (id: number) => {
-  const session = await getServerSession(options)
-  const checkUser = await getPortfolio(id)
-  if (!checkUser) {
-    throw new Error('Usuário não autorizado')
-  }
+  await checkUser(id)
   const portfolio = await sql`DELETE FROM portfolio WHERE id = ${id}`
   return portfolio.rows[0]
 }
 
 export const checkUser = async (id: number) => {
   const session = await getServerSession(options)
+  if (session === null) {
+    throw new Error('Usuário não autorizado')
+  }
   const email = session.user?.email
   const checkEmail = await getPortfolio(id)
-  if (checkEmail.email !== email) {
+  if (checkEmail.rows[0].email !== email) {
     throw new Error('Usuário não autorizado')
   }
   return true
