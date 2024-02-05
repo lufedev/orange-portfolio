@@ -34,7 +34,7 @@ export default function Home({ sessionData }: Session) {
             day: '2-digit',
             month: '2-digit'
           }
-
+          //@ts-expect-error  Sobrecarga Inválida no options
           project.date = date.toLocaleDateString('en-US', options)
         })
         setProjects(data.data)

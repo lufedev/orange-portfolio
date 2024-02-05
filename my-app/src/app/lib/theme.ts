@@ -6,7 +6,7 @@ interface CustomColorOptions {
   dark: string
   contrastText: string
 }
-
+//@ts-expect-error  Import Inválido
 export interface CustomTheme extends Theme {
   palette: {
     default?: CustomColorOptions

@@ -26,7 +26,6 @@ import NotificationsIcon from '@mui/icons-material/Notifications'
 import LogoutIcon from '@mui/icons-material/Logout'
 import { UserProps } from '../lib/definiton'
 import { signOut } from 'next-auth/react'
-import Image from 'next/image'
 
 const pages = ['Meus projetos', 'Descobrir', 'Sair']
 
