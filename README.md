@@ -1,6 +1,6 @@
 # 🍊Orange Porfólio 🍊
 
-Um lugar para você organizar suas ideias e conhecer novas.
+### Um excelente lugar para você expor suas ideias e também conhecer novas.
 
 ## Time 
 | Nome      | Área      | Perfis                           |
