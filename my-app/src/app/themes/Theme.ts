@@ -1,6 +1,6 @@
 import { createTheme } from '@mui/material'
 import { CustomTheme } from '../lib/theme'
-
+//@ts-expect-error  Ignorar atribuiçao de tipo
 export const MainTheme: CustomTheme = createTheme({
   breakpoints: {
     values: {
@@ -12,6 +12,7 @@ export const MainTheme: CustomTheme = createTheme({
     }
   },
   palette: {
+    //@ts-expect-error Ignorar atribuição de tipo
     default: {
       light: '#EDEFF2',
       main: '#00000014',
