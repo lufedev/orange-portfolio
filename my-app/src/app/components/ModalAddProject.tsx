@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
 import Modal from '@mui/material/Modal'
 import CustomButton from './CustomButton'
 import { TextFieldTheme } from '../themes/TextField'
@@ -17,7 +16,6 @@ import Image from 'next/image'
 import { storage } from '../firebase/firebase'
 import { redirect } from 'next/navigation'
 import loadingImage from '../assets/img/loading.gif'
-import { set } from 'firebase/database'
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -37,7 +35,7 @@ export default function ModalAddProject({
   editing,
   onClose
 }: ProjectProps) {
-  const [enableButton, setEnableButton] = useState(true)
+  const [disableButton, setDisableButton] = useState(true)
   const [newProjectData, setNewProjectData] = useState(
     project || ({} as Project)
   )
@@ -65,14 +63,13 @@ export default function ModalAddProject({
   }
   useEffect(() => {
     if (
-      newProjectData.title === '' ||
-      newProjectData.tags === '' ||
-      newProjectData.link === '' ||
-      newProjectData.description === ''
+      newProjectData.title ||
+      newProjectData.tags ||
+      newProjectData.link ||
+      newProjectData.description
     ) {
-      setEnableButton(true)
-    } else {
-      setEnableButton(false)
+      const { title, tags, link, description } = newProjectData
+      setDisableButton(!(title && tags && link && description))
     }
   }, [newProjectData])
   const createProject = async (project: Project) => {
@@ -168,7 +165,7 @@ export default function ModalAddProject({
                   size="medium"
                   className=""
                   type="text"
-                  value={newProjectData?.title || ''}
+                  value={newProjectData.title || ''}
                   error={newProjectData?.title === '' ? true : false}
                   helperText={
                     newProjectData?.title === '' ? 'Campo obrigatório' : ''
@@ -187,7 +184,7 @@ export default function ModalAddProject({
                   size="medium"
                   className=""
                   type="text"
-                  value={newProjectData?.tags || ''}
+                  value={newProjectData.tags || ''}
                   error={newProjectData?.tags === '' ? true : false}
                   helperText={
                     newProjectData?.tags === '' ? 'Campo obrigatório' : ''
@@ -206,7 +203,7 @@ export default function ModalAddProject({
                   size="medium"
                   className=""
                   type="text"
-                  value={newProjectData?.link || ''}
+                  value={newProjectData.link || ''}
                   error={newProjectData?.link === '' ? true : false}
                   helperText={
                     newProjectData?.link === '' ? 'Campo obrigatório' : ''
@@ -227,7 +224,7 @@ export default function ModalAddProject({
                   type="text"
                   multiline
                   rows={3}
-                  value={newProjectData?.description || ''}
+                  value={newProjectData.description || ''}
                   error={newProjectData?.description === '' ? true : false}
                   helperText={
                     newProjectData?.description === ''
@@ -301,7 +298,7 @@ export default function ModalAddProject({
                 variant="contained"
                 color="primary"
                 size="large"
-                disabled={enableButton}
+                disabled={disableButton}
                 name="SALVAR"
                 loading={false}
                 onClick={handleSave}
