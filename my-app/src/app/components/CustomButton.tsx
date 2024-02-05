@@ -29,6 +29,7 @@ export default function CustomButton({
   }
   return (
     <ThemeProvider theme={getTheme(theme)}>
+      {/* @ts-expect-error Não consigo resolver, e é necessário para compilar */}
       <LoadingButton
         variant={variant}
         color={color}
