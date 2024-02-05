@@ -10,12 +10,14 @@ import { TextField } from '@mui/material';
 import ModalAddProject from '../components/ModalAddProject';
 import ContainerProjects from '../components/ContainerProjects';
 import ButtonFirstProject from '../components/ButtonAddFirstProject';
+import CustomSkeleton from '../components/CustomSkeleton';
 
 export default function Home({ sessionData }: Session) {
   const [projects, setProjects] = useState<Project[]>([]);
-  const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
-  const [searchTag, setSearchTag] = useState('');
-  
+  const [tagFilter, setTagFilter] = useState(''); 
+  const [modalOpen, setModalOpen] = useState(false);
+  const [country, setCountry] = useState<string>('');
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -45,15 +47,16 @@ export default function Home({ sessionData }: Session) {
   }, []);
 
   useEffect(() => {
-    // Filtrar os projetos com base na tag pesquisada
-    const filtered = projects.filter(project =>
-      project.tags.includes(searchTag)
-    );
-    setFilteredProjects(filtered);
-  }, [projects, searchTag]);
+    fetch('https://get.geojs.io/v1/ip/geo.json')
+        .then(response => response.json())
+        .then(data => {
+            setCountry(data.country);
+        })
+        .catch(error => console.error('Erro ao obter o nome do país:', error));
+       
+}, []);
 
-  const [modalOpen, setModalOpen] = useState(false);
-  
+
 
   const openModal = () => {
     setModalOpen(true);
@@ -63,9 +66,9 @@ export default function Home({ sessionData }: Session) {
     setModalOpen(false);
   };
 
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTag(event.target.value);
-    user.projects = filteredProjects
+
+  const filterProjectsByTag = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTagFilter(event.target.value);
   };
 
   const user: User = {
@@ -75,7 +78,7 @@ export default function Home({ sessionData }: Session) {
     image: AvatarUser,
     sname: '',
     password: '',
-    country: ''
+    country: country
   };
 
   const isProject: boolean = user.projects.length > 0;
@@ -94,21 +97,28 @@ export default function Home({ sessionData }: Session) {
         <div className="w-full mb-6">
           <h4 className="h6 text-color-neutral-130 mb-4">Meus projetos</h4>
           <ThemeProvider theme={TextFieldTheme}>
-          <TextField
+            <TextField
               name="Buscar tags"
               label="Buscar tags"
               variant="outlined"
               size="medium"
               className="w-full md:w-[32rem]"
               type="text"
-              value={searchTag}
-              onChange={handleSearchChange}
+              value={tagFilter}
+              onChange={filterProjectsByTag}
             />
           </ThemeProvider>
           {isProject ? (
-            <ContainerProjects user={user}/>
+            <ContainerProjects user={user} filter={tagFilter}/>
           ) : (
-            <ButtonFirstProject onClick={openModal} />
+            <>
+              <div className="w-full flex flex-row flex-wrap gap-6 items-end">
+                <ButtonFirstProject onClick={openModal} editing={false} />
+                <CustomSkeleton />
+                <CustomSkeleton />
+              </div>
+
+            </>
           )}
         </div>
       </div>

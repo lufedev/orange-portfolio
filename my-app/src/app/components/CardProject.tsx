@@ -10,17 +10,19 @@ import {
   ThemeProvider
 } from '@mui/material'
 import { ChipTheme, MenuTheme } from '../themes/Button'
-import sam from '../assets/img/images.jpg'
 import EditIcon from '@mui/icons-material/Edit'
-import * as React from 'react'
+import React, { useState } from 'react';
 import CustomChip from './CustomChip'
-import { MainTheme } from '../themes/Theme'
 import ModalAddProject from './ModalAddProject'
 import { redirect } from 'next/navigation'
+import { storage } from '../firebase/firebase'
+import NotFoundImageProject from '../assets/img/no-picture-available.svg'
+import SuccessModel from './SuccessModal'
 
 export default function CardProject({ user, project, view }: UserProps) {
   const [modalOpen, setModalOpen] = React.useState(false)
   const [success, setSuccess] = React.useState(false)
+  const [showSuccessModal, setShowSuccessModal] = useState(false); 
   const [anchorElMenu, setAnchorElMenu] = React.useState<null | HTMLElement>(
     null
   )
@@ -59,12 +61,29 @@ export default function CardProject({ user, project, view }: UserProps) {
         body: JSON.stringify({ id: project?.id })
       })
       setSuccess(true)
+      removeImageFromDatabase()
+      setShowSuccessModal(true)
     } catch (error) {}
   }
+
+  const removeImageFromDatabase = () => {
+    if (project?.imagepath) {
+      const imageRef = storage.refFromURL(project?.imagepath as string);
+      imageRef.delete()
+        .then(() => {
+          console.log('Imagem removida do Firebase Storage com sucesso.');
+        })
+        .catch((error) => {
+          console.error('Erro ao remover a imagem do Firebase Storage:', error);
+        });
+    }
+  }
+
+
   return (
     <div className="h-[19.75rem] w-full md:w-[24.31rem] md:h-[17.87rem] mt-6">
       <Image
-        src={project?.imagepath || NotFoundImage}
+        src={project?.imagepath || NotFoundImageProject}
         alt={project?.title}
         width={312}
         height={258}
@@ -78,7 +97,7 @@ export default function CardProject({ user, project, view }: UserProps) {
           height={40}
           className="my-[.31rem] rounded"
         />
-        <div className="absolute bottom-[16rem] right-[1rem] fixed border-2 border-solid border-color-secondary-70 rounded-full">
+        <div className="absolute bottom-[16rem] right-[1rem] fixed  rounded-full">
           <IconButton
             size="large"
             aria-label="account of current user"
@@ -165,6 +184,10 @@ export default function CardProject({ user, project, view }: UserProps) {
           </ThemeProvider>
         </Stack>
       </div>
+      <SuccessModel
+        status={showSuccessModal}
+        title='Projeto deletado com sucesso!'
+      />
     </div>
   )
 }

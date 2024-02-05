@@ -15,10 +15,12 @@ import { Project, ProjectProps } from '../lib/definiton'
 import Image from 'next/image'
 import { storage } from '../firebase/firebase'
 import { redirect } from 'next/navigation'
-import loadingImage from '../assets/img/loading.gif'
-import { set } from 'firebase/database'
 import ModalProjectPreview from './ModalProjectPreview'
 import Link from 'next/link'
+import loadingImage from '../assets/img/loading.gif'
+import CircularProgress from '@mui/material/CircularProgress';
+import SuccessModel from './SuccessModal'
+
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -39,7 +41,6 @@ export default function ModalAddProject({
   onClose
 }: ProjectProps) {
   const [disableButton, setDisableButton] = useState(true)
-  const initialState = project || {} as Project;
   const [newProjectData, setNewProjectData] = useState(
     project || ({} as Project)
   )
@@ -47,24 +48,17 @@ export default function ModalAddProject({
 
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
+  const [isimagepath, setIsimagepath] = useState(false)
+  const [isAddProjectModalOpen, setAddProjectModalOpen] = useState(states);
+  const [isPreviewModalOpen, setPreviewModalOpen] = useState(false);
+  const [imageLoading, setImageLoading] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false); 
+  const [messageSuccessModal, setMessageShowSuccessModal] = useState(''); 
 
-  const handleToggle = () => {
-    setNewProjectData(currentProject)
-    onClose()
-  }
   if (success) {
     redirect('http://localhost:3000/')
   }
-  const handleSave = () => {
-    setLoading(true)
-    if (editing) {
-      updateProject(newProjectData as Project)
-    } else {
-      createProject(newProjectData as Project)
-    }
-    setLoading(false)
-    onClose()
-  }
+
   useEffect(() => {
     if (
       newProjectData.title ||
@@ -76,16 +70,11 @@ export default function ModalAddProject({
       setDisableButton(!(title && tags && link && description))
     }
   }, [newProjectData])
-  const [isimagepath, setIsimagepath] = useState(false)
-  const [isAddProjectModalOpen, setAddProjectModalOpen] = useState(states);
-  const [isPreviewModalOpen, setPreviewModalOpen] = useState(false);
+
   useEffect(() => {
     setAddProjectModalOpen(states);
   }, [states]);
-  const resetComponentState = () => {
-    setNewProjectData(initialState);
-    setIsimagepath(false);
-  };
+
   const createProject = async (project: Project) => {
     try {
       const response = await fetch('http://localhost:3000/api/portfolio', {
@@ -95,11 +84,12 @@ export default function ModalAddProject({
         },
         body: JSON.stringify(newProjectData)
       })
-   
+
       setNewProjectData({} as Project)
       setSuccess(true)
       setIsimagepath(false)
-      resetComponentState(); 
+     
+
     } catch (error) { }
   }
 
@@ -112,37 +102,43 @@ export default function ModalAddProject({
         },
         body: JSON.stringify(newProjectData)
       })
-      handleToggle()
       setSuccess(true)
-    } catch (error) {}
+    
+    
+    } catch (error) { }
   }
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setLoading(true)
-    const file = event.target.files?.[0]
-    if (file) {
-      const storageRef = storage.ref()
-      const projectFolder = `${user?.email}`
+    setLoading(true);
+    const file = event.target.files?.[0];
+    if (file !== undefined) {
+      if (editing) {
+        removeImageFromDatabase();
+      }
+      const storageRef = storage.ref();
+      const projectFolder = `${user?.email}`;
+      const fileRef = storageRef.child(projectFolder + '/' + Date.now());
 
-      const fileRef = storageRef.child(
-        projectFolder + '/' + Date.now()
-      )
+      setImageLoading(true);
 
       fileRef
         .put(file)
         .then(() => {
-          console.log('Arquivo enviado com sucesso!')
+          console.log('Arquivo enviado com sucesso!');
           fileRef.getDownloadURL().then((url: string) => {
-            //Caso o campo é preenchido durante o upload da imagem, o valor é limpo
-            setNewProjectData({ ...newProjectData, imagepath: url })
-          })
+            setIsimagepath(true);
+            setNewProjectData({ ...newProjectData, imagepath: url });
+            setImageLoading(false);
+          });
         })
         .catch((error) => {
-          console.error('Erro ao enviar arquivo:', error)
-        })
+          console.error('Erro ao enviar arquivo:', error);
+          setImageLoading(false);
+        });
     }
-    setLoading(false)
-  }
+    setLoading(false);
+  };
+
 
   const removeImageFromDatabase = () => {
     if (newProjectData.imagepath) {
@@ -156,22 +152,35 @@ export default function ModalAddProject({
         });
     }
   }
-  
+
   const handleToggle = () => {
     onClose()
-    removeImageFromDatabase()
-    resetComponentState(); 
+    setNewProjectData(currentProject)
+    if (!editing) {
+      removeImageFromDatabase()
+    }
+
+
   }
+
   const handleSave = () => {
     setLoading(true)
 
-    createProject(newProjectData as Project)
-    //updateProject ainda nao foi criado
+    if (editing) {
+
+      updateProject(newProjectData as Project)
+      setIsimagepath(true)
+      setMessageShowSuccessModal('Edição concluída com sucesso!');
+
+    } else {
+      createProject(newProjectData as Project)
+      setMessageShowSuccessModal('Projeto adicionado com sucesso!');
+    }
     setLoading(false)
     onClose()
+    setShowSuccessModal(true); 
   }
 
- 
 
   const openPreviewModal = () => {
     setPreviewModalOpen(true);
@@ -184,175 +193,146 @@ export default function ModalAddProject({
   };
 
   return (
-      <div>
+    <div>
 
-    {isAddProjectModalOpen && (
-      <Modal
-        open={states}
-        onClose={onClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-        className="mx-6 md:px-[195px]"
-      >
-      <Box
-        sx={{
-          position: { xs: 'absolute', md: 'relative' },
-          bottom: '0',
-          top: { md: '50%' },
-          left: '50%',
-          transform: { xs: 'translate(-50%)', md: 'translate(-50%, -50%)' },
-          width: '100%',
-          marginBottom: { xs: '24px', md: '0' },
-          maxHeight: { xs: '84vh', md: '100%' },
-          bgcolor: 'white',
-          overflow: 'auto'
-        }}
-        className="absolute bottom-0 left-1/2 translate-x-[-50%] bg-white w-full max-h-[84vh] overflow-auto md:top-1/2 md:translate-y-[-50%] md:relative md:max-h-screen"
-      >
-        <div className="px-6 md:px-8 w-full">
-          <h5 className="h5 my-4 md:my-6 w-full text-left">
-            Adicionar projeto
-          </h5>
-          <div className="md:flex md:flex-row-reverse">
-            <div className="w-full flex flex-col justify-center text-center gap-4 md:w-[50vw]">
-              <ThemeProvider theme={TextFieldTheme}>
-                <TextField
-                  name="title"
-                  label="Título"
-                  variant="outlined"
-                  size="medium"
-                  className=""
-                  type="text"
-                  value={newProjectData.title || ''}
-                  error={newProjectData?.title === '' ? true : false}
-                  helperText={
-                    newProjectData?.title === '' ? 'Campo obrigatório' : ''
-                  }
-                  onChange={(e) =>
-                    setNewProjectData({
-                      ...newProjectData,
-                      title: e.target.value
-                    })
-                  }
-                />
-                <TextField
-                  name="tags"
-                  label="Tags"
-                  variant="outlined"
-                  size="medium"
-                  className=""
-                  type="text"
-                  value={newProjectData.tags || ''}
-                  error={newProjectData?.tags === '' ? true : false}
-                  helperText={
-                    newProjectData?.tags === '' ? 'Campo obrigatório' : ''
-                  }
-                  onChange={(e) =>
-                    setNewProjectData({
-                      ...newProjectData,
-                      tags: e.target.value as unknown as string[]
-                    })
-                  }
-                />
-                <TextField
-                  name="link"
-                  label="Link"
-                  variant="outlined"
-                  size="medium"
-                  className=""
-                  type="text"
-                  value={newProjectData.link || ''}
-                  error={newProjectData?.link === '' ? true : false}
-                  helperText={
-                    newProjectData?.link === '' ? 'Campo obrigatório' : ''
-                  }
-                  onChange={(e) =>
-                    setNewProjectData({
-                      ...newProjectData,
-                      link: e.target.value
-                    })
-                  }
-                />
-                <TextField
-                  name="description"
-                  label="Descrição"
-                  variant="outlined"
-                  size="medium"
-                  className=""
-                  type="text"
-                  multiline
-                  rows={3}
-                  value={newProjectData.description || ''}
-                  error={newProjectData?.description === '' ? true : false}
-                  helperText={
-                    newProjectData?.description === ''
-                      ? 'Campo obrigatório'
-                      : ''
-                  }
-                  onChange={(e) =>
-                    setNewProjectData({
-                      ...newProjectData,
-                      description: e.target.value
-                    })
-                  }
-                />
-              </ThemeProvider>
-            </div>
-            <div className="my-4 flex flex-col md:mr-6 md:w-[50vw] md:mt-0">
-              <p className="subtitle-1 text-color-neutral-110 text-left w-full mb-4">
-                Selecione o conteúdo que você deseja fazer upload
-              </p>
-              <div className="w-full h-[304px] md:h-[307px]">
-                {newProjectData?.imagepath ? (
-                  <Button
-                    component="label"
-                    disableElevation
-                    className="h-full px-2 py-0 flex flex-col text-color-neutral-120 leading-[0.875rem] tracking-[0.01563rem] font-normal normal-case"
-                  >
-                    <Image
-                      src={loading ? loadingImage : newProjectData?.imagepath}
-                      alt={newProjectData?.title}
-                      width={389}
-                      height={304}
-                      className="h-full w-full object-cover"
+      {isAddProjectModalOpen && (
+        <Modal
+          open={states}
+          onClose={onClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+          className="mx-6 md:px-[195px]"
+        >
+          <Box
+            sx={{
+              position: { xs: 'absolute', md: 'relative' },
+              bottom: '0',
+              top: { md: '50%' },
+              left: '50%',
+              transform: { xs: 'translate(-50%)', md: 'translate(-50%, -50%)' },
+              width: '100%',
+              marginBottom: { xs: '24px', md: '0' },
+              maxHeight: { xs: '84vh', md: '100%' },
+              bgcolor: 'white',
+              overflow: 'auto'
+            }}
+            className="absolute bottom-0 left-1/2 translate-x-[-50%] bg-white w-full max-h-[84vh] overflow-auto md:top-1/2 md:translate-y-[-50%] md:relative md:max-h-screen"
+          >
+            <div className="px-6 md:px-8 w-full">
+              <h5 className="h5 my-4 md:my-6 w-full text-left">
+                Adicionar projeto
+              </h5>
+              <div className="md:flex md:flex-row-reverse">
+                <div className="w-full flex flex-col justify-center text-center gap-4 md:w-[50vw]">
+                  <ThemeProvider theme={TextFieldTheme}>
+                    <TextField
+                      name="title"
+                      label="Título"
+                      variant="outlined"
+                      size="medium"
+                      className=""
+                      type="text"
+                      value={newProjectData.title || ''}
+                      error={newProjectData?.title === '' ? true : false}
+                      helperText={
+                        newProjectData?.title === '' ? 'Campo obrigatório' : ''
+                      }
+                      onChange={(e) =>
+                        setNewProjectData({
+                          ...newProjectData,
+                          title: e.target.value
+                        })
+                      }
                     />
-                    <VisuallyHiddenInput
-                      type="file"
-                      onChange={handleFileChange}
+                    <TextField
+                      name="tags"
+                      label="Tags"
+                      variant="outlined"
+                      size="medium"
+                      className=""
+                      type="text"
+                      value={newProjectData.tags || ''}
+                      error={newProjectData?.tags === '' ? true : false}
+                      helperText={
+                        newProjectData?.tags === '' ? 'Campo obrigatório' : ''
+                      }
+                      onChange={(e) =>
+                        setNewProjectData({
+                          ...newProjectData,
+                          tags: e.target.value as unknown as string[]
+                        })
+                      }
                     />
-                  </Button>
-                ) : (
-                  <ThemeProvider theme={DisabledTheme}>
-                    <Button
-                      component="label"
-                      disableElevation
-                      variant="contained"
-                      className="h-full px-2 py-0 flex flex-col text-color-neutral-120 leading-[0.875rem] tracking-[0.01563rem] font-normal normal-case"
-                    >
-                      <PhotoLibraryIcon className="text-5xl" />
-                      <p className="w-full text-left flex justify-center mt-4">
-                        Compartilhe seu talento com milhares de pessoas
-                      </p>
-                      <VisuallyHiddenInput
-                        type="file"
-                        onChange={handleFileChange}
-                      />
-                    </Button>
+                    <TextField
+                      name="link"
+                      label="Link"
+                      variant="outlined"
+                      size="medium"
+                      className=""
+                      type="text"
+                      value={newProjectData.link || ''}
+                      error={newProjectData?.link === '' ? true : false}
+                      helperText={
+                        newProjectData?.link === '' ? 'Campo obrigatório' : ''
+                      }
+                      onChange={(e) =>
+                        setNewProjectData({
+                          ...newProjectData,
+                          link: e.target.value
+                        })
+                      }
+                    />
+                    <TextField
+                      name="description"
+                      label="Descrição"
+                      variant="outlined"
+                      size="medium"
+                      className=""
+                      type="text"
+                      multiline
+                      rows={3}
+                      value={newProjectData.description || ''}
+                      error={newProjectData?.description === '' ? true : false}
+                      helperText={
+                        newProjectData?.description === ''
+                          ? 'Campo obrigatório'
+                          : ''
+                      }
+                      onChange={(e) =>
+                        setNewProjectData({
+                          ...newProjectData,
+                          description: e.target.value
+                        })
+                      }
+                    />
                   </ThemeProvider>
                 </div>
                 <div className="my-4 flex flex-col md:mr-6 md:w-[50vw] md:mt-0">
                   <p className="subtitle-1 text-color-neutral-110 text-left w-full mb-4">
                     Selecione o conteúdo que você deseja fazer upload
                   </p>
+
                   <div className="w-full h-[304px] md:h-[307px]">
-                    {isimagepath ? (
-                      <Image
-                        src={newProjectData?.imagepath}
-                        alt={newProjectData?.title}
-                        width={389}
-                        height={304}
-                        className="h-full w-full object-cover"
-                      />
+                    {newProjectData?.imagepath ? (
+                      <Button
+                        component="label"
+                        disableElevation
+                        className="h-full w-full  px-2 py-0 flex flex-col text-color-neutral-120 leading-[0.875rem] tracking-[0.01563rem] font-normal normal-case"
+                      >
+                        <Image
+                          src={loading ? loadingImage : newProjectData?.imagepath}
+                          alt={newProjectData?.title}
+                          width={389}
+                          height={304}
+                          className="h-full w-full object-cover"
+                        />
+                        <VisuallyHiddenInput
+                          type="file"
+                          width={389}
+                          height={304}
+                          onChange={handleFileChange}
+                        />
+                      </Button>
                     ) : (
                       <ThemeProvider theme={DisabledTheme}>
                         <Button
@@ -361,7 +341,11 @@ export default function ModalAddProject({
                           variant="contained"
                           className="h-full px-2 py-0 flex flex-col text-color-neutral-120 leading-[0.875rem] tracking-[0.01563rem] font-normal normal-case"
                         >
-                          <PhotoLibraryIcon className="text-5xl" />
+                          {!imageLoading ? (
+                            <PhotoLibraryIcon className="text-5xl" />
+                          ) : (
+                            <CircularProgress />
+                          )}
                           <p className="w-full text-left flex justify-center mt-4">
                             Compartilhe seu talento com milhares de pessoas
                           </p>
@@ -387,7 +371,7 @@ export default function ModalAddProject({
                     variant="contained"
                     color="primary"
                     size="large"
-                    disabled={false}
+                    disabled={disableButton}
                     name="SALVAR"
                     loading={false}
                     onClick={handleSave}
@@ -405,49 +389,21 @@ export default function ModalAddProject({
                 </div>
               </div>
             </div>
-          </div>
-          <div className="flex flex-col w-full items-start">
-            <a
-              href="https://www.youtube.com/"
-              className="subtitle-1 text-color-neutral-100 !no-underline mb-4"
-            >
-              Visualizar publicação
-            </a>
-            <div className="flex mb-10 md:mb-6 gap-4">
-              <CustomButton
-                theme="ContainedTheme"
-                variant="contained"
-                color="primary"
-                size="large"
-                disabled={disableButton}
-                name="SALVAR"
-                loading={false}
-                onClick={handleSave}
-              />
-              <CustomButton
-                theme="disabled"
-                variant="contained"
-                color="primary"
-                size="large"
-                disabled={false}
-                name="CANCELAR"
-                loading={false}
-                onClick={handleToggle}
-              />
-            </div>
-          </div>
-        </div>
-      </Box>
-    </Modal>
+          </Box>
+        </Modal>
       )}
       {isPreviewModalOpen && newProjectData && (
         <ModalProjectPreview
           user={user}
           project={newProjectData as Project}
           onClose={closePreviewModal}
-          states={isPreviewModalOpen}
-        />
+          states={isPreviewModalOpen} editing={false} />
       )}
+
+      <SuccessModel
+        status={showSuccessModal}
+        title={messageSuccessModal}
+      />
     </div>
   )
 }

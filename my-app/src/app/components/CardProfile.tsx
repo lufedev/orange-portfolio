@@ -14,7 +14,7 @@ export default function CardProfile({ user, onClick }: UserProps) {
       />
       <div className="flex flex-col md:items-start md:gap-[3px]">
         <h3 className="h5 text-color-neutral-120 mb-2">
-          {user.name} {user.surname}
+          {user.name} {user.sname}
         </h3>
         <p className="subtitle-1 text-color-neutral-130 mb-2 md:mb-5">
           {user.country}
