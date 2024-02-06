@@ -28,6 +28,9 @@ export default function ModalProjectPreview({
   const EMPTY_FIELDS_MESSAGE = ''
   const tagsString = project?.tags || EMPTY_FIELDS_MESSAGE
   const isLink = project?.link === '' ? '' : 'Download'
+  const date = new Date()
+  const currentDate = `0${date.getMonth()}/${date.getFullYear()%100}`
+  project.date = currentDate
 
   return (
     <div>
@@ -75,7 +78,7 @@ export default function ModalProjectPreview({
                       <h6 className="h6 text-color-neutral-120 md:text-color-neutral-110">
                         {user?.name} {user?.sname}
                       </h6>
-                      <p className="text-color-neutral-110">{project?.date}</p>
+                      <p className="text-color-neutral-110">{project.date}</p>
                     </div>
                   </div>
                   <h5 className="text-color-neutral-120 md:text-center h5">

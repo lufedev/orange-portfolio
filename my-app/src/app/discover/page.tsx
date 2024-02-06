@@ -89,19 +89,19 @@ export default function Discover() {
   return (
     <div>
       <Header user={user} />
-      <div className="flex flex-col items-center justify-start mt-16 mx-6 gap-10">
+      <div className="flex flex-col items-center justify-start mt-16 mx-6 gap-10 md:mt-28">
         <h4 className="h4 text-center">
           Junte-se à comunidade de inovação, inspiração e descobertas,
           transformando experiências em conexões inesquecíveis
         </h4>
-        <div className="w-full mb-6">
+        <div className="w-full mb-9 md:mb-[77px]">
           <ThemeProvider theme={TextFieldTheme}>
             <TextField
               name="Buscar tags"
               label="Buscar tags"
               variant="outlined"
               size="medium"
-              className="w-full"
+              className="w-full md:max-w-[723px]"
               type="text"
               value={tagFilter}
               onChange={filterProjectsByTag}
