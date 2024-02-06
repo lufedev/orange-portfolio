@@ -18,6 +18,11 @@ O Orange Portfólio é um agregador de projetos, onde vários usuários podem sa
 ## Recursos
 <img src="https://miro.medium.com/v2/resize:fit:4800/format:webp/1*aF1u1vDDft_pzrZ0SlLRuw.png" alt="NextJs e React" width="300"/>
 
+
+## Documentação da API
+
+[<img src="https://www.benner.com.br/tecnologia/wp-content/uploads/2023/06/Postman.jpg" alt="Postman" width="400"/>](https://documenter.getpostman.com/view/31469136/2s9Yynk3fE)
+
 ### Instalação
 O serviço está funcional através de uma URL da Vercel
 
