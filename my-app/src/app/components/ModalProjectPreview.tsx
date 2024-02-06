@@ -5,7 +5,6 @@ import {
   Stack,
   ThemeProvider,
   Tooltip,
-  Typography,
   useMediaQuery
 } from '@mui/material'
 import { ProjectProps, User } from '../lib/definiton'
@@ -29,7 +28,7 @@ export default function ModalProjectPreview({
   const tagsString = project?.tags || EMPTY_FIELDS_MESSAGE
   const isLink = project?.link === '' ? '' : 'Download'
   const date = new Date()
-  const currentDate = `0${date.getMonth()}/${date.getFullYear()%100}`
+  const currentDate = `0${date.getMonth()}/${date.getFullYear() % 100}`
   project.date = currentDate
 
   return (
