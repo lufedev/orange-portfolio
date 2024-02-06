@@ -6,14 +6,14 @@ import { ThemeProvider } from '@mui/material'
 
 export default function CustomSkeleton() {
   return (
-    <Stack spacing={1} width={389} className="hidden xl:block">
+    <Stack spacing={1} width={389} className="w-full hidden md:block">
       <ThemeProvider theme={SkeletonTheme}>
         <Skeleton
           variant="rectangular"
           animation="wave"
           width={389}
           height={258}
-          className="rounded"
+          className="w-full h-[16.125rem] rounded"
           color="primary"
         />
         {/* <Stack spacing={2} className="flex flex-row  justify-between">

@@ -163,7 +163,7 @@ export default function Header({ user }: UserProps) {
                 <Divider />
                 {pages.map(renderPage)}
               </Menu>
-              <img src={Logo.src} alt="logo" className="w-[6rem] h=[3rem]" />
+              <img src={Logo.src} alt="logo" className="w-[6rem] h-[3rem]" />
             </Box>
             <Box
               sx={{
@@ -175,7 +175,7 @@ export default function Header({ user }: UserProps) {
               <img
                 src={Logo.src}
                 alt="logo"
-                className="ml-7 w-[6.9rem] mr-[100px]"
+                className="w-[6.9rem] mr-[100px]"
               />
               {pages.slice(0, 2).map((page) => (
                 <Button

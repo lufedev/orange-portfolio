@@ -24,9 +24,10 @@ export default function ModalProjectPreview({
   states
 }: ProjectProps) {
   const handleClose = () => onClose()
-  const isDesktop: boolean = useMediaQuery('(min-width:900px)')
-  const EMPTY_FIELDS_MESSAGE = 'Por favor, preencha todos os campos.'
+  const isDesktop: boolean = useMediaQuery('(min-width:768px)')
+  const EMPTY_FIELDS_MESSAGE = ''
   const tagsString = project?.tags || EMPTY_FIELDS_MESSAGE
+  const isLink = project?.link === '' ? '' : 'Download'
 
   return (
     <div>
@@ -51,26 +52,23 @@ export default function ModalProjectPreview({
             height: '100%',
             bgcolor: 'white',
             overflow: { xs: 'auto', md: 'auto' },
-            p: 4,
             borderRadius: { xs: '24px 24px 0px 0px', md: '0' }
           }}
         >
-          <Tooltip title="Fechar" className="absolute top-0 right-0 h-16 w-16">
-            <IconButton onClick={handleClose}>
+          <Tooltip title="Fechar" className="absolute top-0 right-0 mr-4 mt-4">
+            <IconButton className="p-[5px]" onClick={handleClose}>
               <CloseIcon />
             </IconButton>
           </Tooltip>
 
-          <div className="mt-[28px] flex flex-col items-center justify-center">
+          <div className="w-full flex flex-col items-center justify-center pt-14 px-6 md:px-[102px]">
             {isDesktop ? (
-              <div className="flex-col md:w-full relative">
-                <div className="flex flex-row md:w-full md:items-center justify-between gap-2 mb-8">
+              <div className="flex-col w-full relative">
+                <div className="flex flex-row w-full h-fit md:items-center justify-between gap-2 md:gap-0 mb-8">
                   <div className="flex gap-2">
                     <Image
                       src={user?.image}
                       alt={user?.name}
-                      width={40}
-                      height={40}
                       className="my-[.31rem] rounded"
                     />
                     <div className="flex flex-col gap-2">
@@ -80,15 +78,9 @@ export default function ModalProjectPreview({
                       <p className="text-color-neutral-110">{project?.date}</p>
                     </div>
                   </div>
-
-                  <Typography
-                    id="keep-mounted-modal-title"
-                    variant="h5"
-                    component="h2"
-                    className="text-color-neutral-120 md:text-center .h5"
-                  >
+                  <h5 className="text-color-neutral-120 md:text-center h5">
                     {project?.title || EMPTY_FIELDS_MESSAGE}
-                  </Typography>
+                  </h5>
                   <Stack
                     direction="row"
                     spacing={1}
@@ -105,7 +97,6 @@ export default function ModalProjectPreview({
                               color="default"
                               size="large"
                               disabled={false}
-                              className="mb-[1.13rem]"
                               label={tag.trim()}
                             />
                           ))}
@@ -123,14 +114,9 @@ export default function ModalProjectPreview({
               </div>
             ) : (
               <>
-                <Typography
-                  id="keep-mounted-modal-title"
-                  variant="h5"
-                  component="h5"
-                  className="text-color-neutral-120 text-center md:text-[18px] md:text-left mt-6"
-                >
+                <h6 className="text-color-neutral-120 h5 text-center mb-8 md:text-[18px]">
                   {project?.title}
-                </Typography>
+                </h6>
                 <CardProject
                   user={user as User}
                   project={project}
@@ -139,14 +125,16 @@ export default function ModalProjectPreview({
               </>
             )}
 
-            <div className="flex flex-col mt-6  md:mt-14 gap-6">
-              <p>{project?.description || EMPTY_FIELDS_MESSAGE}</p>
+            <div className="w-full flex flex-col  mt-6  md:mt-[4rem] gap-6">
+              <p className="body-2">
+                {project?.description || EMPTY_FIELDS_MESSAGE}
+              </p>
               <div className="flex flex-col">
-                <b>Download</b>
+                <b className="body-2">{isLink}</b>
                 <Link
                   href={project?.link || EMPTY_FIELDS_MESSAGE}
                   target="_blank"
-                  className="text-color-info-80 no-underline"
+                  className="text-color-info-80 no-underline body-2"
                 >
                   {project?.link || EMPTY_FIELDS_MESSAGE}
                 </Link>

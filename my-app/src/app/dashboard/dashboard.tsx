@@ -10,7 +10,6 @@ import { TextField } from '@mui/material'
 import ModalAddProject from '../components/ModalAddProject'
 import ContainerProjects from '../components/ContainerProjects'
 import ButtonFirstProject from '../components/ButtonAddFirstProject'
-import CustomSkeleton from '../components/CustomSkeleton'
 
 export default function Home({ sessionData }: Session) {
   const [projects, setProjects] = useState<Project[]>([])
@@ -55,7 +54,6 @@ export default function Home({ sessionData }: Session) {
       .catch((error) => console.error('Erro ao obter o nome do país:', error))
   }, [])
 
-
   const user: User = {
     name: sessionData.name,
     email: sessionData.email,
@@ -66,13 +64,11 @@ export default function Home({ sessionData }: Session) {
     country: country || 'Brasil'
   }
 
-
   useEffect(() => {
-   
     if (user) {
-      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('user', JSON.stringify(user))
     }
-  }, [user]);
+  }, [user])
 
   const openModal = () => {
     setModalOpen(true)
@@ -85,7 +81,6 @@ export default function Home({ sessionData }: Session) {
   const filterProjectsByTag = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTagFilter(event.target.value)
   }
-
 
   const isProject: boolean = user.projects.length > 0
 
@@ -120,8 +115,6 @@ export default function Home({ sessionData }: Session) {
             <>
               <div className="w-full flex flex-row flex-wrap gap-6 items-end">
                 <ButtonFirstProject onClick={openModal} editing={false} />
-                <CustomSkeleton />
-                <CustomSkeleton />
               </div>
             </>
           )}
