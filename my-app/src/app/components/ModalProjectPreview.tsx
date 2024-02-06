@@ -5,7 +5,6 @@ import {
   Stack,
   ThemeProvider,
   Tooltip,
-  Typography,
   useMediaQuery
 } from '@mui/material'
 import { ProjectProps, User } from '../lib/definiton'

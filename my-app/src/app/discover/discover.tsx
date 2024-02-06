@@ -61,45 +61,59 @@ export default function Discover() {
     }
   }, [])
 
+  const userMap: Map<string, User> = new Map<string, User>()
+  projects.forEach((project) => {
+    //@ts-expect-error Não consigo resolver, e é necessário para compilar
+    const email = project.email
+    const name = project.usuario
+
+    if (userMap.has(email)) {
+      const existingUser = userMap.get(email) as User
+      existingUser.projects.push(project)
+    } else {
+      const newUser: User = {
+        name,
+        email,
+        projects: [project],
+        image: AvatarUser,
+        sname: '',
+        password: '',
+        country: ''
+      }
+      userMap.set(email, newUser)
+    }
+  })
+  const users: User[] = Array.from(userMap.values())
+
   return (
     <div>
       <Header user={user} />
-      <div className="flex flex-col items-center justify-start mt-14 mx-6 gap-10">
+      <div className="flex flex-col items-center justify-start mt-16 mx-6 gap-10">
+        <h4 className="h4 text-center">
+          Junte-se à comunidade de inovação, inspiração e descobertas,
+          transformando experiências em conexões inesquecíveis
+        </h4>
         <div className="w-full mb-6">
-          <h4 className="h6 text-color-neutral-130 mb-4">Meus projetos</h4>
-
           <ThemeProvider theme={TextFieldTheme}>
             <TextField
               name="Buscar tags"
               label="Buscar tags"
               variant="outlined"
               size="medium"
-              className="w-full md:w-[32rem]"
+              className="w-full"
               type="text"
               value={tagFilter}
               onChange={filterProjectsByTag}
             />
-          </ThemeProvider>
-          {projects.map((project: Project) => {
-            const users: User = {
-              name: project?.usuario as string,
-              email: 'default',
-              projects: [project],
-              image: AvatarUser,
-              sname: '',
-              password: '',
-              country: ''
-            }
-
-            return (
+            {users.map((user: User) => (
               <ContainerProjects
-                key={''}
+                key={user.email}
                 editable={false}
-                user={users}
+                user={user}
                 filter={tagFilter}
               />
-            )
-          })}
+            ))}
+          </ThemeProvider>
         </div>
       </div>
     </div>
