@@ -33,4 +33,4 @@ Você também pode testar ele localmente em sua máquina clonando o repo e insta
 - npm run dev
 
 ### Licença 
-Este projeto está sobre a licença GPL 3.0 
+Este projeto está sob a licença GPL 3.0 
