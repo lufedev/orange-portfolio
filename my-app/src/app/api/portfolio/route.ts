@@ -6,6 +6,7 @@ import {
   editPortfolio,
   getAllPortfoliosFromUser
 } from './portfolio'
+import { revalidatePath } from 'next/cache'
 
 const ERROR_MESSAGES = {
   missingData: 'Dados não recebidos',
@@ -45,6 +46,7 @@ export async function POST(request: Request) {
       throw new Error(ERROR_MESSAGES.incompleteData)
     }
     await createPortfolio(title, tags, link, description, imagepath)
+    revalidatePath('/api/portfolio/all')
     return NextResponse.json({ data: 'Projeto adicionado' })
   } catch (error) {
     return handleError(error)
@@ -69,6 +71,7 @@ export async function DELETE(request: Request) {
   } catch (error) {
     return handleError(error)
   }
+  revalidatePath('/api/portfolio/all')
   return NextResponse.json({ data: 'Projeto deletado' })
 }
 
@@ -91,6 +94,7 @@ export async function PUT(request: Request) {
   } catch (error) {
     return handleError(error)
   }
+  revalidatePath('/api/portfolio/all')
   return NextResponse.json({ data: 'Projeto editado' })
 }
 
