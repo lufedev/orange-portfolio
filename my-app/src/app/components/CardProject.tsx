@@ -83,7 +83,7 @@ export default function CardProject({ user, project, editable }: UserProps) {
           alt={project?.title}
           width={312}
           height={258}
-          className="w-full h-[19.5rem] md:h-[24.31rem] object-cover"
+          className="w-screen h-[19.5rem] md:h-[24.31rem] rounded object-cover"
         />
         <div className="absolute bottom-0 top-0 right-0">
           {editable ? (
