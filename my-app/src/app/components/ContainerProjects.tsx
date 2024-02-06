@@ -7,7 +7,7 @@ export default function ContainerProjects({
   editable
 }: UserProps) {
   const normalizedFilter: string = filter?.toLowerCase() as string
-
+  console.log(user)
   return (
     <div className="flex flex-col mt-6 md:mt-10 gap-6 md:gap-8 md:grid grid-cols-3">
       {user?.projects

@@ -36,6 +36,7 @@ export type Session = {
 export type UserProps = {
   user: User
   project?: Project
+  projects?: Project[]
   onClick?: () => void
   view?: boolean
   filter?: string

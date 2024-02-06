@@ -61,6 +61,31 @@ export default function Discover() {
     }
   }, [])
 
+  const userMap: Map<string, User> = new Map<string, User>()
+  projects.forEach((project) => {
+    //@ts-expect-error Não consigo resolver, e é necessário para compilar
+    const email = project.email
+    const name = project.usuario
+
+    if (userMap.has(email)) {
+      const existingUser = userMap.get(email) as User
+      existingUser.projects.push(project)
+    } else {
+      const newUser: User = {
+        name,
+        email,
+        projects: [project],
+        image: AvatarUser,
+        sname: '',
+        password: '',
+        country: ''
+      }
+      userMap.set(email, newUser)
+    }
+  })
+  const users: User[] = Array.from(userMap.values())
+
+  console.log(users)
   return (
     <div>
       <Header user={user} />
@@ -81,27 +106,15 @@ export default function Discover() {
               value={tagFilter}
               onChange={filterProjectsByTag}
             />
-          </ThemeProvider>
-          {projects.map((project: Project) => {
-            const users: User = {
-              name: project?.usuario as string,
-              email: 'default',
-              projects: [project],
-              image: AvatarUser,
-              sname: '',
-              password: '',
-              country: ''
-            }
-
-            return (
+            {users.map((user: User) => (
               <ContainerProjects
-                key={''}
+                key={user.email}
                 editable={false}
-                user={users}
+                user={user}
                 filter={tagFilter}
               />
-            )
-          })}
+            ))}
+          </ThemeProvider>
         </div>
       </div>
     </div>
