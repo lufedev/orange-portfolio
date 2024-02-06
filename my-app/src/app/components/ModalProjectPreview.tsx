@@ -71,7 +71,7 @@ export default function ModalProjectPreview({
                     <Image
                       src={user?.image}
                       alt={user?.name}
-                      className="my-[.31rem] rounded"
+                      className="my-[.31rem] rounded h-[40px] w-[40px]"
                     />
                     <div className="flex flex-col gap-2">
                       <h6 className="h6 text-color-neutral-120 md:text-color-neutral-110">
