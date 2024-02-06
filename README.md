@@ -1,6 +1,7 @@
 # 🍊Orange Porfólio 🍊
-
 ### Um excelente lugar para você expor suas ideias e também conhecer novas.
+
+<img src="https://i.imgur.com/SPnEb0k.png" alt="Orange Logo" width="400"/>
 
 ## Time 
 | Nome      | Área      | Perfis                           |
@@ -18,6 +19,11 @@ O Orange Portfólio é um agregador de projetos, onde vários usuários podem sa
 ## Recursos
 <img src="https://miro.medium.com/v2/resize:fit:4800/format:webp/1*aF1u1vDDft_pzrZ0SlLRuw.png" alt="NextJs e React" width="300"/>
 
+
+## Documentação da API
+
+[<img src="https://www.benner.com.br/tecnologia/wp-content/uploads/2023/06/Postman.jpg" alt="Postman" width="400"/>](https://documenter.getpostman.com/view/31469136/2s9Yynk3fE)
+
 ### Instalação
 O serviço está funcional através de uma URL da Vercel
 
@@ -27,4 +33,4 @@ Você também pode testar ele localmente em sua máquina clonando o repo e insta
 - npm run dev
 
 ### Licença 
-Este projeto está sobre a licença GPL 3.0 
+Este projeto está sob a licença GPL 3.0 
