@@ -1,5 +1,7 @@
 # 🍊Orange Porfólio 🍊
 
+<img src="https://i.imgur.com/SPnEb0k.png" alt="Orange Logo" width="400"/>
+
 ### Um excelente lugar para você expor suas ideias e também conhecer novas.
 
 ## Time 
